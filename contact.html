@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact — Barry Yuan</title>
+<meta name="description" content="PLACEHOLDER — how to reach Barry.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/main.css">
+<link rel="stylesheet" href="assets/css/contact.css">
+</head>
+<body>
+
+<div class="veil"></div>
+
+<nav class="nav">
+  <a class="nav__mark" href="index.html">Barry <span>Yuan</span></a>
+  <ul class="nav__links">
+    <li><a class="nav__link" href="portfolio.html">Portfolio</a></li>
+    <li><a class="nav__link" href="barrymade.html">BarryMade</a></li>
+    <li><a class="nav__link" href="about.html">About</a></li>
+    <li><a class="nav__link" href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <header class="page-head">
+    <h1>Contact</h1>
+    <p class="page-head__note">
+      PLACEHOLDER — one line saying what you'd like to hear about, and roughly
+      how fast you answer. Being specific here gets you better mail.
+    </p>
+  </header>
+
+  <section class="contact">
+
+    <!-- ============ DIRECT ====================================== -->
+    <div class="contact__col">
+      <h2>Reach me directly</h2>
+
+      <ul class="reach">
+        <li>
+          <span class="reach__what">Email</span>
+          <a class="reach__value" href="mailto:barryyuan2000@gmail.com">barryyuan2000@gmail.com</a>
+          <button class="copy" type="button" data-copy="barryyuan2000@gmail.com">Copy</button>
+        </li>
+        <li>
+          <span class="reach__what">Cell</span>
+          <a class="reach__value" href="tel:+10000000000">PLACEHOLDER — +1 (000) 000-0000</a>
+          <button class="copy" type="button" data-copy="+1 (000) 000-0000">Copy</button>
+        </li>
+        <li>
+          <span class="reach__what">Based in</span>
+          <span class="reach__value ph">PLACEHOLDER — city, and whether you'll relocate</span>
+        </li>
+        <li>
+          <span class="reach__what">ArtStation</span>
+          <a class="reach__value" href="#" target="_blank" rel="noopener">PLACEHOLDER — artstation.com/yourname</a>
+        </li>
+        <li>
+          <span class="reach__what">LinkedIn</span>
+          <a class="reach__value" href="#" target="_blank" rel="noopener">PLACEHOLDER — linkedin.com/in/yourname</a>
+        </li>
+        <li>
+          <span class="reach__what">GitHub</span>
+          <a class="reach__value" href="https://github.com/1h-barryy" target="_blank" rel="noopener">github.com/1h-barryy</a>
+        </li>
+        <li>
+          <span class="reach__what">Résumé</span>
+          <a class="reach__value" href="#">PLACEHOLDER — link a PDF here</a>
+        </li>
+      </ul>
+
+      <div class="availability">
+        <p><strong>PLACEHOLDER — availability.</strong> One line: what you're open to
+        and from when. Delete this box if you'd rather not say.</p>
+      </div>
+    </div>
+
+    <!-- ============ COMPOSER ==================================== -->
+    <div class="contact__col">
+      <h2>Or write one here</h2>
+      <p class="contact__aside">
+        PLACEHOLDER — optional: tell people what to include. A link to the role,
+        a rough timeline, and what the work actually is will get a faster reply.
+      </p>
+
+      <!-- Deliberately not a <form>: there is no server behind this page, so
+           the button hands the message to the visitor's own mail app.
+           See assets/js/contact.js for how to swap in a form service. -->
+      <div class="compose">
+        <div class="field">
+          <label for="from-name">Your name</label>
+          <input id="from-name" type="text" autocomplete="name" placeholder="Who's writing">
+        </div>
+        <div class="field">
+          <label for="from-email">Your email</label>
+          <input id="from-email" type="email" autocomplete="email" placeholder="Where I should reply">
+        </div>
+        <div class="field">
+          <label for="subject">Subject</label>
+          <input id="subject" type="text" placeholder="What this is about">
+        </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" placeholder="The details"></textarea>
+        </div>
+
+        <button class="send" type="button" data-to="barryyuan2000@gmail.com">
+          Open in your mail app
+        </button>
+
+        <p class="compose__status" role="status" aria-live="polite"></p>
+        <p class="compose__note">
+          This fills out a message in the mail app you already use. Nothing is
+          sent from this page and nothing is stored here.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span>&copy; 2026 Barry <span>Yuan</span></span>
+  <div class="foot__links">
+    <a href="portfolio.html">Portfolio</a>
+    <a href="barrymade.html">BarryMade</a>
+    <a href="about.html">About</a>
+  </div>
+</footer>
+
+<script src="assets/js/site.js"></script>
+<script src="assets/js/contact.js"></script>
+</body>
+</html>

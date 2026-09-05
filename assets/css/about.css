@@ -1,5 +1,5 @@
 /* =========================================================
-   About — a portrait, a paragraph, and how to reach you
+   About — a portrait and a paragraph
    ========================================================= */
 
 .about {
@@ -105,40 +105,15 @@
 .kit dt { color: var(--bronze); font-size: var(--t-sm); margin-bottom: .3rem; }
 .kit dd { margin: 0; color: var(--ivory-mid); font-size: var(--t-sm); line-height: 1.55; }
 
-/* --- contact -------------------------------------------------------- */
-
-.reach { list-style: none; margin: 0; padding: 0; max-width: 34rem; }
-
-.reach li { border-bottom: 1px solid var(--hairline); }
-.reach li:first-child { border-top: 1px solid var(--hairline); }
-
-.reach__row {
-  display: grid;
-  grid-template-columns: 6.5rem 1fr;
-  gap: 1.2rem;
-  align-items: baseline;
-  padding: .95rem 0;
-  text-decoration: none;
+/* a plain inline link inside the bio prose */
+.bio__link {
   color: var(--ivory);
-  transition: padding-left .45s var(--ease-settle), color .3s;
+  text-decoration: none;
+  border-bottom: 1px solid var(--bronze);
+  padding-bottom: 1px;
+  transition: color .3s, border-color .3s;
 }
-a.reach__row:hover { padding-left: .6rem; color: var(--bronze-lit); }
-
-.reach__what { color: var(--ivory-dim); font-size: var(--t-sm); }
-.reach__value { word-break: break-word; }
-
-.availability {
-  margin-top: 2.4rem;
-  padding: 1.15rem 1.3rem;
-  border: 1px solid var(--hairline);
-  border-left: 2px solid var(--bronze);
-  border-radius: 3px;
-  background: linear-gradient(158deg, rgba(43,38,32,.55), rgba(18,18,21,.55));
-  box-shadow: var(--bevel);
-  max-width: 34rem;
-}
-.availability p { margin: 0; color: var(--ivory-mid); font-size: var(--t-sm); }
-.availability strong { color: var(--ivory); font-weight: 500; }
+.bio__link:hover { color: var(--bronze-lit); border-bottom-color: var(--bronze-lit); }
 
 @media (max-width: 880px) {
   .about { grid-template-columns: 1fr; }

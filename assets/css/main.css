@@ -179,6 +179,18 @@ a { color: inherit; }
 .nav__link[aria-current="page"]::after { transform: scaleX(1); }
 .nav__link[aria-current="page"] { color: var(--ivory); }
 
+/* five items no longer fit on a phone, so the links drop to their own row */
+@media (max-width: 780px) {
+  .nav { flex-wrap: wrap; gap: .45rem 1rem; padding-block: 1.05rem; }
+  .nav__links { width: 100%; gap: 1.05rem; }
+  .nav__link { font-size: .82rem; }
+}
+@media (max-width: 420px) {
+  .nav__links { gap: .8rem; }
+  .nav__link { font-size: .78rem; }
+  .nav__mark { font-size: 1.05rem; }
+}
+
 /* Page-to-page fade. The lift is a CSS animation, not a JS class, so a
    failed script can never leave the visitor staring at a black rectangle. */
 .veil {
