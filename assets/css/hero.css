@@ -1,0 +1,207 @@
+/* =========================================================
+   Landing — full-bleed particle field
+   ========================================================= */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  padding: 0 var(--gutter);
+  overflow: hidden;
+}
+
+#field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+}
+
+/* keeps type legible over the densest part of the field */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(80vw 70vh at 26% 52%, rgba(8,8,10,.72), transparent 68%);
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1500px;
+  margin: 0 auto;
+  width: 100%;
+  padding-block: 14vh 10vh;
+}
+
+.hero__name {
+  font-family: var(--serif);
+  font-size: clamp(3.4rem, 13vw, 11rem);
+  font-weight: 300;
+  font-variation-settings: "opsz" 144;
+  letter-spacing: -0.035em;
+  line-height: .92;
+  margin: 0 0 1.6rem;
+  color: var(--ivory);
+}
+
+/* the single orchestrated entrance: type rises once, in two beats */
+.hero__name span,
+.hero__line,
+.hero__enter {
+  display: block;
+  animation: rise 1.5s var(--ease-settle) both;
+}
+.hero__name span:nth-child(1) { animation-delay: .35s; }
+.hero__name span:nth-child(2) { animation-delay: .48s; }
+.hero__line  { animation-delay: .78s; animation-duration: 1.4s; }
+.hero__enter { animation-delay: 1s;   animation-duration: 1.4s; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(1.1rem); }
+  to   { opacity: 1; transform: none; }
+}
+
+.hero__line {
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 28;
+  font-size: clamp(1.1rem, 2.1vw, 1.6rem);
+  line-height: 1.45;
+  color: var(--ivory-mid);
+  max-width: 34ch;
+  margin: 0 0 2.9rem;
+}
+.hero__line em {
+  font-style: italic;
+  color: var(--ivory);
+}
+
+/* entry links — set as a small lit shelf, not buttons */
+.hero__enter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .9rem;
+}
+
+.enter-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .78rem 1.35rem;
+  font-size: var(--t-sm);
+  text-decoration: none;
+  color: var(--ivory);
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  background: linear-gradient(158deg, var(--charcoal-hi), var(--charcoal));
+  box-shadow: var(--bevel), var(--lift-2);
+  transition: transform .5s var(--ease-settle), box-shadow .5s var(--ease-settle),
+              border-color .4s, background .4s;
+}
+.enter-link:hover {
+  transform: translateY(-2px);
+  border-color: var(--hairline-lit);
+  box-shadow: var(--bevel), var(--lift-3), 0 0 0 1px rgba(184,134,63,.14);
+}
+.enter-link:active { transform: translateY(0); box-shadow: var(--bevel), var(--lift-1); }
+
+.enter-link__dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--bronze-lit);
+  box-shadow: 0 0 10px 1px rgba(232,178,106,.65);
+  flex: none;
+}
+
+/* scroll cue */
+.hero__cue {
+  position: absolute;
+  left: var(--gutter);
+  bottom: 2.2rem;
+  z-index: 2;
+  font-size: var(--t-xs);
+  letter-spacing: .06em;
+  color: var(--ivory-dim);
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  animation: rise 1.2s var(--ease-settle) 1.5s both;
+}
+.hero__cue i {
+  display: block;
+  width: 34px; height: 1px;
+  background: linear-gradient(to right, var(--bronze), transparent);
+}
+
+/* =========================================================
+   Below the fold — three doors into the site
+   ========================================================= */
+
+.doors-wrap {
+  max-width: 1500px;
+  margin: clamp(4rem, 10vh, 8rem) auto 0;
+  padding-inline: var(--gutter);
+}
+
+.doors {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: var(--lift-3);
+}
+
+.door {
+  position: relative;
+  display: block;
+  padding: clamp(2rem, 4vw, 3.2rem);
+  text-decoration: none;
+  background: linear-gradient(160deg, #151412, #0e0e10);
+  min-height: 240px;
+  transition: background .55s var(--ease-out);
+  overflow: hidden;
+}
+.door::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(60% 70% at 30% 0%, rgba(184,134,63,.16), transparent 70%);
+  transition: opacity .55s var(--ease-out);
+}
+.door:hover { background: linear-gradient(160deg, #1d1a16, #111013); }
+.door:hover::before { opacity: 1; }
+
+.door__year {
+  position: relative;
+  font-size: var(--t-xs);
+  color: var(--ivory-dim);
+  letter-spacing: .04em;
+}
+.door__title {
+  position: relative;
+  font-family: var(--serif);
+  font-size: var(--t-lg);
+  font-variation-settings: "opsz" 40;
+  margin: .5rem 0 .7rem;
+}
+.door__desc {
+  position: relative;
+  color: var(--ivory-mid);
+  font-size: var(--t-sm);
+  margin: 0;
+  max-width: 32ch;
+}
+
+@media (max-width: 720px) {
+  .hero__cue { display: none; }
+}

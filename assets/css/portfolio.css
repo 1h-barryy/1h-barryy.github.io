@@ -1,0 +1,211 @@
+/* =========================================================
+   Portfolio — long-form case studies, scroll driven
+   ========================================================= */
+
+.progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(to right, var(--bronze-deep), var(--bronze-lit));
+  z-index: 70;
+  will-change: transform;
+}
+
+/* --- the index of projects, at the top ---------------------------- */
+
+.index {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 var(--gutter) clamp(4rem, 10vh, 7rem);
+}
+
+.index__list { list-style: none; margin: 0; padding: 0; }
+
+.index__row {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr auto;
+  gap: 1.5rem;
+  align-items: baseline;
+  padding: 1.15rem 0;
+  border-top: 1px solid var(--hairline);
+  text-decoration: none;
+  color: var(--ivory-mid);
+  transition: color .4s var(--ease-out), padding-left .5s var(--ease-settle);
+}
+.index__list li:last-child .index__row { border-bottom: 1px solid var(--hairline); }
+.index__row:hover { color: var(--ivory); padding-left: .7rem; }
+
+.index__year { font-size: var(--t-sm); color: var(--ivory-dim); }
+.index__name {
+  font-family: var(--serif);
+  font-size: var(--t-md);
+  font-variation-settings: "opsz" 36;
+  color: var(--ivory);
+}
+.index__role { font-size: var(--t-sm); text-align: right; }
+
+/* --- a case study ------------------------------------------------- */
+
+.study {
+  position: relative;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: clamp(4rem, 12vh, 9rem) var(--gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: start;
+}
+
+/* media column sticks while the writing scrolls past it */
+.study__stage {
+  position: sticky;
+  top: 12vh;
+  align-self: start;
+}
+
+.plate-figure { margin: 0; }
+
+.plate {
+  --enter: 0;
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  background: linear-gradient(158deg, #1f1c19 0%, #121113 58%, #0c0c0e 100%);
+  box-shadow: var(--bevel), var(--lift-3);
+  aspect-ratio: 4 / 3;
+  transform: scale(calc(0.945 + 0.055 * var(--enter)));
+  transition: transform .12s linear;
+  will-change: transform;
+}
+
+/* a single slow highlight raking across the surface as it enters view */
+.plate::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  pointer-events: none;
+  background: linear-gradient(104deg, transparent 42%, rgba(255,226,180,.09) 50%, transparent 58%);
+  transform: translateX(calc((var(--enter) * 150%) - 75%));
+}
+
+.plate__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.08) translateY(calc((var(--enter) - .5) * -3.5%));
+}
+
+/* what you see before you drop a real image in */
+.plate__empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: .5rem;
+  text-align: center;
+  color: var(--ivory-dim);
+  font-size: var(--t-sm);
+  padding: 2rem;
+}
+.plate__empty strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: var(--t-md);
+  font-weight: 400;
+  color: var(--bronze);
+}
+
+.plate__caption {
+  margin: .95rem 0 0;
+  font-size: var(--t-xs);
+  color: var(--ivory-dim);
+  max-width: 46ch;
+}
+
+/* --- writing column ----------------------------------------------- */
+
+.study__body { padding-block: 6vh 14vh; }
+
+.study__eyebrow {
+  font-size: var(--t-sm);
+  color: var(--bronze);
+  margin: 0 0 .55rem;
+}
+
+.study__title {
+  font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+  font-variation-settings: "opsz" 100;
+  margin: 0 0 1.6rem;
+}
+
+.study__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.1rem 2rem;
+  margin: 0 0 2.6rem;
+  padding: 1.3rem 0;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+.study__facts div { font-size: var(--t-sm); }
+.study__facts dt { color: var(--ivory-dim); margin-bottom: .18rem; }
+.study__facts dd { margin: 0; color: var(--ivory); }
+
+.beat { margin-bottom: 2.4rem; }
+
+/* hidden only when scripting is available to bring them back */
+.js .beat {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .9s var(--ease-out), transform .9s var(--ease-settle);
+}
+.js .beat.is-in { opacity: 1; transform: none; }
+
+.beat h3 {
+  font-size: var(--t-md);
+  font-variation-settings: "opsz" 30;
+  margin: 0 0 .55rem;
+}
+.beat p { color: var(--ivory-mid); }
+.beat p:last-child { margin-bottom: 0; }
+
+.beat ul {
+  color: var(--ivory-mid);
+  margin: 0;
+  padding-left: 1.1rem;
+  max-width: var(--measure);
+}
+.beat li { margin-bottom: .4rem; }
+.beat li::marker { color: var(--bronze); }
+
+.study__link {
+  display: inline-block;
+  margin-top: .4rem;
+  color: var(--ivory);
+  text-decoration: none;
+  border-bottom: 1px solid var(--bronze);
+  padding-bottom: 2px;
+  transition: border-color .35s, color .35s;
+}
+.study__link:hover { border-color: var(--bronze-lit); color: var(--bronze-lit); }
+
+.study + .study { border-top: 1px solid var(--hairline); }
+
+@media (max-width: 900px) {
+  .study {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .study__stage { position: static; }
+  .plate { transform: none; }
+  .study__body { padding-block: 0 4vh; }
+  .index__row { grid-template-columns: 4.5rem 1fr; }
+  .index__role { grid-column: 2; text-align: left; }
+}

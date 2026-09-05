@@ -1,0 +1,268 @@
+/* =========================================================
+   Barry — portfolio
+   One light source. Warm bronze lamp, upper left.
+   Everything on the page is lit by it, or waiting to be.
+   ========================================================= */
+
+:root {
+  /* --- ground --- */
+  --void:      #08080a;   /* page floor, deepest black */
+  --graphite:  #121215;   /* recessed panel */
+  --charcoal:  #1c1a18;   /* warm charcoal, raised object */
+  --charcoal-hi:#26231f;  /* lit face of a raised object */
+
+  /* --- type --- */
+  --ivory:     #ece6da;
+  --ivory-mid: #a29c92;
+  --ivory-dim: #6d675f;
+
+  /* --- the lamp --- */
+  --bronze:    #b8863f;
+  --bronze-lit:#e8b26a;
+  --bronze-deep:#6b4d24;
+
+  /* --- edges --- */
+  --hairline:  rgba(236, 230, 218, 0.09);
+  --hairline-lit: rgba(255, 236, 205, 0.16);
+
+  /* --- light geometry: shadows all fall from upper-left --- */
+  --lift-1: 0 2px 6px rgba(0,0,0,.55);
+  --lift-2: 0 10px 24px -8px rgba(0,0,0,.8);
+  --lift-3: 0 34px 70px -24px rgba(0,0,0,.95);
+  --bevel:  inset 0 1px 0 rgba(255,240,220,.07);
+
+  /* --- type scale, perfect fourth from 17px --- */
+  --t-xs:   0.78rem;
+  --t-sm:   0.9rem;
+  --t-base: 1.0625rem;
+  --t-md:   1.4rem;
+  --t-lg:   1.95rem;
+  --t-xl:   2.6rem;
+  --t-2xl:  clamp(2.4rem, 5vw, 4rem);
+
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans:  "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --gutter: clamp(1.5rem, 5vw, 5.5rem);
+  --measure: 62ch;
+
+  --ease-settle: cubic-bezier(.16, .84, .32, 1);
+  --ease-out:    cubic-bezier(.22, 1, .36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--void);
+  color: var(--ivory);
+  font-family: var(--sans);
+  font-size: var(--t-base);
+  line-height: 1.65;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* The lamp itself — a single static wash. It does not move,
+   so the particle field is the only ambient motion on the site. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(120vw 90vh at 12% -10%, rgba(184,134,63,.13), transparent 62%),
+    radial-gradient(70vw 60vh at 88% 108%, rgba(107,77,36,.10), transparent 70%);
+}
+
+img { max-width: 100%; display: block; }
+
+::selection { background: var(--bronze-deep); color: var(--ivory); }
+
+/* --- headings ---------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-variation-settings: "opsz" 120;
+  letter-spacing: -0.018em;
+  line-height: 1.08;
+  margin: 0;
+  color: var(--ivory);
+}
+
+h2 { font-size: var(--t-2xl); }
+h3 { font-size: var(--t-lg); line-height: 1.2; }
+
+p { margin: 0 0 1.1em; max-width: var(--measure); }
+
+a { color: inherit; }
+
+/* --- focus, always visible ---------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--bronze-lit);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* =========================================================
+   Navigation
+   ========================================================= */
+
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 60;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.55rem var(--gutter);
+  mix-blend-mode: normal;
+  transition: background .5s var(--ease-out), backdrop-filter .5s var(--ease-out);
+}
+
+.nav.is-stuck {
+  background: linear-gradient(to bottom, rgba(8,8,10,.92), rgba(8,8,10,.55) 70%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.nav__mark {
+  font-family: var(--serif);
+  font-size: 1.18rem;
+  font-variation-settings: "opsz" 20;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: var(--ivory);
+  white-space: nowrap;
+}
+.nav__mark span { color: var(--ivory-dim); }
+
+.nav__links {
+  display: flex;
+  gap: clamp(1.1rem, 3vw, 2.6rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav__link {
+  position: relative;
+  font-size: var(--t-sm);
+  letter-spacing: .01em;
+  color: var(--ivory-mid);
+  text-decoration: none;
+  padding-bottom: 3px;
+  transition: color .35s var(--ease-out);
+}
+.nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  height: 1px; width: 100%;
+  background: var(--bronze-lit);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .45s var(--ease-settle);
+}
+.nav__link:hover { color: var(--ivory); }
+.nav__link:hover::after,
+.nav__link[aria-current="page"]::after { transform: scaleX(1); }
+.nav__link[aria-current="page"] { color: var(--ivory); }
+
+/* Page-to-page fade. The lift is a CSS animation, not a JS class, so a
+   failed script can never leave the visitor staring at a black rectangle. */
+.veil {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--void);
+  pointer-events: none;
+  opacity: 0;
+  animation: veil-lift .5s var(--ease-out) both;
+}
+@keyframes veil-lift { from { opacity: 1; } to { opacity: 0; } }
+
+.veil.is-closing {
+  animation: none;
+  opacity: 1;
+  transition: opacity .26s var(--ease-out);
+}
+
+/* =========================================================
+   Shared page furniture
+   ========================================================= */
+
+main { position: relative; z-index: 1; }
+
+.page-head {
+  padding: clamp(8rem, 18vh, 13rem) var(--gutter) clamp(3rem, 7vh, 5rem);
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.page-head h1 {
+  font-size: clamp(2.8rem, 7.5vw, 6rem);
+  font-variation-settings: "opsz" 144;
+  margin-bottom: .9rem;
+}
+
+.page-head__note {
+  color: var(--ivory-mid);
+  max-width: 46ch;
+  font-size: var(--t-md);
+  line-height: 1.5;
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 30;
+}
+
+/* placeholder convention: anything you replace is marked with this */
+.ph {
+  color: var(--bronze);
+  font-family: var(--sans);
+  font-style: normal;
+}
+
+/* =========================================================
+   Footer
+   ========================================================= */
+
+.foot {
+  position: relative;
+  z-index: 1;
+  padding: 4.5rem var(--gutter) 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem 3rem;
+  align-items: baseline;
+  justify-content: space-between;
+  border-top: 1px solid var(--hairline);
+  margin-top: 6rem;
+  color: var(--ivory-dim);
+  font-size: var(--t-sm);
+}
+.foot a { color: var(--ivory-mid); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .3s, color .3s; }
+.foot a:hover { color: var(--ivory); border-bottom-color: var(--bronze); }
+.foot__links { display: flex; gap: 1.6rem; flex-wrap: wrap; }
+
+/* =========================================================
+   Reduced motion
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}

@@ -1,0 +1,208 @@
+/* =========================================================
+   BarryMade — a dark room with things in it.
+   Cards behave like objects on a table. A lamp follows you.
+   ========================================================= */
+
+.workshop {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 var(--gutter) 2rem;
+}
+
+.workshop__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+.workshop__hint {
+  margin: 0;
+  font-size: var(--t-sm);
+  color: var(--ivory-dim);
+  max-width: 48ch;
+}
+
+.tidy {
+  font: inherit;
+  font-size: var(--t-sm);
+  color: var(--ivory);
+  background: linear-gradient(158deg, var(--charcoal-hi), var(--charcoal));
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  padding: .55rem 1.05rem;
+  cursor: pointer;
+  box-shadow: var(--bevel), var(--lift-1);
+  transition: transform .35s var(--ease-settle), border-color .3s, box-shadow .35s;
+}
+.tidy:hover { border-color: var(--hairline-lit); transform: translateY(-1px); box-shadow: var(--bevel), var(--lift-2); }
+.tidy:active { transform: translateY(1px); }
+
+/* --- the table ---------------------------------------------------- */
+
+.stage {
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+  height: clamp(560px, 76vh, 820px);
+  border: 1px solid var(--hairline);
+  border-radius: 5px;
+  background:
+    radial-gradient(90% 120% at 8% -20%, rgba(184,134,63,.055), transparent 60%),
+    linear-gradient(#0d0d0f, #090909);
+  box-shadow: inset 0 1px 0 rgba(255,240,220,.05), inset 0 -60px 90px -60px rgba(0,0,0,1);
+  overflow: hidden;
+  perspective: 1200px;
+  touch-action: pan-y;
+}
+
+/* the lamp: a soft pool of light that follows the cursor */
+.stage__lamp {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .7s var(--ease-out);
+  background: radial-gradient(
+    circle 300px at var(--mx) var(--my),
+    rgba(9,9,11,0) 0%,
+    rgba(9,9,11,.34) 46%,
+    rgba(7,7,9,.82) 78%,
+    rgba(6,6,8,.9) 100%);
+}
+.stage.is-lit .stage__lamp { opacity: 1; }
+
+/* a faint warm bloom right at the cursor, under the cards */
+.stage__pool {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .7s var(--ease-out);
+  background: radial-gradient(circle 240px at var(--mx) var(--my), rgba(184,134,63,.10), transparent 70%);
+}
+.stage.is-lit .stage__pool { opacity: 1; }
+
+/* --- a made thing -------------------------------------------------- */
+
+.chip {
+  --lit: 1;
+  position: absolute;
+  top: 0; left: 0;
+  width: 244px;
+  z-index: 5;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: grab;
+  touch-action: none;
+  transform-style: preserve-3d;
+  will-change: transform;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.chip.is-held { cursor: grabbing; z-index: 30; }
+
+.chip__face {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  padding: 1.15rem 1.25rem 1.3rem;
+  background: linear-gradient(158deg, #141416, #0e0e10);
+  border: 1px solid rgba(236,230,218, calc(0.05 + 0.10 * var(--lit)));
+  box-shadow:
+    inset 0 1px 0 rgba(255,240,220, calc(0.02 + 0.08 * var(--lit))),
+    0 calc(4px + 20px * var(--lit)) calc(12px + 40px * var(--lit)) calc(-6px - 12px * var(--lit)) rgba(0,0,0, calc(0.5 + 0.45 * var(--lit)));
+}
+
+/* the lit face, cross-faded in by proximity to the lamp */
+.chip__face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: var(--lit);
+  background: linear-gradient(158deg, #2b2620 0%, #1a1917 55%, #121215 100%);
+}
+/* warm rim along the top-left edge, matching the room's light */
+.chip__face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: var(--lit);
+  background: linear-gradient(152deg, rgba(232,178,106,.14), transparent 42%);
+}
+
+.chip__inner {
+  position: relative;
+  z-index: 1;
+  opacity: calc(0.42 + 0.58 * var(--lit));
+}
+
+.chip__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: var(--t-xs);
+  color: var(--ivory-dim);
+  margin-bottom: .55rem;
+}
+.chip__kind { color: var(--bronze); }
+
+.chip__title {
+  font-family: var(--serif);
+  font-size: 1.28rem;
+  font-variation-settings: "opsz" 24;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0 0 .4rem;
+  color: var(--ivory);
+}
+
+.chip__note {
+  margin: 0;
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  color: var(--ivory-mid);
+}
+
+.chip__tools {
+  margin: .75rem 0 0;
+  font-size: var(--t-xs);
+  color: var(--ivory-dim);
+}
+
+/* --- keyboard users get the lamp too ------------------------------- */
+.chip:focus-visible { --lit: 1; z-index: 35; }
+
+/* --- static fallback: no pointer, reduced motion, or narrow screen -- */
+
+.stage.is-static {
+  height: auto;
+  overflow: visible;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(238px, 1fr));
+  gap: 1rem;
+  perspective: none;
+}
+.stage.is-static .stage__lamp,
+.stage.is-static .stage__pool { display: none; }
+.stage.is-static .chip {
+  position: relative;
+  width: auto;
+  transform: none !important;
+  --lit: 1;
+  cursor: pointer;
+}
+.stage.is-static .chip__face { height: 100%; }
+
+@media (max-width: 620px) {
+  .workshop { padding-inline: var(--gutter); }
+}
