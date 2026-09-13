@@ -11,6 +11,8 @@
   /* --- fade out on internal navigation ---------------------------- */
   if (veil && !calm) {
     document.addEventListener("click", function (e) {
+      // Respect clicks canceled by interactions such as dragging a gallery card.
+      if (e.defaultPrevented) return;
       var a = e.target.closest("a");
       if (!a) return;
       var href = a.getAttribute("href");
