@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f4f3e9">
-  <meta name="description" content="A tiny traveler. A very busy world. Play Parallel Crossy Road, a colorful isometric browser game by BarryMade.">
+  <meta name="theme-color" content="#172e33">
+  <meta name="description" content="Hop through an enchanted forest. Dodge boulders, thorn wheels, and spirit boars. Ride logs and rare hopping mushrooms in Parallel Crossy Road by BarryMade.">
   <title>Parallel Crossy Road · BarryMade</title>
   <link rel="stylesheet" href="./style.css">
   <script src="./core.js" defer></script>
@@ -14,23 +14,23 @@
   <main class="shell">
     <header class="topbar">
       <a href="../../barrymade.html" class="brand" aria-label="Back to BarryMade"><span class="brand-icon">b.</span> BarryMade <span class="back">↗</span></a>
-      <span class="edition"><i></i> PLAYABLE EXPERIMENT / 001</span>
+      <span class="edition"><i></i> ENCHANTED FOREST / 002</span>
       <button id="pause" class="quiet" type="button" disabled>Pause <kbd>P</kbd></button>
     </header>
     <section class="heading" aria-label="Game information">
-      <div><p class="eyebrow">ONE LITTLE HOP AT A TIME</p><h1>Parallel <span>Crossy Road</span><sup>↗</sup></h1><p class="tagline">A tiny traveler. A very busy world.</p></div>
+      <div><p class="eyebrow">A LITTLE LOST. A LITTLE MAGICAL.</p><h1>Parallel <span>Crossy Road</span><sup>✦</sup></h1><p class="tagline">Follow the glow. Find your way through.</p></div>
       <div class="scores"><div class="score current"><span>DISTANCE</span><strong id="score">000</strong><small>lanes crossed</small></div><div class="score"><span>PERSONAL BEST</span><strong id="best">000</strong><small>on this browser</small></div></div>
     </section>
     <section class="playfield" aria-label="Parallel Crossy Road game">
-      <div class="field-label"><span class="dot"></span> THE CROSSING <span class="field-note">LOOK BOTH WAYS.</span></div>
-      <canvas id="game" tabindex="0" aria-label="Isometric crossing game. Use arrow keys or W A S D to hop. Avoid cars. P pauses.">Your browser needs Canvas support to play this game.</canvas>
+      <div class="field-label"><span class="dot"></span> THE WILDWOOD <span class="field-note">SOMETHING WONDROUS AHEAD.</span></div>
+      <canvas id="game" tabindex="0" aria-label="Enchanted forest crossing. Arrow keys or WASD to hop. Avoid boulders, thorn wheels, and spirit boars. Land on logs, rafts, or giant hopping mushrooms. Cross cursed lanes while quiet; waking warns of thorns. P pauses." aria-describedby="forest-guide">Your browser needs Canvas support to play this game.</canvas>
       <noscript><p class="noscript">Enable JavaScript in your browser to play.</p></noscript>
-      <div class="lane-key" aria-hidden="true"><span><i class="grass"></i> Take a breath</span><span><i class="road"></i> Take your chance</span></div>
+      <div class="lane-key" aria-hidden="true"><span><i class="grass"></i> Clearing</span><span><i class="road"></i> Crossing</span><span><i class="river"></i> River</span><span><i class="curse"></i> Runes</span></div>
       <div id="overlay" class="overlay">
         <div class="dialog" role="dialog" aria-labelledby="dialog-title" aria-describedby="dialog-copy">
-          <span class="dialog-label" id="dialog-label">YOUR NEXT LITTLE ADVENTURE</span>
-          <h2 id="dialog-title">Ready, little traveler?</h2>
-          <p id="dialog-copy">Hop across the roads. Dodge the traffic.<br>See how far a little courage takes you.</p>
+          <span class="dialog-label" id="dialog-label">WELCOME TO THE WILDWOOD</span>
+          <h2 id="dialog-title">The forest is awake.</h2>
+          <p id="dialog-copy">Dodge boulders, thorn wheels, and spirit boars. Ride the river mushrooms. Cross the runes while quiet.</p>
           <button id="play" class="primary" type="button">Let's hop <span>↗</span></button>
           <small id="dialog-hint">Arrow keys or WASD · one press, one hop</small>
         </div>
@@ -38,11 +38,12 @@
       <div id="status" class="sr-only" aria-live="polite"></div>
     </section>
     <footer class="controls">
-      <div class="control-copy"><span class="eyebrow">SMALL STEPS. BIG POSSIBILITIES.</span><p>Go forward. Stay curious. Avoid the cars.</p></div>
+      <div class="control-copy"><span class="eyebrow">SMALL STEPS. STRANGE WONDERS.</span><p>Read the trail. Follow the fireflies.</p></div>
       <div class="keyboard"><span><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> or <b>W A S D</b></span><small>Move one tile · <b>P</b> pause · <b>R</b> restart</small></div>
       <div class="dpad" aria-label="Touch movement controls"><button type="button" data-move="up" aria-label="Hop forward">↑</button><button type="button" data-move="left" aria-label="Hop left">←</button><button type="button" data-move="down" aria-label="Hop backward">↓</button><button type="button" data-move="right" aria-label="Hop right">→</button></div>
-      <span class="prototype">PROTOTYPE 0.1 <span>MADE TO BE PLAYED.</span></span>
+      <span class="prototype">FOREST EDITION 0.2 <span>MADE TO BE EXPLORED.</span></span>
     </footer>
+    <div class="forest-guide" id="forest-guide"><span><b>01 / Moss</b> A safe place to wait.</span><span><b>02 / Crossings</b> Boulders, thorn wheels &amp; boars. Wait for a gap.</span><span><b>03 / Rivers</b> Logs, rafts &amp; rare hopping mushrooms carry you.</span><span><b>04 / Runes</b> Quiet → waking → thorns. Wait for quiet.</span></div>
   </main>
 </body>
 </html>

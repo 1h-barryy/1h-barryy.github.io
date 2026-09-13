@@ -3,3 +3,22 @@
 @media(pointer:coarse){.dpad{display:grid}.keyboard{display:none}}
 @media(max-width:760px){.shell{padding:0 18px}.topbar{height:65px}.edition{display:none}.heading{padding:22px 0;gap:12px;align-items:flex-start}h1{font-size:30px;letter-spacing:-1.4px}h1 span{display:block}h1 sup{display:none}.heading .eyebrow{font-size:8px;letter-spacing:1px}.tagline{font-size:11px;max-width:175px;line-height:1.5;margin-top:9px}.scores{gap:12px;align-self:center}.score{min-width:0}.score.current{padding-right:12px}.score>span{font-size:7px;letter-spacing:.4px}.score strong{font-size:32px}.score small{font-size:8px}.playfield{height:54vh;min-height:360px}.field-label{top:16px;left:16px;font-size:8px}.field-note{display:none}.lane-key{left:16px;bottom:14px;font-size:8px;gap:10px}.overlay{align-items:flex-end;padding:16px;background:linear-gradient(0deg,rgba(229,237,218,.98),rgba(229,237,218,.9) 30%,transparent 75%)}.dialog{padding:10px 0 20px;max-width:280px}h2{font-size:30px;margin:10px 0}.dialog p{font-size:12px;margin:10px 0 14px;line-height:1.6}.dialog>small{margin-top:12px;font-size:9px}.primary{padding:10px 14px;width:210px}.controls{padding:16px 0;gap:12px}.control-copy{max-width:155px}.control-copy .eyebrow{font-size:8px;line-height:1.5}.control-copy p{font-size:10px;line-height:1.6}.keyboard,.prototype{display:none}.dpad{display:grid}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
+/* Forest edition: presentation remains isolated to this game. */
+:root{color-scheme:dark;--paper:#172e33;--ink:#e6efdb;--muted:#a5bcb3;--line:#39545a;--green:#acd6af;--orange:#f3d39a;background:#172e33}
+body{background:radial-gradient(ellipse at 14% 0%,#294647,transparent 65%),var(--paper)}
+.brand-icon{color:#1b3939}.edition i,.dot{background:#f1d398;box-shadow:0 0 12px #f1d39866}
+.playfield{background:#326862;border-color:#527876;box-shadow:0 18px 60px #081f2940}
+.field-label{color:#eff3da;text-shadow:0 1px 5px #183c3f}.field-note{color:#c4dbc9}
+.lane-key{color:#e2e8dc;background:#18343ee6;border:1px solid #6d928366;padding:9px 12px;border-radius:7px;flex-wrap:wrap}
+.grass{background:#8dbc91}.road{background:#b7a2c3}.river{background:#58c6cb}.curse{background:#e2a7e0}
+.overlay{background:linear-gradient(90deg,#173b3df5,#234749cc 37%,transparent 73%)}
+.dialog-label{color:#f1d39a}.dialog p,.dialog>small{color:#c8ded0}
+.primary{background:#e8ce94;color:#263f3c;box-shadow:0 4px 0 #95825d;font-weight:700}
+.primary:hover{background:#f3deb0}.primary:active{box-shadow:0 2px 0 #95825d}
+kbd{background:#29464b;border-color:#526b6f;color:var(--ink)}
+.dpad button{background:#2f5356;border-color:#658986;border-bottom-color:#496d70;color:#eff2d7}
+button:focus-visible,a:focus-visible,canvas:focus-visible{outline-color:#f3d39a}
+.forest-guide{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;border-top:1px solid var(--line);padding:20px 0 30px;color:var(--muted);font-size:11px;line-height:1.7}
+.forest-guide b{display:block;color:#dbc1e8;font:11px monospace;margin-bottom:5px}
+@media(max-width:760px){.overlay{background:linear-gradient(0deg,#173b3dfa,#234749e6 30%,transparent 85%)}.forest-guide{grid-template-columns:repeat(2,1fr);gap:15px;font-size:10px}.lane-key{padding:6px 8px;gap:9px;bottom:10px}.dialog{padding-bottom:43px}.heading .eyebrow{max-width:190px}}
