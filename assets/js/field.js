@@ -15,7 +15,7 @@
   var gl = canvas.getContext("webgl", {
     alpha: true,
     antialias: false,
-    premultipliedAlpha: false,
+    premultipliedAlpha: true, // blend output is premultiplied for soft page compositing
     powerPreference: "high-performance"
   }) || canvas.getContext("experimental-webgl");
 
@@ -41,6 +41,7 @@
     "precision highp float;",
     "attribute vec3 aPos;",
     "attribute vec3 aSeed;",          // phase, speed, size
+    "attribute vec2 aMaterial;",      // visual density and pigment only
     "uniform mat4 uProj;",
     "uniform mat4 uView;",
     "uniform float uTime;",
@@ -50,6 +51,8 @@
     "uniform float uCursorOn;",
     "varying float vGlow;",
     "varying float vFade;",
+    "varying vec2 vMaterial;",
+    "varying float vTint;",
 
     "void main() {",
     "  vec3 p = aPos;",
@@ -77,7 +80,11 @@
 
     // size falls off with distance, like real depth of field
     "  float dist = -view.z;",
-    "  gl_PointSize = aSeed.z * uDpr * (26.0 / max(dist, 0.4));",
+    // Keep every mark small and individually visible, including nearby grains.
+    // This changes the sprite footprint only, never its trajectory.
+    "  vMaterial = aMaterial;",
+    "  vTint = aSeed.x;", // reuse a fixed seed for color; no new randomness or motion
+    "  gl_PointSize = clamp(aSeed.z * (26.0 / max(dist, 0.4)) * 1.5, 1.4, 3.8) * uDpr;",
 
     // near the cursor the lamp catches them
     "  vGlow = smoothstep(4.2, 0.4, d) * uCursorOn * depth;",
@@ -90,16 +97,27 @@
     "precision mediump float;",
     "varying float vGlow;",
     "varying float vFade;",
+    "varying vec2 vMaterial;",
+    "varying float vTint;",
     "uniform vec3 uDim;",
+    "uniform vec3 uCool;",
     "uniform vec3 uLit;",
+    "uniform vec3 uPigment;",
+    "uniform float uOpacity;",
     "void main() {",
     "  vec2 c = gl_PointCoord - 0.5;",
     "  float r = length(c);",
     "  if (r > 0.5) discard;",
-    "  float a = smoothstep(0.5, 0.0, r);",
-    "  a = pow(a, 2.4);",
-    "  vec3 col = mix(uDim, uLit, vGlow);",
-    "  gl_FragColor = vec4(col, a * vFade * 0.85);",
+    "  float a = 1.0 - smoothstep(0.12, 0.5, r);",
+    "  a = pow(a, 1.15);",
+    // Most grains stay neutral; a quarter catch mineral blue. Warm pigment
+    // appears on a few individual grains within the existing spatial pockets.
+    "  float cool = 1.0 - smoothstep(0.20, 0.30, vTint);",
+    "  float warm = smoothstep(0.86, 0.94, vTint) * smoothstep(0.60, 0.85, vMaterial.y);",
+    "  vec3 resting = mix(uDim, uCool, cool);",
+    "  resting = mix(resting, uPigment, warm);",
+    "  vec3 col = mix(resting, mix(uLit, resting, 0.24), vGlow);",
+    "  gl_FragColor = vec4(col, min(0.94, a * vFade * vMaterial.x * uOpacity));",
     "}"
   ].join("\n");
 
@@ -161,12 +179,50 @@
   attrib("aPos", pos, 3);
   attrib("aSeed", seed, 3);
 
+  /* ---------- material composition (no position or seed mutations) -- */
+  // A density mask brings out fine, interwoven strands of individual grains
+  // and lets the surrounding field recede. The original geometry, random
+  // sequence, drift, repulsion and camera remain untouched.
+  var material = new Float32Array(n * 2);
+  for (var j = 0; j < n; j++) {
+    var distance = CFG.camZ - pos[j * 3 + 2];
+    var x = pos[j * 3] / distance;
+    var y = pos[j * 3 + 1] / distance;
+    var spine = x * 0.46 - 0.06 + Math.sin(x * 9 + 0.7) * 0.06 + Math.sin(x * 20) * 0.018;
+    var width = 0.065 + (0.5 + 0.5 * Math.sin(x * 4.1 - 0.5)) * 0.035;
+    var band = Math.exp(-Math.pow((y - spine) / width, 2));
+    var strand = Math.exp(-Math.pow((y - spine + Math.sin(x * 17) * 0.023) / 0.025, 2));
+    var thread = Math.exp(-Math.pow((y - spine - 0.06 - Math.sin(x * 12 + 1.2) * 0.036) / 0.022, 2));
+    var knots = 0.78 + 0.22 * Math.sin(x * 15 + y * 9) * Math.cos(y * 21 - x * 6);
+    // Lift the small middle-distance grains without adding a blurred layer.
+    var grainLight = 1 + Math.max(0, distance - 8) * 0.16;
+    material[j * 2] = 0.035 + (band * 1.0 + strand * 4.0 + thread * 2.6) * knots * grainLight;
+    material[j * 2 + 1] = 0.5 + 0.5 * Math.sin(x * 7 + y * 11);
+  }
+  attrib("aMaterial", material, 2);
+
   var U = {};
-  ["uProj","uView","uTime","uIntro","uDpr","uCursor","uCursorOn","uDim","uLit"]
+  ["uProj","uView","uTime","uIntro","uDpr","uCursor","uCursorOn","uDim","uCool","uLit","uPigment","uOpacity"]
     .forEach(function (k) { U[k] = gl.getUniformLocation(prog, k); });
 
-  gl.uniform3f(U.uDim, 0.62, 0.55, 0.46);   // resting ivory-grey
-  gl.uniform3f(U.uLit, 0.94, 0.72, 0.42);   // bronze, where the lamp lands
+  function updatePalette() {
+    var style = getComputedStyle(document.documentElement);
+    [["uDim", "--field-dim"], ["uCool", "--field-cool"], ["uLit", "--field-lit"], ["uPigment", "--field-pigment"]]
+      .forEach(function (entry) {
+        var rgb = style.getPropertyValue(entry[1]).trim().split(",").map(Number);
+        gl.uniform3f(U[entry[0]], rgb[0], rgb[1], rgb[2]);
+      });
+    // Paper uses translucent pigment; dark mode retains additive light.
+    var light = document.documentElement.getAttribute("data-theme") === "light";
+    gl.uniform1f(U.uOpacity, light ? 0.76 : 1.0);
+    gl.blendFuncSeparate(gl.SRC_ALPHA, light ? gl.ONE_MINUS_SRC_ALPHA : gl.ONE,
+      gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  }
+  updatePalette();
+  document.addEventListener("themechange", function () {
+    updatePalette();
+    if (calm) draw(0, 1);
+  });
 
   /* ---------- matrices -------------------------------------------- */
 
@@ -226,7 +282,7 @@
 
   gl.disable(gl.DEPTH_TEST);
   gl.enable(gl.BLEND);
-  gl.blendFunc(gl.SRC_ALPHA, gl.ONE);   // additive: overlaps bloom
+  // Blend factors are palette-dependent and set by updatePalette().
 
   var t0 = performance.now();
   var running = true;

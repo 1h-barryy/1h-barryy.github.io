@@ -1,10 +1,10 @@
 # Placeholder checklist
 
 Auto-generated. Every line below still says PLACEHOLDER or is tagged
-`class="ph"` (which renders in bronze so you can spot it on the page).
+`class="ph"` (which renders in muted ink).
 
 **When you fill something in, also delete the `class="ph"`** — otherwise the
-real text keeps the bronze placeholder styling.
+real text keeps the placeholder styling.
 
 Delete this file when you're done.
 **86 left.**

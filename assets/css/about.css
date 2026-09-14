@@ -26,7 +26,7 @@
   border-radius: 5px;
   overflow: hidden;
   border: 1px solid var(--hairline);
-  background: linear-gradient(158deg, #221f1b 0%, #141316 60%, #0d0d0f 100%);
+  background: linear-gradient(158deg, var(--charcoal-hi) 0%, var(--graphite) 60%, var(--void) 100%);
   box-shadow: var(--bevel), var(--lift-3);
 }
 /* the lamp catching the top-left corner of the frame */
@@ -35,7 +35,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(150deg, rgba(232,178,106,.10), transparent 45%);
+  background: linear-gradient(150deg, rgba(var(--light-rgb),.10), transparent 45%);
 }
 
 .portrait__frame img {
@@ -62,7 +62,7 @@
   font-family: var(--serif);
   font-weight: 400;
   font-size: var(--t-md);
-  color: var(--bronze);
+  color: var(--accent);
 }
 
 .portrait figcaption {
@@ -102,18 +102,18 @@
   gap: 1.4rem 2.5rem;
   margin: 0;
 }
-.kit dt { color: var(--bronze); font-size: var(--t-sm); margin-bottom: .3rem; }
+.kit dt { color: var(--accent); font-size: var(--t-sm); margin-bottom: .3rem; }
 .kit dd { margin: 0; color: var(--ivory-mid); font-size: var(--t-sm); line-height: 1.55; }
 
 /* a plain inline link inside the bio prose */
 .bio__link {
   color: var(--ivory);
   text-decoration: none;
-  border-bottom: 1px solid var(--bronze);
+  border-bottom: 1px solid var(--accent);
   padding-bottom: 1px;
   transition: color .3s, border-color .3s;
 }
-.bio__link:hover { color: var(--bronze-lit); border-bottom-color: var(--bronze-lit); }
+.bio__link:hover { color: var(--accent-lit); border-bottom-color: var(--accent-lit); }
 
 @media (max-width: 880px) {
   .about { grid-template-columns: 1fr; }

@@ -1,35 +1,57 @@
 /* =========================================================
    Barry — portfolio
-   One light source. Warm bronze lamp, upper left.
-   Everything on the page is lit by it, or waiting to be.
+   Graphite, paper, and mineral light.
+   Palette tokens are shared; geometry and motion stay in each page stylesheet.
    ========================================================= */
 
 :root {
   /* --- ground --- */
-  --void:      #08080a;   /* page floor, deepest black */
-  --graphite:  #121215;   /* recessed panel */
-  --charcoal:  #1c1a18;   /* warm charcoal, raised object */
-  --charcoal-hi:#26231f;  /* lit face of a raised object */
+  color-scheme: dark;
+  --void:      #101213;
+  --graphite:  #1c1f21;
+  --charcoal:  #242829;
+  --charcoal-hi:#2b3031;
+  --ground-rgb: 16,18,19;
+  --light-rgb: 137,165,181;
+  --rim-rgb: 221,228,226;
+  --shade-rgb: 15,17,18;
+  --shadow-rgb: 0,0,0;
+  --shadow-strength: 1;
 
   /* --- type --- */
-  --ivory:     #ece6da;
-  --ivory-mid: #a29c92;
-  --ivory-dim: #6d675f;
+  --ivory:     #e8e6df;
+  --ivory-mid: #b1b5b2;
+  --ivory-dim: #8d9595;
 
   /* --- the lamp --- */
-  --bronze:    #b8863f;
-  --bronze-lit:#e8b26a;
-  --bronze-deep:#6b4d24;
+  --accent:   #92aebe;
+  --accent-lit:#bfd1db;
+  --accent-deep:#4e6572;
+  --accent-edge: rgba(var(--light-rgb),.42);
+  --button-hi: #2b3439;
+  --button-base: #252c30;
+  --workspace-low: #181b1d;
+  --card-low: #24282a;
+  --card-base: #2a2e31;
+  --card-hi: #34393d;
 
   /* --- edges --- */
-  --hairline:  rgba(236, 230, 218, 0.09);
-  --hairline-lit: rgba(255, 236, 205, 0.16);
+  --hairline:  rgba(219,226,223,.13);
+  --hairline-lit: rgba(219,226,223,.25);
 
   /* --- light geometry: shadows all fall from upper-left --- */
-  --lift-1: 0 2px 6px rgba(0,0,0,.55);
-  --lift-2: 0 10px 24px -8px rgba(0,0,0,.8);
-  --lift-3: 0 34px 70px -24px rgba(0,0,0,.95);
-  --bevel:  inset 0 1px 0 rgba(255,240,220,.07);
+  --lift-1: 0 2px 6px rgba(0,0,0,.18);
+  --lift-2: 0 10px 24px -8px rgba(0,0,0,.28);
+  --lift-3: 0 34px 70px -24px rgba(0,0,0,.42);
+  --bevel:  inset 0 1px 0 rgba(231,235,232,.045);
+  --inset: inset 0 2px 7px rgba(0,0,0,.25);
+  --grain-opacity: .045;
+  --grain-blend: soft-light;
+  --field-blend: screen;
+  --field-dim: .60, .63, .64;
+  --field-cool: .39, .56, .68;
+  --field-lit: .86, .89, .90;
+  --field-pigment: .67, .55, .43;
 
   /* --- type scale, perfect fourth from 17px --- */
   --t-xs:   0.78rem;
@@ -42,12 +64,55 @@
 
   --serif: "Fraunces", Georgia, "Times New Roman", serif;
   --sans:  "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 
   --gutter: clamp(1.5rem, 5vw, 5.5rem);
   --measure: 62ch;
 
   --ease-settle: cubic-bezier(.16, .84, .32, 1);
   --ease-out:    cubic-bezier(.22, 1, .36, 1);
+}
+
+/* A separate paper palette, including pigment, shadows and the moving lamp. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --void: #f2f0e9;
+  --graphite: #e8e7df;
+  --charcoal: #eeede6;
+  --charcoal-hi: #f8f7f1;
+  --ground-rgb: 242,240,233;
+  --light-rgb: 94,126,144;
+  --rim-rgb: 255,255,250;
+  --shade-rgb: 219,220,212;
+  --shadow-rgb: 55,61,58;
+  --shadow-strength: .16;
+  --ivory: #292e30;
+  --ivory-mid: #555e60;
+  --ivory-dim: #667073;
+  --accent: #496b7e;
+  --accent-lit: #34596c;
+  --accent-deep: #c7d5da;
+  --button-hi: #eef2f1;
+  --button-base: #e3eae9;
+  --workspace-low: #e4e5df;
+  --card-low: #e7e9e4;
+  --card-base: #eff0ea;
+  --card-hi: #f7f8f2;
+  --hairline: rgba(44,60,64,.16);
+  --hairline-lit: rgba(44,60,64,.30);
+  --lift-1: 0 2px 6px rgba(55,61,58,.06);
+  --lift-2: 0 10px 24px -8px rgba(55,61,58,.12);
+  --lift-3: 0 34px 70px -24px rgba(55,61,58,.17);
+  --bevel: inset 0 1px 0 rgba(255,255,250,.7);
+  --inset: inset 0 2px 7px rgba(55,61,58,.055);
+  --grain-opacity: .035;
+  --grain-blend: multiply;
+  --field-blend: multiply;
+  /* The light field is pigment on paper, not white light over white. */
+  --field-dim: .38, .41, .41;
+  --field-cool: .20, .36, .45;
+  --field-lit: .22, .30, .34;
+  --field-pigment: .52, .40, .29;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -79,13 +144,25 @@ body::before {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(120vw 90vh at 12% -10%, rgba(184,134,63,.13), transparent 62%),
-    radial-gradient(70vw 60vh at 88% 108%, rgba(107,77,36,.10), transparent 70%);
+    radial-gradient(120vw 90vh at 12% -10%, rgba(var(--light-rgb),.055), transparent 62%),
+    radial-gradient(70vw 60vh at 88% 108%, rgba(var(--rim-rgb),.014), transparent 70%);
+}
+
+/* Static, fine material grain. It never intercepts a pointer or animates. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background: url("../img/grain.svg") repeat;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
 }
 
 img { max-width: 100%; display: block; }
 
-::selection { background: var(--bronze-deep); color: var(--ivory); }
+::selection { background: var(--accent-deep); color: var(--ivory); }
 
 /* --- headings ---------------------------------------------------- */
 
@@ -109,7 +186,7 @@ a { color: inherit; }
 /* --- focus, always visible ---------------------------------------- */
 
 :focus-visible {
-  outline: 2px solid var(--bronze-lit);
+  outline: 2px solid var(--accent-lit);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -132,7 +209,7 @@ a { color: inherit; }
 }
 
 .nav.is-stuck {
-  background: linear-gradient(to bottom, rgba(8,8,10,.92), rgba(8,8,10,.55) 70%, transparent);
+  background: linear-gradient(to bottom, rgba(var(--ground-rgb),.92), rgba(var(--ground-rgb),.55) 70%, transparent);
   backdrop-filter: blur(14px);
 }
 
@@ -169,15 +246,46 @@ a { color: inherit; }
   position: absolute;
   left: 0; bottom: 0;
   height: 1px; width: 100%;
-  background: var(--bronze-lit);
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform .45s var(--ease-settle);
 }
-.nav__link:hover { color: var(--ivory); }
+.nav__link:hover { color: var(--accent-lit); }
 .nav__link:hover::after,
 .nav__link[aria-current="page"]::after { transform: scaleX(1); }
-.nav__link[aria-current="page"] { color: var(--ivory); }
+.nav__link[aria-current="page"] { color: var(--accent-lit); }
+
+/* Sits in the existing gutter without shifting any navigation links. */
+.theme-toggle {
+  position: absolute;
+  right: max(.1rem, calc((var(--gutter) - 2.75rem) / 2));
+  top: 1.2rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ivory-mid);
+  cursor: pointer;
+  transition: color .35s var(--ease-out), background .35s var(--ease-out);
+}
+.theme-toggle[hidden] { display: none; }
+.theme-toggle:hover { color: var(--accent-lit); background: rgba(var(--light-rgb),.09); }
+.theme-toggle svg { width: 17px; height: 17px; }
+.theme-toggle__disc { fill: currentColor; }
+[data-theme="light"] .theme-toggle__disc { fill: none; }
+
+@media (min-width: 781px) and (max-width: 960px) {
+  .theme-toggle { left: calc(var(--gutter) + 8rem); right: auto; }
+}
+
+@media (max-width: 780px) {
+  .theme-toggle { right: var(--gutter); top: .65rem; }
+}
 
 /* five items no longer fit on a phone, so the links drop to their own row */
 @media (max-width: 780px) {
@@ -239,7 +347,7 @@ main { position: relative; z-index: 1; }
 
 /* placeholder convention: anything you replace is marked with this */
 .ph {
-  color: var(--bronze);
+  color: var(--ivory-mid);
   font-family: var(--sans);
   font-style: normal;
 }
@@ -263,7 +371,7 @@ main { position: relative; z-index: 1; }
   font-size: var(--t-sm);
 }
 .foot a { color: var(--ivory-mid); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .3s, color .3s; }
-.foot a:hover { color: var(--ivory); border-bottom-color: var(--bronze); }
+.foot a:hover { color: var(--ivory); border-bottom-color: var(--accent); }
 .foot__links { display: flex; gap: 1.6rem; flex-wrap: wrap; }
 
 /* =========================================================

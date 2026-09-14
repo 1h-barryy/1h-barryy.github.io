@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101213">
+<script src="assets/js/theme.js?v=20260914-graphite"></script>
 <title>Portfolio — Barry Yuan</title>
 <meta name="description" content="PLACEHOLDER — selected technical art projects.">
 
@@ -10,8 +12,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="assets/css/main.css">
-<link rel="stylesheet" href="assets/css/portfolio.css">
+<link rel="stylesheet" href="assets/css/main.css?v=20260914-graphite">
+<link rel="stylesheet" href="assets/css/portfolio.css?v=20260914-material">
 <script>document.documentElement.className += " js";</script>
 </head>
 <body>
@@ -27,6 +29,13 @@
     <li><a class="nav__link" href="about.html">About</a></li>
     <li><a class="nav__link" href="contact.html">Contact</a></li>
   </ul>
+  <button class="theme-toggle" type="button" aria-label="Light mode" aria-pressed="false" title="Switch to light mode" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+      <circle cx="12" cy="12" r="7.5"/>
+      <path class="theme-toggle__disc" d="M12 4.5a7.5 7.5 0 0 0 0 15Z" stroke="none"/>
+      <path d="M12 1v1m0 20v1M1 12h1m20 0h1"/>
+    </svg>
+  </button>
 </nav>
 
 <main>

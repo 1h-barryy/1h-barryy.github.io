@@ -29,7 +29,7 @@
   font: inherit;
   font-size: var(--t-sm);
   color: var(--ivory);
-  background: linear-gradient(158deg, var(--charcoal-hi), var(--charcoal));
+  background: linear-gradient(158deg, var(--button-hi), var(--button-base));
   border: 1px solid var(--hairline);
   border-radius: 3px;
   padding: .55rem 1.05rem;
@@ -37,7 +37,7 @@
   box-shadow: var(--bevel), var(--lift-1);
   transition: transform .35s var(--ease-settle), border-color .3s, box-shadow .35s;
 }
-.tidy:hover { border-color: var(--hairline-lit); transform: translateY(-1px); box-shadow: var(--bevel), var(--lift-2); }
+.tidy:hover { border-color: var(--accent-edge); transform: translateY(-1px); box-shadow: var(--bevel), var(--lift-2); }
 .tidy:active { transform: translateY(1px); }
 
 /* --- the table ---------------------------------------------------- */
@@ -50,9 +50,9 @@
   border: 1px solid var(--hairline);
   border-radius: 5px;
   background:
-    radial-gradient(90% 120% at 8% -20%, rgba(184,134,63,.055), transparent 60%),
-    linear-gradient(#0d0d0f, #090909);
-  box-shadow: inset 0 1px 0 rgba(255,240,220,.05), inset 0 -60px 90px -60px rgba(0,0,0,1);
+    radial-gradient(90% 120% at 8% -20%, rgba(var(--light-rgb),.055), transparent 60%),
+    linear-gradient(var(--graphite), var(--workspace-low));
+  box-shadow: var(--bevel), inset 0 -60px 90px -60px rgba(var(--shadow-rgb),var(--shadow-strength));
   overflow: hidden;
   perspective: 1200px;
   touch-action: pan-y;
@@ -68,14 +68,14 @@
   transition: opacity .7s var(--ease-out);
   background: radial-gradient(
     circle 300px at var(--mx) var(--my),
-    rgba(9,9,11,0) 0%,
-    rgba(9,9,11,.34) 46%,
-    rgba(7,7,9,.82) 78%,
-    rgba(6,6,8,.9) 100%);
+    rgba(var(--shade-rgb),0) 0%,
+    rgba(var(--shade-rgb),.34) 46%,
+    rgba(var(--shade-rgb),.82) 78%,
+    rgba(var(--shade-rgb),.9) 100%);
 }
 .stage.is-lit .stage__lamp { opacity: 1; }
 
-/* a faint warm bloom right at the cursor, under the cards */
+/* a faint mineral bloom right at the cursor, under the cards */
 .stage__pool {
   position: absolute;
   inset: 0;
@@ -83,7 +83,7 @@
   pointer-events: none;
   opacity: 0;
   transition: opacity .7s var(--ease-out);
-  background: radial-gradient(circle 240px at var(--mx) var(--my), rgba(184,134,63,.10), transparent 70%);
+  background: radial-gradient(circle 240px at var(--mx) var(--my), rgba(var(--light-rgb),.10), transparent 70%);
 }
 .stage.is-lit .stage__pool { opacity: 1; }
 
@@ -112,11 +112,14 @@
   overflow: hidden;
   border-radius: 4px;
   padding: 1.15rem 1.25rem 1.3rem;
-  background: linear-gradient(158deg, #141416, #0e0e10);
-  border: 1px solid rgba(236,230,218, calc(0.05 + 0.10 * var(--lit)));
+  background:
+    url("../img/card-grain.svg") repeat,
+    linear-gradient(158deg, var(--card-base), var(--card-low));
+  border: 1px solid rgba(var(--light-rgb), calc(0.05 + 0.10 * var(--lit)));
   box-shadow:
-    inset 0 1px 0 rgba(255,240,220, calc(0.02 + 0.08 * var(--lit))),
-    0 calc(4px + 20px * var(--lit)) calc(12px + 40px * var(--lit)) calc(-6px - 12px * var(--lit)) rgba(0,0,0, calc(0.5 + 0.45 * var(--lit)));
+    inset 0 1px 0 rgba(var(--rim-rgb), calc(0.02 + 0.08 * var(--lit))),
+    0 2px 4px rgba(var(--shadow-rgb), calc(0.22 * var(--shadow-strength))),
+    0 calc(4px + 20px * var(--lit)) calc(12px + 40px * var(--lit)) calc(-6px - 12px * var(--lit)) rgba(var(--shadow-rgb), calc((0.5 + 0.45 * var(--lit)) * var(--shadow-strength)));
 }
 
 /* the lit face, cross-faded in by proximity to the lamp */
@@ -125,15 +128,22 @@
   position: absolute;
   inset: 0;
   opacity: var(--lit);
-  background: linear-gradient(158deg, #2b2620 0%, #1a1917 55%, #121215 100%);
+  background:
+    url("../img/card-grain.svg") repeat,
+    radial-gradient(85% 100% at 8% -10%, rgba(var(--light-rgb),.04), transparent 72%),
+    linear-gradient(158deg, var(--card-hi) 0%, var(--card-base) 55%, var(--card-low) 100%);
 }
-/* warm rim along the top-left edge, matching the room's light */
+/* Fine bevels and a mineral reflection use the existing lamp intensity. */
 .chip__face::after {
   content: "";
   position: absolute;
   inset: 0;
   opacity: var(--lit);
-  background: linear-gradient(152deg, rgba(232,178,106,.14), transparent 42%);
+  background: linear-gradient(152deg, rgba(var(--light-rgb),.08), transparent 42%);
+  box-shadow:
+    inset 0 1px 0 rgba(var(--rim-rgb),.12),
+    inset 1px 0 0 rgba(var(--rim-rgb),.04),
+    inset 0 -1px 0 rgba(var(--shadow-rgb), calc(0.28 * var(--shadow-strength)));
 }
 
 .chip__inner {
@@ -150,7 +160,7 @@
   color: var(--ivory-dim);
   margin-bottom: .55rem;
 }
-.chip__kind { color: var(--bronze); }
+.chip__kind { color: var(--accent); }
 
 .chip__title {
   font-family: var(--serif);
