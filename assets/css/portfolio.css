@@ -1,5 +1,5 @@
 /* =========================================================
-   Portfolio — long-form case studies, scroll driven
+   Portfolio — image previews and individual case studies
    ========================================================= */
 
 .progress {
@@ -22,21 +22,30 @@
   padding: 0 var(--gutter) clamp(4rem, 10vh, 7rem);
 }
 
-.index__list { list-style: none; margin: 0; padding: 0; }
-
-.index__row {
+.index__list {
   display: grid;
-  grid-template-columns: 5.5rem 1fr auto;
-  gap: 1.5rem;
-  align-items: baseline;
-  padding: 1.15rem 0;
-  border-top: 1px solid var(--hairline);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 3rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.index__preview {
+  display: grid;
+  gap: .35rem;
+  padding-bottom: 1.15rem;
+  border-bottom: 1px solid var(--hairline);
   text-decoration: none;
   color: var(--ivory-mid);
-  transition: color .4s var(--ease-out), padding-left .5s var(--ease-settle);
+  transition: color .4s var(--ease-out);
 }
-.index__list li:last-child .index__row { border-bottom: 1px solid var(--hairline); }
-.index__row:hover { color: var(--ivory); padding-left: .7rem; }
+.index__preview:hover,
+.index__preview:focus-visible { color: var(--ivory); }
+.index__image { display: block; width: 100%; margin-bottom: 1.15rem; }
+.index__name { transition: padding-left .5s var(--ease-settle); }
+.index__preview:hover .index__name,
+.index__preview:focus-visible .index__name { padding-left: .7rem; }
 
 .index__year { font-size: var(--t-sm); color: var(--ivory-dim); }
 .index__name {
@@ -45,7 +54,17 @@
   font-variation-settings: "opsz" 36;
   color: var(--ivory);
 }
-.index__role { font-size: var(--t-sm); text-align: right; }
+.index__role { font-size: var(--t-sm); }
+
+/* Project pages keep the shared navigation and case-study presentation. */
+.project-head {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: clamp(8rem, 18vh, 13rem) var(--gutter) 0;
+}
+.project-page .study { padding-top: 2rem; }
+.project-page .nav__link[aria-current="true"] { color: var(--accent-lit); }
+.project-page .nav__link[aria-current="true"]::after { transform: scaleX(1); }
 
 /* --- a case study ------------------------------------------------- */
 
@@ -168,9 +187,10 @@
 }
 .js .beat.is-in { opacity: 1; transform: none; }
 
-.beat h3 {
+.beat h2 {
   font-size: var(--t-md);
   font-variation-settings: "opsz" 30;
+  line-height: 1.2;
   margin: 0 0 .55rem;
 }
 .beat p { color: var(--ivory-mid); }
@@ -206,6 +226,9 @@
   .study__stage { position: static; }
   .plate { transform: none; }
   .study__body { padding-block: 0 4vh; }
-  .index__row { grid-template-columns: 4.5rem 1fr; }
-  .index__role { grid-column: 2; text-align: left; }
+  .index__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 620px) {
+  .index__list { grid-template-columns: 1fr; }
 }

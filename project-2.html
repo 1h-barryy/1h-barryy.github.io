@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#101213">
 <script src="assets/js/theme.js?v=20260914-graphite"></script>
-<title>Portfolio — Barry Yuan</title>
+<title>Project two title — Barry Yuan</title>
 <meta name="description" content="PLACEHOLDER — selected technical art projects.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="assets/css/portfolio.css?v=20260922-structure">
 <script>document.documentElement.className += " js";</script>
 </head>
-<body>
+<body class="project-page">
 
 <div class="veil"></div>
 <div class="progress"></div>
@@ -24,7 +24,7 @@
 <nav class="nav">
   <a class="nav__mark" href="index.html">Barry <span>Yuan</span></a>
   <ul class="nav__links">
-    <li><a class="nav__link" href="portfolio.html">Portfolio</a></li>
+    <li><a class="nav__link" href="portfolio.html" aria-current="true">Portfolio</a></li>
     <li><a class="nav__link" href="barrymade.html">BarryMade</a></li>
     <li><a class="nav__link" href="about.html">About</a></li>
     <li><a class="nav__link" href="contact.html">Contact</a></li>
@@ -40,55 +40,62 @@
 
 <main>
 
-  <header class="page-head">
-    <h1>Portfolio</h1>
-    <p class="page-head__note">
-      PLACEHOLDER — a sentence about how you choose what goes here. Something like:
-      three projects where the interesting part was the system underneath, not the screenshot.
-    </p>
-  </header>
+  <div class="project-head">
+    <a class="study__link" href="portfolio.html">&larr; Back to Portfolio</a>
+  </div>
 
-  <!-- ============ INDEX ============================================ -->
-  <section class="index" aria-label="Project index">
-    <ul class="index__list">
-      <li>
-        <a class="index__preview" href="project-1.html">
-          <span class="plate index__image" aria-hidden="true">
-            <span class="plate__empty"><strong>Hero image</strong></span>
-          </span>
-          <span class="index__year">PLACEHOLDER</span>
-          <span class="index__name">Project one title</span>
-          <span class="index__role">Your role here</span>
-        </a>
-      </li>
-      <li>
-        <a class="index__preview" href="project-2.html">
-          <span class="plate index__image" aria-hidden="true">
-            <span class="plate__empty"><strong>Hero image</strong></span>
-          </span>
-          <span class="index__year">PLACEHOLDER</span>
-          <span class="index__name">Project two title</span>
-          <span class="index__role">Your role here</span>
-        </a>
-      </li>
-      <li>
-        <a class="index__preview" href="project-3.html">
-          <span class="plate index__image" aria-hidden="true">
-            <span class="plate__empty"><strong>Hero image</strong></span>
-          </span>
-          <span class="index__year">PLACEHOLDER</span>
-          <span class="index__name">Project three title</span>
-          <span class="index__role">Your role here</span>
-        </a>
-      </li>
-    </ul>
-  </section>
+  <article class="study" id="project-2">
+
+    <div class="study__stage">
+      <figure class="plate-figure">
+        <div class="plate">
+          <div class="plate__empty">
+            <strong>Hero image</strong>
+            <span>assets/img/project-2.jpg — 1600&times;1200 or wider</span>
+          </div>
+        </div>
+        <figcaption class="plate__caption">PLACEHOLDER — one line describing the shot.</figcaption>
+      </figure>
+    </div>
+
+    <div class="study__body">
+      <p class="study__eyebrow">PLACEHOLDER — engine, platform, or context</p>
+      <h1 class="study__title">Project two title</h1>
+
+      <dl class="study__facts">
+        <div><dt>Role</dt><dd class="ph">Your role</dd></div>
+        <div><dt>Team</dt><dd class="ph">Solo</dd></div>
+        <div><dt>Built with</dt><dd class="ph">Tool, tool</dd></div>
+        <div><dt>When</dt><dd class="ph">Year</dd></div>
+      </dl>
+
+      <div class="beat">
+        <h2>The problem</h2>
+        <p>PLACEHOLDER.</p>
+      </div>
+      <div class="beat">
+        <h2>What I built</h2>
+        <p>PLACEHOLDER.</p>
+        <ul>
+          <li>PLACEHOLDER</li>
+          <li>PLACEHOLDER</li>
+        </ul>
+      </div>
+      <div class="beat">
+        <h2>Result</h2>
+        <p>PLACEHOLDER.</p>
+        <a class="study__link" href="#">PLACEHOLDER — link</a>
+      </div>
+    </div>
+
+  </article>
 
 </main>
 
 <footer class="foot">
   <span>More small things live in <a href="barrymade.html">BarryMade</a>.</span>
   <div class="foot__links">
+    <a href="portfolio.html">Back to Portfolio</a>
     <a href="about.html">About</a>
     <a href="contact.html">Contact</a>
   </div>
