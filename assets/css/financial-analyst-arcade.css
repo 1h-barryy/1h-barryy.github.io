@@ -1,0 +1,754 @@
+/* =========================================================
+   Financial Analyst Arcade — Web Edition
+   An analyst's desk: one dominant chart, server indicators,
+   a conversation, and the call. Shared tokens only; the chart
+   reads them at draw time so both themes stay in step.
+   ========================================================= */
+
+.faa {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* Market direction, US convention: green up, red down. Only directional
+   data uses these; panels and non-directional figures stay neutral.
+   Text contrast on every panel surface is at least 4.5:1 in both themes. */
+:root {
+  --up: #5cbf8a;
+  --down: #e0787a;
+  --up-rgb: 92,191,138;
+  --down-rgb: 224,120,122;
+}
+:root[data-theme="light"] {
+  --up: #1b6e45;
+  --down: #a93538;
+  --up-rgb: 27,110,69;
+  --down-rgb: 169,53,56;
+}
+.is-up   { color: var(--up) !important; }
+.is-down { color: var(--down) !important; }
+.is-flat { color: var(--ivory) !important; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- micro-labels: the desk's small print ------------------------ */
+
+.faa-micro {
+  font-family: var(--mono);
+  font-size: .7rem;
+  font-weight: 400;
+  font-variation-settings: normal;
+  letter-spacing: .12em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--ivory-mid);
+  margin: 0;
+}
+.faa-micro--dim { color: var(--ivory-dim); letter-spacing: .08em; }
+.faa-micro--accent { color: var(--accent); }
+.faa-num { color: var(--accent); margin-right: .5rem; }
+.faa-crumb { color: var(--ivory-dim); letter-spacing: .1em; }
+
+/* --- heading ------------------------------------------------------ */
+
+.faa-head {
+  padding: clamp(6.5rem, 13vh, 9rem) 0 1.4rem;
+}
+.faa-head .study__link { margin: 0 0 1.8rem; }
+.faa-head__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.2rem 2rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--hairline);
+}
+.faa-head .faa-micro--accent { margin-bottom: .6rem; }
+.faa-head__title {
+  font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+  font-variation-settings: "opsz" 144;
+  margin: 0 0 .35rem;
+}
+.faa-head__sub {
+  font-family: var(--serif);
+  font-size: var(--t-base);
+  font-variation-settings: "opsz" 24;
+  color: var(--ivory-mid);
+  margin: 0;
+}
+.faa-head__note {
+  color: var(--ivory-dim);
+  font-size: .82rem;
+  max-width: 64ch;
+  margin: .9rem 0 0;
+}
+
+/* session strip: scenario, bar count, server state */
+.faa-strip {
+  display: flex;
+  margin: 0;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  background: rgba(var(--ground-rgb), .45);
+}
+.faa-strip div { padding: .5rem .9rem; border-left: 1px solid var(--hairline); }
+.faa-strip div:first-child { border-left: 0; }
+.faa-strip dt,
+.faa-quote dt,
+.faa-cells dt {
+  font-family: var(--mono);
+  font-size: .64rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ivory-dim);
+  margin-bottom: .2rem;
+}
+.faa-strip dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  color: var(--ivory);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+}
+
+.faa-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--ivory-dim);
+  flex: none;
+}
+.faa-dot[data-state="online"] { background: var(--accent); box-shadow: 0 0 0 3px rgba(var(--light-rgb), .16); }
+.faa-dot[data-state="connecting"],
+.faa-dot[data-state="waking"] { background: var(--accent); animation: faa-pulse 1.4s var(--ease-out) infinite; }
+.faa-dot[data-state="offline"] { background: transparent; border: 1px solid var(--ivory-dim); }
+
+/* --- the desk ----------------------------------------------------- */
+
+.faa-desk {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(330px, .92fr);
+  grid-template-areas:
+    "chart  chart  chat"
+    "ind    ind    chat"
+    "call   reveal chat";
+  gap: 12px;
+  align-items: stretch;
+}
+.faa-panel--chart  { grid-area: chart; }
+.faa-panel--ind    { grid-area: ind; }
+.faa-panel--chat   { grid-area: chat; }
+.faa-panel--call   { grid-area: call; }
+.faa-panel--reveal { grid-area: reveal; }
+
+.faa-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--hairline-lit);
+  border-radius: 2px;
+  background: linear-gradient(158deg, var(--charcoal-hi) 0%, var(--graphite) 62%);
+  box-shadow: var(--bevel), var(--lift-1);
+}
+.faa-panel:focus { outline: none; }
+
+.faa-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .4rem 1rem;
+  min-height: 2.35rem;
+  padding: .4rem .85rem;
+  border-bottom: 1px solid var(--hairline-lit);
+  background: rgba(var(--ground-rgb), .55);
+}
+.faa-panel__body { padding: .9rem; flex: 1; min-width: 0; }
+
+/* --- chart -------------------------------------------------------- */
+
+.faa-toggle {
+  display: inline-flex;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.faa-toggle button {
+  font: inherit;
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ivory-dim);
+  background: transparent;
+  border: 0;
+  border-left: 1px solid var(--hairline);
+  padding: .32rem .7rem;
+  cursor: pointer;
+  transition: color .3s, background .3s;
+}
+.faa-toggle button:first-child { border-left: 0; }
+.faa-toggle button:hover:not(:disabled) { color: var(--ivory); }
+.faa-toggle button[aria-pressed="true"] {
+  color: var(--ivory);
+  background: linear-gradient(158deg, var(--button-hi), var(--button-base));
+  box-shadow: inset 0 -1px 0 var(--accent);
+}
+.faa-toggle button:disabled { opacity: .45; cursor: default; }
+.faa-toggle button:focus-visible { outline-offset: -3px; }
+
+.faa-quote {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0 0 .8rem;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+}
+.faa-quote[hidden] { display: none; }
+.faa-quote div { padding: .45rem .7rem; border-left: 1px solid var(--hairline); min-width: 0; }
+.faa-quote div:first-child { border-left: 0; }
+.faa-quote div:first-child dd { font-size: 1.4rem; }
+.faa-quote dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 1.12rem;
+  line-height: 1.25;
+  color: var(--ivory);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.faa-chart { margin: 0; }
+.faa-chart[hidden] { display: none; }
+.faa-chart__frame {
+  position: relative;
+  aspect-ratio: 16 / 8.6;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  background: rgba(var(--ground-rgb), .5);
+  box-shadow: var(--inset);
+  overflow: hidden;
+}
+.faa-chart canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+.faa-chart__foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .4rem 1.2rem;
+  margin-top: .6rem;
+}
+.faa-legend {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .3rem .9rem;
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ivory-dim);
+}
+.faa-legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.faa-legend i { display: inline-block; flex: none; }
+.faa-key-line   { width: 16px; height: 2px; background: linear-gradient(90deg, var(--up) 50%, var(--down) 50%); }
+.faa-key-future { width: 14px; height: 9px; background: rgba(var(--light-rgb), .16); border: 1px dashed var(--ivory-dim); }
+.faa-key-vol    { width: 5px; height: 9px; background: linear-gradient(var(--up) 50%, var(--down) 50%); opacity: .55; }
+.faa-key-up     { width: 7px; height: 11px; border: 1px solid var(--up); }
+.faa-key-down   { width: 7px; height: 11px; background: var(--down); }
+.faa-readout {
+  font-family: var(--mono);
+  font-size: .72rem;
+  color: var(--ivory-mid);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- indicator + outcome cells ------------------------------------- */
+
+.faa-cells {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1px;
+  margin: 0;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.faa-cells[hidden] { display: none; }
+.faa-cells div {
+  padding: .55rem .7rem .6rem;
+  background: var(--graphite);
+  min-width: 0;
+}
+.faa-cells dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  color: var(--ivory);
+  font-variant-numeric: tabular-nums;
+}
+.faa-cells--reveal { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: .9rem; }
+.faa-cells--reveal dd { font-size: 1.4rem; line-height: 1.2; }
+
+.faa-empty,
+.faa-note,
+.faa-sealed {
+  font-size: var(--t-sm);
+  color: var(--ivory-dim);
+  margin: 0;
+}
+.faa-note { margin-bottom: 1rem; }
+.faa-sealed {
+  padding: 1.1rem;
+  border: 1px dashed var(--hairline-lit);
+  border-radius: 3px;
+  text-align: center;
+}
+
+/* --- chat ---------------------------------------------------------- */
+
+.faa-panel--chat { min-height: 34rem; }
+
+.faa-chat {
+  flex: 1 1 0;
+  min-height: 0;
+  contain: size;                       /* the desk's rows set the height; the log scrolls */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+  padding: .9rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--hairline-lit) transparent;
+}
+
+.faa-msg {
+  flex-shrink: 0;                      /* turns keep their height; the log scrolls instead */
+  max-width: 100%;
+  font-size: var(--t-sm);
+  line-height: 1.55;
+}
+.faa-msg p { margin: 0; max-width: none; }
+
+/* who is speaking: a small mono tag above every turn */
+.faa-who {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ivory-dim);
+}
+
+/* static desk brief — written into the page, never an API reply */
+.faa-msg--intro {
+  padding: .7rem .85rem .75rem;
+  border: 1px dashed var(--hairline-lit);
+  border-radius: 2px;
+  color: var(--ivory-mid);
+}
+.faa-msg--intro .faa-micro { margin-bottom: .35rem; }
+
+/* the player: right side, tinted, compact */
+.faa-msg--user {
+  align-self: flex-end;
+  max-width: 84%;
+  display: grid;
+  justify-items: end;
+  gap: .25rem;
+}
+.faa-msg--user p {
+  padding: .5rem .75rem;
+  color: var(--ivory);
+  background: rgba(var(--light-rgb), .16);
+  border: 1px solid var(--accent-edge);
+  border-radius: 10px 10px 2px 10px;
+}
+
+/* the analyst: left side, framed, with the reply's sections inside */
+.faa-msg--analyst,
+.faa-msg--pending,
+.faa-msg--error {
+  align-self: flex-start;
+  width: 96%;
+  border: 1px solid var(--hairline-lit);
+  border-left: 2px solid var(--accent);
+  border-radius: 2px 10px 10px 10px;
+  background: rgba(var(--ground-rgb), .62);
+  overflow: hidden;
+}
+.faa-msg__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .6rem;
+  padding: .35rem .75rem;
+  border-bottom: 1px solid var(--hairline);
+  background: rgba(var(--light-rgb), .05);
+}
+.faa-msg__body { padding: .65rem .75rem .75rem; display: grid; gap: .7rem; }
+
+.faa-mode {
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ivory-dim);
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+  padding: .08rem .4rem;
+  white-space: nowrap;
+}
+.faa-mode--offline { border-style: dashed; }
+
+.faa-msg--pending .faa-msg__body {
+  display: block;
+  font-family: var(--mono);
+  font-size: .74rem;
+  letter-spacing: .04em;
+  color: var(--ivory-dim);
+}
+.faa-msg--pending .faa-msg__body::before,
+.faa-status.is-busy::before {
+  content: "";
+  display: inline-block;
+  width: .45rem;
+  height: .45rem;
+  margin-right: .55rem;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: .05em;
+  animation: faa-pulse 1.4s var(--ease-out) infinite;
+}
+@keyframes faa-pulse { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+
+.faa-msg--error { border-left-color: var(--ivory-dim); }
+.faa-msg--error .faa-msg__body { display: block; color: var(--ivory); }
+.faa-msg--error .faa-btn { margin-top: .6rem; }
+
+/* sections inside an analyst reply */
+.faa-sec + .faa-sec { padding-top: .6rem; border-top: 1px solid var(--hairline); }
+.faa-sec h3 {
+  font-family: var(--mono);
+  font-size: .62rem;
+  font-weight: 400;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 .3rem;
+}
+.faa-sec p { color: var(--ivory-mid); }
+.faa-sec--summary p {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-variation-settings: "opsz" 24;
+  line-height: 1.45;
+  color: var(--ivory);
+}
+.faa-sec ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.faa-sec li { color: var(--ivory-mid); }
+.faa-sec li b {
+  display: inline-block;
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: .64rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+  padding: 0 .35rem;
+  margin: 0 .4rem .1rem 0;
+}
+.faa-sec .faa-none { color: var(--ivory-dim); font-size: .8rem; }
+
+/* composer */
+.faa-composer {
+  border-top: 1px solid var(--hairline);
+  padding: .75rem .9rem .8rem;
+}
+.faa-suggest {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: .6rem;
+}
+.faa-chipbtn,
+.faa-btn {
+  font: inherit;
+  font-size: .78rem;
+  color: var(--ivory-mid);
+  background: transparent;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  padding: .3rem .6rem;
+  cursor: pointer;
+  transition: color .3s, border-color .3s, background .3s;
+}
+.faa-chipbtn:hover:not(:disabled),
+.faa-btn:hover:not(:disabled) {
+  color: var(--ivory);
+  border-color: var(--accent-edge);
+  background: rgba(var(--light-rgb), .06);
+}
+.faa-chipbtn:disabled,
+.faa-btn:disabled { opacity: .45; cursor: default; }
+
+/* prompt chips read as desk shortcuts */
+.faa-chipbtn {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  padding: .32rem .55rem;
+}
+.faa-chipbtn::before { content: "\203A"; margin-right: .35rem; color: var(--accent); }
+
+.faa-ask {
+  display: flex;
+  align-items: stretch;
+  gap: .5rem;
+}
+.faa-ask textarea {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  font: inherit;
+  font-size: var(--t-sm);
+  line-height: 1.45;
+  color: var(--ivory);
+  background: rgba(var(--ground-rgb), .6);
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  padding: .55rem .7rem;
+  box-shadow: var(--inset);
+  transition: border-color .3s;
+}
+.faa-ask textarea:focus { outline: none; border-color: var(--accent-edge); }
+.faa-ask textarea:focus-visible { outline: 2px solid var(--accent-lit); outline-offset: 2px; }
+.faa-ask textarea::placeholder { color: var(--ivory-dim); }
+.faa-ask textarea:disabled { opacity: .55; }
+
+.faa-ask__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: .4rem;
+  min-height: 1.1rem;
+}
+.faa-hint { font-size: .78rem; color: var(--accent-lit); }
+.faa-count {
+  font-family: var(--mono);
+  font-size: .68rem;
+  color: var(--ivory-dim);
+  margin-left: auto;
+}
+
+/* --- buttons ------------------------------------------------------- */
+
+.faa-send,
+.faa-primary {
+  font: inherit;
+  font-family: var(--mono);
+  font-size: .76rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  background: linear-gradient(158deg, var(--button-hi), var(--button-base));
+  border: 1px solid var(--accent-edge);
+  border-radius: 3px;
+  padding: .7rem 1.1rem;
+  cursor: pointer;
+  box-shadow: var(--bevel), var(--lift-1);
+  transition: transform .35s var(--ease-settle), border-color .3s, box-shadow .35s, color .3s;
+}
+.faa-primary { width: 100%; }
+.faa-send:hover:not(:disabled),
+.faa-primary:hover:not(:disabled) {
+  color: var(--accent-lit);
+  border-color: var(--accent-lit);
+  transform: translateY(-1px);
+  box-shadow: var(--bevel), var(--lift-2);
+}
+.faa-send:active:not(:disabled),
+.faa-primary:active:not(:disabled) { transform: translateY(1px); }
+.faa-send:disabled,
+.faa-primary:disabled {
+  color: var(--ivory-dim);
+  border-color: var(--hairline);
+  box-shadow: var(--bevel);
+  transform: none;
+  cursor: default;
+}
+
+/* --- request state ------------------------------------------------- */
+
+.faa-status {
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ivory-mid);
+  margin: .7rem 0 0;
+}
+.faa-status:empty { display: none; }
+.faa-panel--chart .faa-status { margin: 0 0 .8rem; }
+
+.faa-alert {
+  margin-top: .8rem;
+  padding: .75rem .9rem;
+  border: 1px solid var(--hairline-lit);
+  border-left: 2px solid var(--accent);
+  border-radius: 3px;
+  background: rgba(var(--light-rgb), .05);
+  font-size: var(--t-sm);
+  color: var(--ivory);
+}
+.faa-alert[hidden] { display: none; }
+.faa-alert p { margin: 0; }
+.faa-alert .faa-btn { margin-top: .6rem; }
+.faa-panel--chart .faa-alert { margin: 0 0 .8rem; }
+
+/* --- thesis --------------------------------------------------------- */
+
+.faa-field { border: 0; padding: 0; margin: 0 0 1.1rem; min-width: 0; }
+.faa-field legend { padding: 0; margin-bottom: .5rem; }
+.faa-field__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: .35rem;
+}
+.faa-conf {
+  font-family: var(--mono);
+  font-size: 1.05rem;
+  color: var(--ivory);
+  font-variant-numeric: tabular-nums;
+}
+
+.faa-dir {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.faa-dir__btn {
+  font: inherit;
+  font-family: var(--mono);
+  font-size: .76rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ivory-mid);
+  background: transparent;
+  border: 0;
+  border-left: 1px solid var(--hairline);
+  padding: .75rem .4rem;
+  cursor: pointer;
+  transition: color .3s, background .3s, box-shadow .3s;
+}
+.faa-dir__btn span { font-size: .62rem; margin-right: .2rem; color: var(--ivory-dim); }
+.faa-dir__btn:first-child { border-left: 0; }
+.faa-dir__btn:hover:not(:disabled) { color: var(--ivory); background: rgba(var(--light-rgb), .06); }
+.faa-dir__btn[data-dir="UP"] span { color: var(--up); }
+.faa-dir__btn[data-dir="DOWN"] span { color: var(--down); }
+.faa-dir__btn[aria-pressed="true"] {
+  color: var(--ivory);
+  background: linear-gradient(158deg, var(--button-hi), var(--button-base));
+  box-shadow: inset 0 -2px 0 var(--ivory-mid), var(--bevel);
+}
+.faa-dir__btn[data-dir="UP"][aria-pressed="true"] {
+  color: var(--up);
+  background: rgba(var(--up-rgb), .12);
+  box-shadow: inset 0 -2px 0 var(--up), var(--bevel);
+}
+.faa-dir__btn[data-dir="DOWN"][aria-pressed="true"] {
+  color: var(--down);
+  background: rgba(var(--down-rgb), .12);
+  box-shadow: inset 0 -2px 0 var(--down), var(--bevel);
+}
+.faa-dir__btn:disabled { cursor: default; opacity: .6; }
+.faa-dir__btn:focus-visible { outline-offset: -3px; }
+
+.faa-field input[type="range"] {
+  width: 100%;
+  margin: .1rem 0 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.faa-field input[type="range"]:disabled { cursor: default; opacity: .6; }
+.faa-scale {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: .64rem;
+  color: var(--ivory-dim);
+}
+
+/* --- outcome -------------------------------------------------------- */
+
+.faa-verdict {
+  font-family: var(--mono);
+  font-size: .66rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .15rem .5rem;
+  border-radius: 2px;
+  border: 1px solid var(--hairline-lit);
+  color: var(--ivory-mid);
+}
+.faa-verdict[hidden] { display: none; }
+.faa-verdict.is-right { color: var(--up); border-color: var(--up); background: rgba(var(--up-rgb), .1); }
+.faa-verdict.is-wrong { color: var(--down); border-color: var(--down); background: rgba(var(--down-rgb), .1); }
+
+/* --- narrower desks --------------------------------------------------- */
+
+@media (max-width: 1180px) {
+  .faa-desk {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "chart  chart"
+      "ind    ind"
+      "chat   chat"
+      "call   reveal";
+  }
+  .faa-panel--chat { min-height: 0; }
+  .faa-chat { contain: none; flex: none; height: clamp(320px, 56vh, 520px); }
+}
+
+@media (max-width: 720px) {
+  .faa-desk {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "chart" "ind" "chat" "call" "reveal";
+  }
+  .faa-strip { width: 100%; }
+  .faa-strip div { flex: 1; min-width: 0; padding-inline: .6rem; }
+  .faa-strip dd { white-space: normal; word-break: break-word; }
+  .faa-quote { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .faa-quote div:nth-child(3) { border-left: 0; }
+  .faa-quote div:nth-child(n + 3) { border-top: 1px solid var(--hairline); }
+  .faa-chart__frame { aspect-ratio: 4 / 3.2; }
+  .faa-cells { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .faa-panel__body, .faa-chat, .faa-composer { padding-inline: .7rem; }
+}

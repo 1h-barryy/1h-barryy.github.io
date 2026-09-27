@@ -185,6 +185,37 @@
   color: var(--ivory-dim);
 }
 
+/* --- one footprint for every card -----------------------------------
+   Tidy up lays the grid out from the first card's size, so a card that
+   grows with its text overlaps the row below. Every card gets the same
+   minimum height (a two-line title plus a one-line note fits), with a
+   capped line count so copy can't push a card past it. */
+.chip__face {
+  display: flex;
+  flex-direction: column;
+  min-height: 11.25rem;
+}
+.chip__inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.chip__title,
+.chip__note {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+.chip__tools {
+  margin-top: auto;
+  padding-top: .75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* --- keyboard users get the lamp too ------------------------------- */
 .chip:focus-visible { --lit: 1; z-index: 35; }
 
