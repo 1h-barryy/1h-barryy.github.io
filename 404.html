@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — Barry Yuan</title>
+<meta name="robots" content="noindex">
+<script>
+/* Old URLs whose folder was renamed only by letter case, so no stub file can
+   sit at the old path. GitHub Pages serves this page for any missing URL. */
+(function () {
+  var old = "/BarryMade/Parallel Crossy Road";
+  var p;
+  try { p = decodeURIComponent(location.pathname); } catch (e) { return; }
+  if (p !== old && p.indexOf(old + "/") !== 0) return;
+  var rest = p.slice(old.length + 1);
+  if (rest === "index.html") rest = "";
+  location.replace("/barrymade/parallel-crossy-road/play/" + encodeURI(rest) + location.search + location.hash);
+})();
+</script>
+</head>
+<body>
+<p>Page not found. <a href="/">Go to the home page</a>.</p>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101213">
+<script src="/assets/js/theme.js?v=20260914-graphite"></script>
+<title>Financial Analyst Arcade — Web Edition — Barry Yuan</title>
+<meta name="description" content="Financial Analyst Arcade, Web Edition: read a simulated market scenario, question an analyst, form your own thesis, then see what happened next.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/assets/css/main.css?v=20260914-graphite">
+<link rel="stylesheet" href="/assets/css/portfolio.css?v=20260922-structure">
+<link rel="stylesheet" href="/assets/css/barrymade-project.css?v=20260927-made">
+<link rel="stylesheet" href="/assets/css/financial-analyst-arcade.css?v=20260927-trade">
+</head>
+<body class="project-page">
+
+<div class="veil"></div>
+
+<nav class="nav">
+  <a class="nav__mark" href="/">Barry <span>Yuan</span></a>
+  <ul class="nav__links">
+    <li><a class="nav__link" href="/portfolio/">Portfolio</a></li>
+    <li><a class="nav__link" href="/barrymade/" aria-current="true">BarryMade</a></li>
+    <li><a class="nav__link" href="/about/">About</a></li>
+    <li><a class="nav__link" href="/contact/">Contact</a></li>
+  </ul>
+  <button class="theme-toggle" type="button" aria-label="Light mode" aria-pressed="false" title="Switch to light mode" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+      <circle cx="12" cy="12" r="7.5"/>
+      <path class="theme-toggle__disc" d="M12 4.5a7.5 7.5 0 0 0 0 15Z" stroke="none"/>
+      <path d="M12 1v1m0 20v1M1 12h1m20 0h1"/>
+    </svg>
+  </button>
+</nav>
+
+<main class="faa">
+
+  <header class="faa-head">
+    <a class="study__link" href="../">&larr; About the project</a>
+    <div class="faa-head__row">
+      <div>
+        <p class="faa-micro faa-micro--accent">Simulated market scenario</p>
+        <h1 class="faa-head__title">Financial Analyst Arcade</h1>
+        <p class="faa-head__sub">Market Reasoning Simulator — Web Edition</p>
+      </div>
+      <dl class="faa-strip" aria-label="Session">
+        <div><dt>Scenario</dt><dd id="scenario-id">—</dd></div>
+        <div><dt>Sessions</dt><dd id="stat-sessions">—</dd></div>
+        <div><dt>Server</dt><dd><span class="faa-dot" id="server-dot" data-state="connecting"></span><span id="server-state">Connecting</span></dd></div>
+      </dl>
+    </div>
+    <p class="faa-head__note">Study the chart, question the analyst, then make your own call. The analyst
+    explains evidence; it won't tell you which way to go.</p>
+    <noscript><p class="faa-alert">This game needs JavaScript to talk to the analyst server.</p></noscript>
+  </header>
+
+  <div class="faa-desk">
+
+    <!-- 01 — price: only what the player may see before predicting -->
+    <section class="faa-panel faa-panel--chart" aria-labelledby="chart-h">
+      <header class="faa-bar">
+        <h2 class="faa-micro" id="chart-h"><span class="faa-num">01</span> Market <span class="faa-crumb">/ Price</span></h2>
+        <div class="faa-toggle" role="group" aria-label="Chart type">
+          <button type="button" data-view="line" aria-pressed="true">Line</button>
+          <button type="button" data-view="candle" aria-pressed="false">Candles</button>
+        </div>
+      </header>
+
+      <div class="faa-panel__body">
+        <dl class="faa-quote" id="quote" hidden>
+          <div><dt>Last close</dt><dd id="q-last">—</dd></div>
+          <div><dt>Last session</dt><dd id="q-change">—</dd></div>
+          <div><dt>Period high</dt><dd id="q-high">—</dd></div>
+          <div><dt>Period low</dt><dd id="q-low">—</dd></div>
+        </dl>
+
+        <div class="faa-status" id="scenario-status" role="status" aria-live="polite">Loading scenario…</div>
+        <div class="faa-alert" id="scenario-error" role="alert" hidden>
+          <p id="scenario-error-text"></p>
+          <button class="faa-btn" type="button" id="scenario-retry">Try again</button>
+        </div>
+
+        <figure class="faa-chart" id="chart-figure" hidden>
+          <div class="faa-chart__frame">
+            <canvas id="chart" role="img" aria-label="Price chart"></canvas>
+          </div>
+          <figcaption class="faa-chart__foot">
+            <span class="faa-legend" id="legend"></span>
+            <span class="faa-readout" id="chart-readout">Hover the chart to inspect a session.</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 02 — indicators, as calculated by the server -->
+    <section class="faa-panel faa-panel--ind" aria-labelledby="ind-h">
+      <header class="faa-bar">
+        <h2 class="faa-micro" id="ind-h"><span class="faa-num">02</span> Market <span class="faa-crumb">/ Indicators</span></h2>
+        <span class="faa-micro faa-micro--dim">Server-calculated · visible bars only</span>
+      </header>
+      <div class="faa-panel__body">
+        <p class="faa-empty" id="indicators-empty">Indicators arrive with your first analyst reply.</p>
+        <dl class="faa-cells" id="indicators" hidden></dl>
+      </div>
+    </section>
+
+    <!-- 03 — analyst chat -->
+    <section class="faa-panel faa-panel--chat" aria-labelledby="chat-h">
+      <header class="faa-bar">
+        <h2 class="faa-micro" id="chat-h"><span class="faa-num">03</span> Analyst</h2>
+        <span class="faa-micro faa-micro--dim">Each question is analyzed independently</span>
+      </header>
+
+      <div class="faa-chat" id="chat-log" role="log" aria-live="polite" aria-label="Conversation with the analyst">
+        <!-- static onboarding, written here — not an API reply -->
+        <div class="faa-msg faa-msg--intro" id="chat-intro">
+          <p class="faa-micro faa-micro--dim">Desk brief</p>
+          <p>I can help you read trend, momentum, participation, volatility, and conflicting
+          signals. I won't make the call for you. I'll help you build your thesis.</p>
+        </div>
+      </div>
+
+      <div class="faa-composer">
+        <div class="faa-suggest" id="suggestions">
+          <button class="faa-chipbtn" type="button" data-question="Walk me through the overall setup.">Overall setup</button>
+          <button class="faa-chipbtn" type="button" data-question="What is the bull case here?">Bull case</button>
+          <button class="faa-chipbtn" type="button" data-question="What is the bear case here?">Bear case</button>
+          <button class="faa-chipbtn" type="button" data-question="What is the biggest risk here?">Biggest risk</button>
+          <button class="faa-chipbtn" type="button" data-question="Are any signals conflicting?">Conflicting signals</button>
+        </div>
+        <form class="faa-ask" id="ask-form" novalidate>
+          <label class="sr-only" for="question">Your question</label>
+          <textarea id="question" rows="2" maxlength="600" placeholder="Ask the analyst…"></textarea>
+          <button class="faa-send" type="submit" id="ask">Send</button>
+        </form>
+        <div class="faa-ask__meta">
+          <span id="ask-hint" class="faa-hint" role="alert"></span>
+          <span class="faa-count" id="question-count">0 / 600</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 — the player's call -->
+    <section class="faa-panel faa-panel--call" id="thesis" aria-labelledby="thesis-h">
+      <header class="faa-bar">
+        <h2 class="faa-micro" id="thesis-h"><span class="faa-num">04</span> Thesis</h2>
+        <span class="faa-micro faa-micro--dim">Next sessions</span>
+      </header>
+      <div class="faa-panel__body">
+        <fieldset class="faa-field">
+          <legend class="faa-micro faa-micro--dim">Direction</legend>
+          <div class="faa-dir" id="direction">
+            <button type="button" class="faa-dir__btn" data-dir="DOWN" aria-pressed="false"><span aria-hidden="true">&#9660;</span> Down</button>
+            <button type="button" class="faa-dir__btn" data-dir="FLAT" aria-pressed="false"><span aria-hidden="true">&#9644;</span> Flat</button>
+            <button type="button" class="faa-dir__btn" data-dir="UP" aria-pressed="false"><span aria-hidden="true">&#9650;</span> Up</button>
+          </div>
+        </fieldset>
+
+        <div class="faa-field">
+          <div class="faa-field__row">
+            <label class="faa-micro faa-micro--dim" for="confidence">Confidence</label>
+            <output class="faa-conf" id="confidence-out" for="confidence">50%</output>
+          </div>
+          <input type="range" id="confidence" min="0" max="100" step="1" value="50">
+          <div class="faa-scale" aria-hidden="true"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+        </div>
+
+        <button class="faa-primary" type="button" id="lock">Lock in</button>
+
+        <div class="faa-status" id="lock-status" role="status" aria-live="polite"></div>
+        <div class="faa-alert" id="lock-error" role="alert" hidden>
+          <p id="lock-error-text"></p>
+          <button class="faa-btn" type="button" id="lock-retry" hidden>Try again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 — outcome -->
+    <section class="faa-panel faa-panel--reveal" id="reveal" aria-labelledby="reveal-h" tabindex="-1">
+      <header class="faa-bar">
+        <h2 class="faa-micro" id="reveal-h"><span class="faa-num">05</span> Outcome</h2>
+        <span class="faa-verdict" id="verdict" hidden></span>
+      </header>
+      <div class="faa-panel__body">
+        <p class="faa-sealed" id="reveal-sealed">Sealed. The next sessions stay hidden until you lock in a call.</p>
+        <div id="reveal-body" hidden>
+          <dl class="faa-cells faa-cells--reveal">
+            <div><dt>Actual direction</dt><dd id="r-direction">—</dd></div>
+            <div><dt>Actual return</dt><dd id="r-return">—</dd></div>
+            <div><dt>Your call</dt><dd id="r-call">—</dd></div>
+            <div><dt>Your confidence</dt><dd id="r-confidence">—</dd></div>
+          </dl>
+          <p class="faa-note">Compare this with the evidence you weighed. One outcome doesn't prove a thesis right or wrong.</p>
+          <button class="faa-primary" type="button" id="next">Next scenario</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</main>
+
+<footer class="foot">
+  <span>A simulated market scenario for practising reasoning. Not financial advice.</span>
+  <div class="foot__links">
+    <a href="../">About the project</a>
+    <a href="/barrymade/">BarryMade</a>
+    <a href="/contact/">Contact</a>
+  </div>
+</footer>
+
+<script src="/assets/js/site.js?v=20260927-paths"></script>
+<script src="/assets/js/financial-analyst-arcade.js?v=20260927-trade"></script>
+</body>
+</html>
