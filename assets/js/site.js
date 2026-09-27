@@ -41,8 +41,12 @@
   }
 
   /* --- mark the current page in the nav --------------------------- */
-  var here = window.location.pathname.split("/").pop() || "index.html";
+  // x.html, /x/ and /x/index.html all name the same page.
+  var pageKey = function (path) {
+    return path.replace(/(\/index)?\.html$/, "").replace(/\/+$/, "");
+  };
+  var here = pageKey(window.location.pathname);
   document.querySelectorAll(".nav__link").forEach(function (link) {
-    if (link.getAttribute("href") === here) link.setAttribute("aria-current", "page");
+    if (pageKey(link.pathname) === here) link.setAttribute("aria-current", "page");
   });
 })();
