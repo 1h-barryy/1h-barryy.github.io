@@ -1,0 +1,8 @@
+# macOS Finder metadata
+.DS_Store
+
+# Dev notes kept outside the repo (../site-notes/) — never publish
+/Claude outputs/
+/PLACEHOLDERS.md
+/THEME.md
+/assets/img/README.txt
