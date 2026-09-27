@@ -1,0 +1,52 @@
+/* =========================================================
+   BarryMade project pages — the case-study layout from
+   portfolio.css, plus one clear way into the thing itself.
+   ========================================================= */
+
+.made-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .9rem 1.4rem;
+  margin: 0 0 2.6rem;
+}
+
+/* same surface, edge, and lift as the BarryMade "Tidy up" button */
+.made-cta__button {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  font: inherit;
+  font-size: var(--t-base);
+  color: var(--ivory);
+  text-decoration: none;
+  background: linear-gradient(158deg, var(--button-hi), var(--button-base));
+  border: 1px solid var(--accent-edge);
+  border-radius: 3px;
+  padding: .8rem 1.35rem;
+  box-shadow: var(--bevel), var(--lift-1);
+  transition: transform .35s var(--ease-settle), border-color .3s, box-shadow .35s, color .3s;
+}
+.made-cta__button:hover,
+.made-cta__button:focus-visible {
+  color: var(--accent-lit);
+  border-color: var(--accent-lit);
+  transform: translateY(-1px);
+  box-shadow: var(--bevel), var(--lift-2);
+}
+.made-cta__button:active { transform: translateY(1px); }
+
+/* nothing to launch yet: same shape, no pretending */
+.made-cta__button[aria-disabled="true"] {
+  color: var(--ivory-dim);
+  border-color: var(--hairline);
+  box-shadow: var(--bevel);
+  cursor: default;
+  transform: none;
+}
+
+.made-cta__note {
+  margin: 0;
+  font-size: var(--t-sm);
+  color: var(--ivory-dim);
+}
