@@ -56,6 +56,18 @@
 }
 .index__role { font-size: var(--t-sm); }
 
+/* Full-image previews for projects whose artwork has its own proportions. */
+.editorial-preview {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  border-radius: 5px;
+  background: var(--graphite);
+}
+.editorial-preview img { width: 100%; height: auto; }
+
 /* Project pages keep the shared navigation and case-study presentation. */
 .project-head {
   max-width: 1500px;
@@ -218,6 +230,98 @@
 
 .study + .study { border-top: 1px solid var(--hairline); }
 
+/* Editorial project pages frame original artifacts without the case-study grid or plate crop. */
+.editorial-project {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 5.5rem) var(--gutter) 0;
+}
+
+.editorial-project__header { max-width: 950px; margin-bottom: clamp(3rem, 6vw, 5rem); }
+.editorial-project__eyebrow,
+.editorial-project__section-label {
+  margin: 0 0 .65rem;
+  color: var(--accent);
+  font-size: var(--t-sm);
+}
+.editorial-project__header h1 {
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-variation-settings: "opsz" 144;
+  margin-bottom: 1.4rem;
+}
+.editorial-project__intro {
+  max-width: 57ch;
+  color: var(--ivory-mid);
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 2.2vw, 1.85rem);
+  line-height: 1.48;
+}
+.editorial-project__roles {
+  display: flex;
+  gap: .8rem 2rem;
+  padding: 1.2rem 0;
+  margin-top: 2rem;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  font-size: var(--t-sm);
+}
+.editorial-project__roles > span { flex: 0 0 6rem; color: var(--ivory-dim); }
+.editorial-project__roles ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ivory);
+}
+.editorial-project__links { display: flex; flex-wrap: wrap; gap: .8rem 2rem; }
+.editorial-project__header .editorial-project__links { margin-top: 1.3rem; }
+
+.editorial-project__hero,
+.editorial-project__gallery figure { margin: 0; }
+.editorial-project__hero img,
+.editorial-project__gallery img {
+  width: 100%;
+  height: auto;
+  outline: 1px solid var(--hairline);
+}
+
+.editorial-project__section {
+  padding-top: clamp(4rem, 10vw, 8rem);
+}
+.editorial-project__section--narrow { max-width: 750px; }
+.editorial-project__section h2 {
+  margin-bottom: 1rem;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+.editorial-project__section p:not(.editorial-project__section-label) {
+  color: var(--ivory-mid);
+}
+.editorial-project__section-head { margin-bottom: 2rem; }
+.editorial-project__gallery {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+}
+.editorial-project__gallery a { display: block; cursor: zoom-in; }
+.editorial-project__video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--graphite);
+  border: 1px solid var(--hairline);
+}
+.editorial-project__video iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.editorial-project__section--links {
+  margin-top: clamp(4rem, 10vw, 8rem);
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--hairline);
+}
+
 @media (max-width: 900px) {
   .study {
     grid-template-columns: 1fr;
@@ -231,4 +335,6 @@
 
 @media (max-width: 620px) {
   .index__list { grid-template-columns: 1fr; }
+  .editorial-project__roles { display: block; }
+  .editorial-project__roles > span { display: block; margin-bottom: .5rem; }
 }
