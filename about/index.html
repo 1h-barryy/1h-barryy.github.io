@@ -6,14 +6,14 @@
 <meta name="theme-color" content="#101213">
 <script src="/assets/js/theme.js?v=20260914-graphite"></script>
 <title>About Me — Barry Yuan</title>
-<meta name="description" content="PLACEHOLDER — who Barry is, what he works on, and how to get in touch.">
+<meta name="description" content="Barry Yuan is a technical artist finishing a master's at Carnegie Mellon's Entertainment Technology Center.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="/assets/css/main.css?v=20260914-graphite">
-<link rel="stylesheet" href="/assets/css/about.css?v=20260914-material">
+<link rel="stylesheet" href="/assets/css/about.css?v=20260929-education">
 </head>
 <body>
 
@@ -47,55 +47,60 @@
     <!-- ============ PORTRAIT ==================================== -->
     <figure class="portrait">
       <div class="portrait__frame">
-        <!-- Replace the div below with:
-             <img src="/assets/img/headshot.jpg" alt="PLACEHOLDER — describe yourself briefly"> -->
-        <div class="portrait__empty">
-          <strong>Headshot</strong>
-          <span>assets/img/headshot.jpg</span>
-          <span>Portrait crop, 4:5, at least 1000&times;1250</span>
-        </div>
+        <img src="/about/media/headshot.JPG" alt="Barry Yuan, smiling, in a white collared shirt against a light grey background">
       </div>
-      <figcaption class="ph">PLACEHOLDER — optional: where and when the photo was taken.</figcaption>
+      <!-- TODO: optional caption — where and when the photo was taken.
+      <figcaption></figcaption> -->
     </figure>
 
     <!-- ============ BIO ========================================= -->
     <div class="bio">
 
-      <p class="bio__lead">
-        PLACEHOLDER — two lines that say what you do and what you care about,
-        in your own voice. This is the sentence a recruiter will actually read.
-      </p>
+      <!-- TODO: lead — 1–2 sentences, pending Barry's pick from the drafted options.
+      <p class="bio__lead"></p> -->
 
-      <p>PLACEHOLDER — where you are now and what you're finishing. A sentence
-      about the program, the studio, or the project that currently takes most of
-      your time.</p>
-
-      <p>PLACEHOLDER — how you got here. The non-obvious part of your background
-      is usually the interesting part. Say what it gave you rather than just
-      listing it.</p>
-
-      <p>PLACEHOLDER — what you want next, stated plainly. If you're looking for
-      a specific kind of role, say the words.</p>
-
-      <h2>What I work with</h2>
-      <dl class="kit">
+      <h2>Education</h2>
+      <dl class="kit kit--stack">
         <div>
-          <dt>Look and lighting</dt>
-          <dd class="ph">PLACEHOLDER — shading languages, engines, renderers</dd>
+          <dt>Carnegie Mellon University</dt>
+          <dd class="kit__when">Aug 2025 – May 2027 (expected)</dd>
+          <dd>Master of Entertainment Technology<br>
+          Entertainment Technology Center</dd>
         </div>
         <div>
-          <dt>Rigging and animation</dt>
-          <dd class="ph">PLACEHOLDER — packages and what you do in them</dd>
-        </div>
-        <div>
-          <dt>Tools and pipeline</dt>
-          <dd class="ph">PLACEHOLDER — languages, APIs, what you automate</dd>
-        </div>
-        <div>
-          <dt>Effects and simulation</dt>
-          <dd class="ph">PLACEHOLDER — the sim work you actually ship</dd>
+          <dt>The Ohio State University</dt>
+          <dd class="kit__when">Jan 2021 – May 2025</dd>
+          <dd>BA in Art: Art and Technology<br>
+          Minor in Game Studies</dd>
+          <dd class="kit__note">Two years of mathematics coursework before switching majors.</dd>
         </div>
       </dl>
+
+      <!-- TODO: Experience section goes here — same <h2> + <dl class="kit">
+           pattern as Education, dated entries, most recent first. -->
+
+      <h2>Skills</h2>
+      <dl class="kit">
+        <div>
+          <dt>Shaders and lighting</dt>
+          <dd>Unity HDRP, Shader Graph, HLSL</dd>
+        </div>
+        <div>
+          <dt>Simulation</dt>
+          <dd>Houdini: pyro solver, some fluids</dd>
+        </div>
+        <div>
+          <dt>Rigging and tools</dt>
+          <dd>Character rigging in Maya, Maya Python</dd>
+        </div>
+      </dl>
+
+      <h2>Before tech art</h2>
+      <p>I started in fine arts, working in ceramics and sculpture.</p>
+
+      <!-- TODO: Résumé — add the PDF to the repo, then uncomment and set the path.
+      <h2>Résumé</h2>
+      <p><a class="bio__link" href="/about/media/resume.pdf">Download my résumé (PDF)</a></p> -->
 
       <h2>Get in touch</h2>
 
