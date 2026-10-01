@@ -50,3 +50,18 @@
   font-size: var(--t-sm);
   color: var(--ivory-dim);
 }
+
+/* hero plates that keep the artwork's own proportions instead of the 4:3 crop */
+.plate--slide { aspect-ratio: 2400 / 1159; }
+.plate--portrait { aspect-ratio: 3 / 4; max-width: min(100%, 62vh); }
+
+/* slides and photos below the case study, framed like the portfolio's editorial pages */
+.made-media {
+  padding-top: 0;
+  padding-bottom: clamp(4rem, 10vw, 8rem);
+}
+.editorial-project__gallery--grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: clamp(.75rem, 1.6vw, 1.25rem);
+  align-items: start;
+}
