@@ -6,3 +6,14 @@
 /PLACEHOLDERS.md
 /THEME.md
 /assets/img/README.txt
+
+# Raw media: convert before committing (photos -> .webp, video -> YouTube embed)
+*.HEIC
+*.heic
+*.mov
+*.mp4
+
+# Parallel Crossy Road dev files: kept locally, not published
+/barrymade/parallel-crossy-road/play/core.test.cjs
+/barrymade/parallel-crossy-road/play/README.txt
+/barrymade/parallel-crossy-road/play/prompt_log.txt
