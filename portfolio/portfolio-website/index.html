@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101213">
+<script src="/assets/js/theme.js?v=20260914-graphite"></script>
+<title>Personal Portfolio Website — Barry Yuan</title>
+<meta name="description" content="A personal portfolio pairing dark editorial case studies with the playful, interactive BarryMade workshop.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/assets/css/main.css?v=20260914-graphite">
+<link rel="stylesheet" href="/assets/css/portfolio.css?v=20260925-editorial">
+<link rel="stylesheet" href="/assets/css/project-media.css">
+<script>document.documentElement.className += " js";</script>
+</head>
+<body class="project-page">
+
+<div class="veil"></div>
+<div class="progress"></div>
+
+<nav class="nav">
+  <a class="nav__mark" href="/">Barry <span>Yuan</span></a>
+  <ul class="nav__links">
+    <li><a class="nav__link" href="/portfolio/" aria-current="true">Portfolio</a></li>
+    <li><a class="nav__link" href="/barrymade/">BarryMade</a></li>
+    <li><a class="nav__link" href="/about/">About</a></li>
+    <li><a class="nav__link" href="/contact/">Contact</a></li>
+  </ul>
+  <button class="theme-toggle" type="button" aria-label="Light mode" aria-pressed="false" title="Switch to light mode" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+      <circle cx="12" cy="12" r="7.5"/>
+      <path class="theme-toggle__disc" d="M12 4.5a7.5 7.5 0 0 0 0 15Z" stroke="none"/>
+      <path d="M12 1v1m0 20v1M1 12h1m20 0h1"/>
+    </svg>
+  </button>
+</nav>
+
+<main>
+  <div class="project-head">
+    <a class="study__link" href="/portfolio/">&larr; Back to Portfolio</a>
+  </div>
+
+  <article class="editorial-project">
+    <header class="editorial-project__header">
+      <p class="editorial-project__eyebrow">A home for selected work and small experiments</p>
+      <h1>Personal Portfolio Website</h1>
+      <p class="editorial-project__intro">A personal website with two ways into the work: a considered Portfolio for selected projects, and BarryMade, a playful workshop of smaller experiments. Typography, space, and motion give each section its own pace while keeping the site connected.</p>
+      <div class="editorial-project__roles"><span>Category</span><ul><li>Web Design</li><li>Front-end Development</li><li>Creative Coding</li></ul></div>
+      <div class="editorial-project__links"><a class="study__link" href="https://1h-barryy.github.io/" target="_blank" rel="noopener noreferrer">View Live Website ↗</a><a class="study__link" href="https://github.com/1h-barryy/1h-barryy.github.io" target="_blank" rel="noopener noreferrer">View GitHub ↗</a></div>
+      
+    </header>
+    <figure class="editorial-project__hero">
+      <a class="plate project-media__frame" href="media/hero.webp" target="_blank" rel="noopener" aria-label="Open full-size screenshot: Personal website homepage with large Barry Yuan typography and an interactive particle field">
+        <img src="media/hero.webp" alt="Personal website homepage with large Barry Yuan typography and an interactive particle field" width="1600" height="900" fetchpriority="high" decoding="async">
+      </a>
+      <figcaption class="plate__caption">Homepage — editorial typography over the live WebGL particle field.</figcaption>
+    </figure>
+    <section class="editorial-project__section" aria-labelledby="design-heading">
+      <div class="editorial-project__section-head"><p class="editorial-project__section-label">01 / Design</p><h2 id="design-heading">An editorial frame for the work</h2><p>Graphite surfaces, warm accents, and fine dividing lines frame large Fraunces headings and Instrument Sans body text. Generous spacing gives project writing and images room to breathe. A shared navigation connects Portfolio, BarryMade, About, and Contact, while a saved light / dark preference carries between pages.</p><p>Built with HTML, CSS, and JavaScript, the site uses a pointer-responsive WebGL field on the landing page, page fades, hover details, and scroll-driven motion. Responsive grids and reduced-motion styles adapt the experience to different screens and preferences.</p></div>
+    </section><section class="editorial-project__section" aria-labelledby="portfolio-heading">
+      <div class="editorial-project__section-head"><p class="editorial-project__section-label">02 / Selected work</p><h2 id="portfolio-heading">Portfolio</h2><p>An image-led index leads to dedicated project pages. Each page moves from an introduction and project links into a long-form account of the work, with large media, concise section labels, and a reading-progress line.</p><p><a class="study__link" href="/portfolio/">Explore the Portfolio &rarr;</a></p><figure class="project-media">
+      <a class="plate project-media__frame" href="media/screenshot-01.webp" target="_blank" rel="noopener" aria-label="Open full-size screenshot: Portfolio index with Thought Path, Personal Portfolio Website, and Quant Analysis project cards">
+        <img src="media/screenshot-01.webp" alt="Portfolio index with Thought Path, Personal Portfolio Website, and Quant Analysis project cards" width="1600" height="900" loading="lazy" decoding="async">
+      </a>
+      <figcaption class="plate__caption">Portfolio — selected projects with dedicated detail pages.</figcaption>
+    </figure></div>
+    </section><section class="editorial-project__section" aria-labelledby="barrymade-heading">
+      <div class="editorial-project__section-head"><p class="editorial-project__section-label">03 / The workshop</p><h2 id="barrymade-heading">BarryMade</h2><p>BarryMade treats smaller projects as objects on a desk. Cards can be picked up, dragged, and thrown; a cursor-following lamp adds depth, and the Tidy up control brings the collection back into order. Each card opens its own project page.</p><p><a class="study__link" href="/barrymade/">Explore BarryMade &rarr;</a></p><figure class="project-media">
+      <a class="plate project-media__frame" href="media/screenshot-02.webp" target="_blank" rel="noopener" aria-label="Open full-size screenshot: BarryMade workshop with project cards arranged using Tidy up and a cursor-following light">
+        <img src="media/screenshot-02.webp" alt="BarryMade workshop with project cards arranged using Tidy up and a cursor-following light" width="1600" height="900" loading="lazy" decoding="async">
+      </a>
+      <figcaption class="plate__caption">BarryMade — the interactive workshop, shown after using Tidy up.</figcaption>
+    </figure></div>
+    </section>
+    <section class="editorial-project__section editorial-project__section--links" aria-labelledby="links-heading">
+      <p class="editorial-project__section-label">Explore</p><h2 id="links-heading">Project Links</h2>
+      <div class="editorial-project__links"><a class="study__link" href="https://1h-barryy.github.io/" target="_blank" rel="noopener noreferrer">View Live Website ↗</a><a class="study__link" href="https://github.com/1h-barryy/1h-barryy.github.io" target="_blank" rel="noopener noreferrer">View GitHub ↗</a></div>
+    </section>
+  </article>
+</main>
+
+<footer class="foot">
+  <span>More small things live in <a href="/barrymade/">BarryMade</a>.</span>
+  <div class="foot__links">
+    <a href="/portfolio/">Back to Portfolio</a>
+    <a href="/about/">About</a>
+    <a href="/contact/">Contact</a>
+  </div>
+</footer>
+
+<script src="/assets/js/site.js?v=20260927-paths"></script>
+<script src="/assets/js/portfolio.js"></script>
+</body>
+</html>

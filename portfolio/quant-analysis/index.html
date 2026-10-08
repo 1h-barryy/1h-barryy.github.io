@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101213">
+<script src="/assets/js/theme.js?v=20260914-graphite"></script>
+<title>Quant Analysis (Market Pinball) — Barry Yuan</title>
+<meta name="description" content="A Galton board-inspired 3D market experiment: configure trading rules, compare practice and out-of-sample scores, and test against a random baseline using synthetic data.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/assets/css/main.css?v=20260914-graphite">
+<link rel="stylesheet" href="/assets/css/portfolio.css?v=20260925-editorial">
+<link rel="stylesheet" href="/assets/css/project-media.css">
+<script>document.documentElement.className += " js";</script>
+</head>
+<body class="project-page">
+
+<div class="veil"></div>
+<div class="progress"></div>
+
+<nav class="nav">
+  <a class="nav__mark" href="/">Barry <span>Yuan</span></a>
+  <ul class="nav__links">
+    <li><a class="nav__link" href="/portfolio/" aria-current="true">Portfolio</a></li>
+    <li><a class="nav__link" href="/barrymade/">BarryMade</a></li>
+    <li><a class="nav__link" href="/about/">About</a></li>
+    <li><a class="nav__link" href="/contact/">Contact</a></li>
+  </ul>
+  <button class="theme-toggle" type="button" aria-label="Light mode" aria-pressed="false" title="Switch to light mode" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+      <circle cx="12" cy="12" r="7.5"/>
+      <path class="theme-toggle__disc" d="M12 4.5a7.5 7.5 0 0 0 0 15Z" stroke="none"/>
+      <path d="M12 1v1m0 20v1M1 12h1m20 0h1"/>
+    </svg>
+  </button>
+</nav>
+
+<main>
+  <div class="project-head">
+    <a class="study__link" href="/portfolio/">&larr; Back to Portfolio</a>
+  </div>
+
+  <article class="editorial-project">
+    <header class="editorial-project__header">
+      <p class="editorial-project__eyebrow">An interactive experiment with market patterns</p>
+      <h1>Quant Analysis (Market Pinball)</h1>
+      <p class="editorial-project__intro">Market Pinball turns a simulated market into a Galton board: each ball represents a stock, and each row of pegs represents a trading day. Across the Board, the Terrain, and the Test, it asks whether a trading rule finds a repeatable pattern or simply fits the data already in view.</p>
+      <div class="editorial-project__roles"><span>Category</span><ul><li>Interactive Web App</li><li>Quantitative Analysis</li><li>3D</li></ul></div>
+      <div class="editorial-project__links"><a class="study__link" href="https://1h-barryy.github.io/market-strategy-lab/" target="_blank" rel="noopener noreferrer">Launch Live Demo ↗</a><a class="study__link" href="https://github.com/1h-barryy/market-strategy-lab" target="_blank" rel="noopener noreferrer">View GitHub ↗</a></div>
+      <p class="plate__caption">Live demo: desktop browsers with WebGL support only. Mobile devices are not currently supported.</p>
+    </header>
+    <figure class="editorial-project__hero">
+      <a class="plate project-media__frame" href="media/hero.webp" target="_blank" rel="noopener" aria-label="Open full-size screenshot: Market Pinball Galton board with falling stocks, outcome bins, and market controls">
+        <img src="media/hero.webp" alt="Market Pinball Galton board with falling stocks, outcome bins, and market controls" width="1600" height="900" fetchpriority="high" decoding="async">
+      </a>
+      <figcaption class="plate__caption">The Board — stocks moving through the simulated market, with Mood and Yesterday controls.</figcaption>
+    </figure>
+    <section class="editorial-project__section" aria-labelledby="board-heading">
+      <div class="editorial-project__section-head"><p class="editorial-project__section-label">01 / The interface</p><h2 id="board-heading">A market inside a pinball machine</h2><p>The board looks like pinball, but its paths come from a seeded market model rather than physical collisions. Mood changes the market’s upward tendency; Yesterday changes how strongly a stock follows or reverses its previous move.</p><p>The Terrain extends that view across 250 trading days, showing how the distribution of stocks changes over time alongside a comparison crowd that ignores yesterday.</p><figure class="project-media">
+      <a class="plate project-media__frame" href="media/screenshot-01.webp" target="_blank" rel="noopener" aria-label="Open full-size screenshot: Three-dimensional market terrain showing the distribution of simulated stock paths over a year">
+        <img src="media/screenshot-01.webp" alt="Three-dimensional market terrain showing the distribution of simulated stock paths over a year" width="1600" height="900" loading="lazy" decoding="async">
+      </a>
+      <figcaption class="plate__caption">The Terrain — a year of synthetic market paths and the comparison crowd.</figcaption>
+    </figure></div>
+    </section><section class="editorial-project__section" aria-labelledby="rules-heading">
+      <div class="editorial-project__section-head"><p class="editorial-project__section-label">02 / Trading rules</p><h2 id="rules-heading">Build a rule, then put it to the test</h2><p>Choose whether to follow a move or bet against it, then configure Memory (how far back the rule looks) and Nerve (the size of move needed to act). A 6 × 6 table compares these settings for the chosen direction on 100 practice stocks.</p><p>Rules hold a stock or stay out of the market. Each decision uses the history available at that point and applies to the following day, keeping future prices out of the decision.</p><figure class="project-media">
+      <a class="plate project-media__frame" href="media/screenshot-02.webp" target="_blank" rel="noopener" aria-label="Open full-size screenshot: Trading rule configuration with Follow the move selected, two-day Memory, and the Memory by Nerve table">
+        <img src="media/screenshot-02.webp" alt="Trading rule configuration with Follow the move selected, two-day Memory, and the Memory by Nerve table" width="1600" height="900" loading="lazy" decoding="async">
+      </a>
+      <figcaption class="plate__caption">Trading rules — selecting a two-day follow-the-move rule before testing it on new stocks.</figcaption>
+    </figure></div>
+    </section><section class="editorial-project__section" aria-labelledby="results-heading">
+      <div class="editorial-project__section-head"><p class="editorial-project__section-label">03 / Results</p><h2 id="results-heading">Tuned results meet new data</h2><p>After selecting a rule on the practice data, test the same settings on 100 newly generated stocks from the same market model. This out-of-sample comparison uses fresh paths rather than a later historical period: it shows whether the tuned practice score carries over to unseen synthetic data.</p><p>A further check runs the rule against 200 random-market batches with the same Mood but no dependence on yesterday. Practice and fresh-stock scores are compared with this luck baseline, including its 95th percentile. Scores use annualized Sharpe calculated from the simulated strategy returns.</p><figure class="project-media">
+      <a class="plate project-media__frame" href="media/screenshot-03.webp" target="_blank" rel="noopener" aria-label="Open full-size screenshot: Strategy test showing a practice score of -0.05, a new-stock score of 0.00, and the Just luck verdict">
+        <img src="media/screenshot-03.webp" alt="Strategy test showing a practice score of -0.05, a new-stock score of 0.00, and the Just luck verdict" width="1600" height="900" loading="lazy" decoding="async">
+      </a>
+      <figcaption class="plate__caption">The Test — an actual run on synthetic data: practice −0.05, new stocks 0.00, and a “Just luck” verdict.</figcaption>
+    </figure></div>
+    </section><section class="editorial-project__section" aria-labelledby="technology-heading">
+      <div class="editorial-project__section-head"><p class="editorial-project__section-label">04 / Implementation</p><h2 id="technology-heading">Model, analysis, and 3D</h2><p>TypeScript implements the market model and backtesting logic; Three.js renders the 3D interface, and Vite builds the browser app. The project includes Vitest tests for the model and interactions.</p><p>All market data is synthetic. The app runs entirely in the browser without a backend or API keys; the results explore behavior within the simulated model rather than performance on real historical market data.</p></div>
+    </section>
+    <section class="editorial-project__section editorial-project__section--links" aria-labelledby="links-heading">
+      <p class="editorial-project__section-label">Explore</p><h2 id="links-heading">Project Links</h2>
+      <div class="editorial-project__links"><a class="study__link" href="https://1h-barryy.github.io/market-strategy-lab/" target="_blank" rel="noopener noreferrer">Launch Live Demo ↗</a><a class="study__link" href="https://github.com/1h-barryy/market-strategy-lab" target="_blank" rel="noopener noreferrer">View GitHub ↗</a></div>
+    </section>
+  </article>
+</main>
+
+<footer class="foot">
+  <span>More small things live in <a href="/barrymade/">BarryMade</a>.</span>
+  <div class="foot__links">
+    <a href="/portfolio/">Back to Portfolio</a>
+    <a href="/about/">About</a>
+    <a href="/contact/">Contact</a>
+  </div>
+</footer>
+
+<script src="/assets/js/site.js?v=20260927-paths"></script>
+<script src="/assets/js/portfolio.js"></script>
+</body>
+</html>

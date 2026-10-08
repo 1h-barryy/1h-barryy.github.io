@@ -1,0 +1,9 @@
+/* Used only by the two new case studies; colors follow the shared theme. */
+.project-media { margin: 2rem 0 0; }
+.project-media__frame { display: block; width: 100%; aspect-ratio: 16 / 9; cursor: zoom-in; }
+.project-media__frame img { display: block; width: 100%; height: auto; outline: none; }
+.project-media__frame:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+@media (prefers-reduced-motion: reduce) {
+  .project-media__frame { transform: none; }
+  .project-media__frame::after { display: none; }
+}
