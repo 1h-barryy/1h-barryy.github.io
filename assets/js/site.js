@@ -26,6 +26,10 @@
     });
   }
 
+  window.addEventListener("pageshow", function () {
+    if (veil) veil.classList.remove("is-closing");
+  });
+
   /* --- nav gains a backdrop once you leave the top ---------------- */
   var nav = document.querySelector(".nav");
   if (nav) {
