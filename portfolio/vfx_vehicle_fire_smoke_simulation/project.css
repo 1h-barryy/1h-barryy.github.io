@@ -1,0 +1,23 @@
+/* Project-only additions; typography, colors, spacing and video frames are shared. */
+[hidden] { display: none !important; }
+.vehicle-figure { margin: 2rem 0 0; }
+.vehicle-figure a, .editorial-project__hero a { display: block; cursor: zoom-in; }
+.vehicle-figure img { width: 100%; height: auto; border: 1px solid var(--hairline); }
+.vehicle-figure:last-child { max-width: 750px; }
+.vehicle-breakdown { max-width: 750px; margin-top: 3rem; }
+.vehicle-breakdown h3 { margin: 2rem 0 .75rem; }
+.vehicle-views { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: 1rem; }
+.vehicle-views button {
+  min-height: 44px;
+  padding: .5rem 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  color: var(--ivory-mid);
+  font: inherit;
+  cursor: pointer;
+}
+.vehicle-views button:hover, .vehicle-views button[aria-pressed="true"] {
+  color: var(--accent-lit);
+  border-bottom-color: var(--accent);
+}

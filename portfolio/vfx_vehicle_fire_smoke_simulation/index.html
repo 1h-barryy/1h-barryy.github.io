@@ -3,10 +3,126 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Personal Portfolio Website — Barry Yuan</title>
-<meta name="description" content="This project has moved to its descriptive portfolio address.">
-<meta http-equiv="refresh" content="0; url=/portfolio/portfolio-website/">
-<link rel="canonical" href="https://1h-barryy.github.io/portfolio/portfolio-website/">
+<meta name="theme-color" content="#101213">
+<script src="../../assets/js/theme.js?v=20260914-graphite"></script>
+<title>Vehicle Fire &amp; Smoke Simulation — Barry Yuan</title>
+<meta name="description" content="A Houdini vehicle fire and smoke simulation exploring procedural sourcing, Pyro Solver, collision geometry, and volumetric look development.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../assets/css/main.css?v=20260914-graphite">
+<link rel="stylesheet" href="../../assets/css/portfolio.css?v=20260925-editorial">
+<link rel="stylesheet" href="project.css">
+<script>document.documentElement.className += " js";</script>
 </head>
-<body><p>Continue to <a href="/portfolio/portfolio-website/">Personal Portfolio Website</a>.</p></body>
+<body class="project-page">
+
+<div class="veil"></div>
+<div class="progress"></div>
+
+<nav class="nav">
+  <a class="nav__mark" href="../../">Barry <span>Yuan</span></a>
+  <ul class="nav__links">
+    <li><a class="nav__link" href="../" aria-current="true">Portfolio</a></li>
+    <li><a class="nav__link" href="../../barrymade/">BarryMade</a></li>
+    <li><a class="nav__link" href="../../about/">About</a></li>
+    <li><a class="nav__link" href="../../contact/">Contact</a></li>
+  </ul>
+  <button class="theme-toggle" type="button" aria-label="Light mode" aria-pressed="false" title="Switch to light mode" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+      <circle cx="12" cy="12" r="7.5"/>
+      <path class="theme-toggle__disc" d="M12 4.5a7.5 7.5 0 0 0 0 15Z" stroke="none"/>
+      <path d="M12 1v1m0 20v1M1 12h1m20 0h1"/>
+    </svg>
+  </button>
+</nav>
+
+<main>
+  <div class="project-head"><a class="study__link" href="../">&larr; Back to Portfolio</a></div>
+  <article class="editorial-project">
+    <header class="editorial-project__header">
+      <p class="editorial-project__eyebrow">01 / Technical Art / VFX</p>
+      <h1>Vehicle Fire &amp; Smoke Simulation</h1>
+      <p class="editorial-project__intro">A vehicle-based fire and smoke simulation developed in Houdini using procedural sourcing, Pyro Solver, and collision geometry. The project explores volumetric smoke behavior, fire dynamics, and visual development, with an additional visualization in Unreal Engine.</p>
+      <dl class="study__facts">
+        <div><dt>Software</dt><dd>Houdini, Unreal Engine</dd></div>
+        <div><dt>Core techniques</dt><dd>Pyro Solver · Volumetric Fire &amp; Smoke · Procedural Sourcing · Collision Geometry · VDB Output</dd></div>
+      </dl>
+    </header>
+    <section id="houdini-video" aria-labelledby="houdini-heading" hidden>
+      <div class="editorial-project__section-head">
+        <h2 id="houdini-heading">Houdini Simulation</h2>
+        <div class="vehicle-views" role="group" aria-label="Simulation camera view" hidden>
+          <button type="button" data-view="front" aria-pressed="false">Front View</button>
+          <button type="button" data-view="rear" aria-pressed="false">Rear View</button>
+        </div>
+      </div>
+      <div class="editorial-project__video" data-player></div>
+      <a class="study__link" data-watch target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
+    </section>
+    <div id="simulation-still">
+<figure class="editorial-project__hero">
+      <a href="media/Fire&amp;Smoke_sim_Front.png" target="_blank" rel="noopener" aria-label="Open full-size image: Front view of the vehicle fire and rising smoke in the Houdini viewport"><img src="media/Fire&amp;Smoke_sim_Front.png" alt="Front view of the vehicle fire and rising smoke in the Houdini viewport" width="2451" height="1542" fetchpriority="high" decoding="async"></a>
+      <figcaption class="plate__caption">Houdini viewport — front view of the fire and smoke simulation.</figcaption>
+    </figure>
+    </div>
+    <section class="editorial-project__section" aria-labelledby="development-heading">
+      <div class="editorial-project__section-head">
+        <p class="editorial-project__section-label">02 / Simulation &amp; Look Development</p>
+        <h2 id="development-heading">Shaping fire and smoke</h2>
+        <p>A significant part of this project involved experimenting with the Pyro Solver’s fields and shaping parameters. I adjusted turbulence to introduce smaller swirling motions, while tuning dissipation, cooling, and smoke density to control how the plume formed, expanded, and gradually broke apart.</p>
+        <p>I studied references of real vehicle fires, paying particular attention to the distribution of darker, soot-heavy smoke. I worked to balance darker internal regions with lighter, more dispersed smoke, preserving both the volume and readability of the flames. Much of the process was an iterative balance between believable motion and the visual direction I wanted to achieve.</p>
+      </div>
+<figure class="vehicle-figure">
+      <a href="media/Fire&amp;Smoke_sim.png" target="_blank" rel="noopener" aria-label="Open full-size image: Rear view of the vehicle beneath a rising volumetric smoke plume"><img src="media/Fire&amp;Smoke_sim.png" alt="Rear view of the vehicle beneath a rising volumetric smoke plume" width="2446" height="1528" loading="lazy" decoding="async"></a>
+      <figcaption class="plate__caption">Rear viewport view — another perspective on the plume and the distribution of smoke.</figcaption>
+    </figure>
+      <div class="vehicle-breakdown">
+        <h3>Fire and smoke sourcing</h3>
+        <p>Torus and Transform geometry feed Pyro Source, Attribute Noise, Point Velocity, and Volume Rasterize Attributes to prepare the source and its simulation attributes.</p>
+        <h3>Vehicle collision setup</h3>
+        <p>The vehicle passes through Object Merge, Blast, Collision Source, and VDB Reshape SDF to prepare collision geometry and volume information for the simulation.</p>
+        <h3>Pyro simulation and output</h3>
+        <p>Pyro Solver brings the source and collision setup together. Field control and shaping adjustments support the visual iteration, while caching and geometry output nodes handle the simulation output; VDB file paths are visible in the network.</p>
+      </div>
+<figure class="vehicle-figure">
+      <a href="media/node.png" target="_blank" rel="noopener" aria-label="Open full-size image: Houdini node network with procedural source, vehicle collision, Pyro Solver, caching, and VDB output"><img src="media/node.png" alt="Houdini node network with procedural source, vehicle collision, Pyro Solver, caching, and VDB output" width="930" height="672" loading="lazy" decoding="async"></a>
+      <figcaption class="plate__caption">Houdini node network — source generation, vehicle collisions, simulation, and output.</figcaption>
+    </figure>
+      <div class="vehicle-breakdown">
+        <h3>Field control</h3>
+        <p>Example settings include dissipation at 0.02, cooling rate at 0.5, and flame lifespan at 0.3, alongside velocity sourcing from <code>v</code> to <code>vel</code>. These controls formed part of the ongoing balance between flame persistence, smoke shaping, and turbulent motion.</p>
+      </div>
+<figure class="vehicle-figure">
+      <a href="media/source.png" target="_blank" rel="noopener" aria-label="Open full-size image: Pyro settings showing dissipation 0.02, cooling rate 0.5, flame lifespan 0.3, and the source network"><img src="media/source.png" alt="Pyro settings showing dissipation 0.02, cooling rate 0.5, flame lifespan 0.3, and the source network" width="1147" height="1562" loading="lazy" decoding="async"></a>
+      <figcaption class="plate__caption">Selected Pyro Solver settings and the source network.</figcaption>
+    </figure>
+    </section>
+    <section id="unreal-video" class="editorial-project__section" aria-labelledby="unreal-heading" hidden>
+      <div class="editorial-project__section-head">
+        <p class="editorial-project__section-label">03 / Unreal Engine Visualization</p>
+        <h2 id="unreal-heading">Fire in a darker environment</h2>
+        <p>A separate visual presentation of the fire and smoke effect in a darker Unreal Engine scene.</p>
+      </div>
+      <div class="editorial-project__video" data-player></div>
+      <a class="study__link" data-watch target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
+    </section>
+    <div class="editorial-project__section editorial-project__section--links"><a class="study__link" href="../">&larr; Back to Portfolio</a></div>
+  </article>
+</main>
+<footer class="foot">
+  <span>More small things live in <a href="../../barrymade/">BarryMade</a>.</span>
+  <div class="foot__links">
+    <a href="../">Back to Portfolio</a>
+    <a href="../../about/">About</a>
+    <a href="../../contact/">Contact</a>
+  </div>
+</footer>
+
+<script src="../../assets/js/site.js?v=20261021-bfcache"></script>
+<script src="../../assets/js/portfolio.js"></script>
+<script src="videos.js"></script>
+</body>
 </html>

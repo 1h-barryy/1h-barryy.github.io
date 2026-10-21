@@ -43,9 +43,9 @@
 .index__preview:hover,
 .index__preview:focus-visible { color: var(--ivory); }
 .index__image { display: block; width: 100%; margin-bottom: 1.15rem; }
-.index__name { transition: padding-left .5s var(--ease-settle); }
+.index__name { transition: transform .5s var(--ease-settle); }
 .index__preview:hover .index__name,
-.index__preview:focus-visible .index__name { padding-left: .7rem; }
+.index__preview:focus-visible .index__name { transform: translateX(.7rem); }
 
 .index__year { font-size: var(--t-sm); color: var(--ivory-dim); }
 .index__name {
@@ -55,6 +55,36 @@
   color: var(--ivory);
 }
 .index__role { font-size: var(--t-sm); }
+
+/* Share text tracks within each gallery row, including naturally wrapped titles. */
+.index__list > li {
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  row-gap: .35rem;
+}
+.index__list > li > .index__preview {
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  row-gap: .35rem;
+}
+/* Both labels occupy the same track so revealing details never changes height. */
+.index__role--reveal { display: grid; }
+.index__role--reveal > span {
+  grid-area: 1 / 1;
+  transition: opacity .3s var(--ease-out);
+}
+.index__role-details { opacity: 0; }
+.index__preview:hover .index__role-summary,
+.index__preview:focus-visible .index__role-summary { opacity: 0; }
+.index__preview:hover .index__role-details,
+.index__preview:focus-visible .index__role-details { opacity: 1; }
+@media (hover: none), (pointer: coarse), (max-width: 620px) {
+  .index__role--reveal > span { grid-area: auto; }
+  .index__preview .index__role-summary,
+  .index__preview .index__role-details { opacity: 1; }
+  .index__role-details { color: var(--ivory-dim); }
+}
 
 /* Full-image previews for projects whose artwork has its own proportions. */
 .editorial-preview {
