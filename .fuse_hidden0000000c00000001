@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101213">
+<script src="/assets/js/theme.js?v=20260914-graphite"></script>
+<title>Barry Yuan</title>
+<meta name="description" content="Barry Yuan — work, experiments, technical art, games, tools, and other things I make.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/assets/css/main.css?v=20260914-graphite">
+<link rel="stylesheet" href="/assets/css/hero.css?v=20260914-graphite">
+</head>
+<body>
+
+<div class="veil"></div>
+
+<nav class="nav">
+  <a class="nav__mark" href="/">Barry <span>Yuan</span></a>
+  <ul class="nav__links">
+    <li><a class="nav__link" href="/portfolio/">Portfolio</a></li>
+    <li><a class="nav__link" href="/barrymade/">BarryMade</a></li>
+    <li><a class="nav__link" href="/about/">About</a></li>
+    <li><a class="nav__link" href="/contact/">Contact</a></li>
+  </ul>
+  <button class="theme-toggle" type="button" aria-label="Light mode" aria-pressed="false" title="Switch to light mode" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+      <circle cx="12" cy="12" r="7.5"/>
+      <path class="theme-toggle__disc" d="M12 4.5a7.5 7.5 0 0 0 0 15Z" stroke="none"/>
+      <path d="M12 1v1m0 20v1M1 12h1m20 0h1"/>
+    </svg>
+  </button>
+</nav>
+
+<main>
+
+  <section class="hero">
+    <canvas id="field" aria-hidden="true"></canvas>
+
+    <div class="hero__inner">
+      <h1 class="hero__name">
+        <span>Barry</span>
+        <span>Yuan</span>
+      </h1>
+
+      <p class="hero__line">
+        Technical artist. I build the things between the art and the engine —
+        <em>shaders, rigs, and the tools that make them repeatable.</em>
+      </p>
+
+      <div class="hero__enter">
+        <a class="enter-link" href="/portfolio/"><span class="enter-link__dot"></span>See the work</a>
+        <a class="enter-link" href="/portfolio/feather-falloff-shader/">Feather Falloff Shader</a>
+        <a class="enter-link" href="/barrymade/">BarryMade</a>
+        <a class="enter-link" href="/about/">About</a>
+        <a class="enter-link" href="/contact/">Contact</a>
+      </div>
+    </div>
+
+    <div class="hero__cue"><i></i> Scroll</div>
+  </section>
+
+  <div class="doors-wrap">
+    <div class="doors">
+
+      <a class="door" href="/portfolio/">
+        <span class="door__year">Selected projects</span>
+        <h2 class="door__title">Portfolio</h2>
+        <p class="door__desc">Selected work in technical art, interaction design, and creative coding — including Feather Falloff Shader, a Unity shader study.</p>
+      </a>
+
+      <a class="door" href="/barrymade/">
+        <span class="door__year">Everything else</span>
+        <h2 class="door__title">BarryMade</h2>
+        <p class="door__desc">The full pile — tools, shaders, jam games, half-experiments, things fired in a kiln. Pick one up and throw it.</p>
+      </a>
+
+      <a class="door" href="/about/">
+        <span class="door__year">Who is doing this</span>
+        <h2 class="door__title">About</h2>
+        <p class="door__desc">How I got into technical art, what I actually work with, and what I'm looking for next.</p>
+      </a>
+
+      <a class="door" href="/contact/">
+        <span class="door__year">Say something</span>
+        <h2 class="door__title">Contact</h2>
+        <p class="door__desc">Email, profiles, and a box that writes the message for you. I read everything.</p>
+      </a>
+
+    </div>
+  </div>
+
+</main>
+
+<footer class="foot">
+  <span>&copy; 2026 Barry <span>Yuan</span></span>
+  <div class="foot__links">
+    <a href="/contact/">Contact</a>
+    <a href="#" target="_blank" rel="noopener">ArtStation</a>
+    <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://github.com/1h-barryy" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+<script src="/assets/js/site.js?v=20261021-bfcache"></script>
+<script src="/assets/js/field.js?v=20260914-mineral"></script>
+</body>
+</html>

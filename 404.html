@@ -18,7 +18,7 @@
     "/about.html": "/about/",
     "/contact.html": "/contact/",
     "/portfolio.html": "/portfolio/",
-    "/thought-path.html": "/portfolio/thought-path/",
+    "/thought-path.html": "/portfolio/game_design_thought_path/",
     "/barrymade.html": "/barrymade/",
     "/barrymade-parallel-crossy-road.html": "/barrymade/parallel-crossy-road/",
     "/barrymade-financial-analyst-arcade.html": "/barrymade/financial-analyst-arcade/",
@@ -29,7 +29,13 @@
   // Old folders. keepRest: files inside still exist under the new folder.
   var folders = [
     { old: "/BarryMade/Parallel Crossy Road", to: "/barrymade/parallel-crossy-road/play/", keepRest: true },
-    { old: "/BarryMade/Financial Analyst Arcade", to: "/barrymade/financial-analyst-arcade/", keepRest: false }
+    { old: "/BarryMade/Financial Analyst Arcade", to: "/barrymade/financial-analyst-arcade/", keepRest: false },
+    // Portfolio folders renamed Oct 2026.
+    { old: "/portfolio/feather-falloff-shader", to: "/portfolio/shader_feather_fall_off/", keepRest: true },
+    { old: "/portfolio/thought-path", to: "/portfolio/game_design_thought_path/", keepRest: true },
+    { old: "/portfolio/portfolio-website", to: "/portfolio/website_portfolio/", keepRest: true },
+    { old: "/portfolio/quant-analysis", to: "/portfolio/web_simulation_quant-analysis/", keepRest: true },
+    { old: "/portfolio/project-2", to: "/portfolio/website_portfolio/", keepRest: false }
   ];
   for (var i = 0; i < folders.length; i++) {
     var f = folders[i];
