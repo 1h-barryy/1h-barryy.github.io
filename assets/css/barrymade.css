@@ -247,3 +247,96 @@
 @media (max-width: 620px) {
   .workshop { padding-inline: var(--gutter); }
 }
+
+/* Concept A: editorial index and tactile image cards. Shared palette stays intact. */
+.barrymade-page { --bm-ink: #cfad86; }
+[data-theme="light"] .barrymade-page { --bm-ink: #805334; }
+.bm-skip { position: fixed; top: -6rem; left: 1rem; z-index: 210; padding: .7rem 1rem; background: var(--ivory); color: var(--void); }
+.bm-skip:focus { top: 1rem; }
+.bm-head { padding-top: 9rem; padding-bottom: 2.5rem; }
+.bm-eyebrow { font: .7rem/1.5 var(--mono); text-transform: uppercase; letter-spacing: .13em; color: var(--bm-ink); margin-bottom: .8rem; }
+.bm-head__row { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+.bm-head h1 { font-size: clamp(3.5rem, 8.8vw, 8rem); letter-spacing: -.055em; }
+.bm-head h1 span { display: inline-block; vertical-align: top; font: 2rem var(--sans); color: var(--bm-ink); margin: .7rem 0 0 .4rem; }
+.bm-head .page-head__note { font-size: 1.25rem; margin: 0; }
+.bm-index { display: flex; flex-wrap: wrap; gap: 1rem 3rem; border-top: 1px solid var(--hairline); padding-top: 1rem; margin-top: 1.8rem; }
+.bm-index a { text-decoration: none; font-size: .85rem; }
+.bm-index span { color: var(--bm-ink); font: .7rem var(--mono); margin-right: .5rem; }
+.bm-index a:hover, .bm-text-link:hover { color: var(--bm-ink); }
+#workbench, #archive, #technical-studies { scroll-margin-top: 7.5rem; }
+.workshop__bar { align-items: end; padding: 1.5rem 0; }
+.workshop__bar h2 { font-size: 2rem; }
+.workshop__bar .bm-eyebrow { margin-bottom: .45rem; }
+.workshop__hint { margin-left: auto; font-size: .8rem; }
+.tidy { border-radius: 0; background: var(--card-base); box-shadow: none; min-height: 44px; }
+.tidy:disabled { opacity: .4; cursor: default; transform: none; }
+.stage { border: 0; outline: 1px solid var(--hairline); border-radius: 2px; background: radial-gradient(circle, var(--hairline-lit) .7px, transparent .9px) 0 0 / 24px 24px, var(--graphite); }
+.stage__lamp { opacity: 0; }
+.stage.is-lit .stage__lamp { opacity: .52; }
+.chip { width: 220px; }
+.chip__face { height: 248px; min-height: 248px; padding: 10px 12px 12px; border-radius: 2px; }
+.chip__inner { min-height: 0; opacity: calc(.78 + .22 * var(--lit)); }
+.chip__image, .chip__specimen { width: 100%; height: 94px; flex: 0 0 94px; margin-bottom: 10px; object-fit: cover; pointer-events: none; }
+.chip__specimen { display: flex; align-items: center; justify-content: space-around; background: var(--workspace-low); color: var(--bm-ink); border: 1px solid var(--hairline); font: 1.6rem var(--serif); }
+.chip__specimen span:first-child { font: 2.5rem var(--serif); }
+.chip__meta { font-size: .63rem; gap: .4rem; margin-bottom: .35rem; }
+.chip__title { font-size: 1.12rem; }
+.chip__note { font-size: .73rem; line-height: 1.35; }
+.chip__tools { font-size: .64rem; padding-top: .3rem; }
+.stage.is-static { outline: 0; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
+.stage.is-static .chip { touch-action: pan-y; }
+.stage.is-static .chip__face { height: 248px; }
+.bm-archive, .bm-studies { max-width: 1500px; margin: 4rem auto 0; padding: 0 var(--gutter); }
+.bm-section-head { display: flex; justify-content: space-between; align-items: end; gap: 2rem; border-top: 1px solid var(--hairline-lit); padding-top: 2rem; }
+.bm-section-head h2 { font-size: clamp(2.8rem, 5vw, 4.5rem); }
+.bm-section-head > p { color: var(--ivory-mid); font-size: .9rem; margin: 0; }
+.archive-controls { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 2rem 0 1rem; }
+.archive-controls[hidden], .archive-row[hidden] { display: none; }
+.archive-filters { display: flex; flex-wrap: wrap; gap: .45rem; }
+.archive-filters button { font: .78rem var(--sans); color: var(--ivory-mid); background: transparent; border: 1px solid var(--hairline); padding: .65rem .9rem; min-height: 44px; border-radius: 2px; cursor: pointer; }
+.archive-filters button:hover { border-color: var(--bm-ink); color: var(--ivory); }
+.archive-filters button[aria-pressed="true"] { color: var(--void); background: var(--ivory); border-color: var(--ivory); }
+#archive-count { flex-shrink: 0; font: .7rem var(--mono); color: var(--ivory-dim); margin: 0; }
+.archive-row { display: grid; grid-template-columns: 2rem 86px minmax(0, 1fr) 160px 1.2rem; align-items: center; gap: 1.5rem; padding: 1rem .5rem; border-bottom: 1px solid var(--hairline); text-decoration: none; transition: background .2s; }
+.archive-row:hover, .archive-row:focus-visible { background: var(--graphite); }
+.archive-number { color: var(--bm-ink); font: .7rem var(--mono); }
+.archive-preview { height: 58px; display: grid; place-items: center; background: var(--graphite); color: var(--bm-ink); font: .8rem var(--mono); overflow: hidden; }
+.archive-preview img { width: 100%; height: 100%; object-fit: cover; }
+.archive-title { display: block; font: 1.45rem/1.25 var(--serif); }
+.archive-detail { display: block; color: var(--ivory-dim); font-size: .75rem; margin-top: .25rem; }
+.archive-kind { font-size: .75rem; color: var(--ivory-mid); }
+.archive-arrow { color: var(--bm-ink); }
+.bm-studies { display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem; margin-top: 5rem; padding-top: 3rem; padding-bottom: 2rem; }
+.bm-study-intro h2 { font-size: clamp(2.7rem, 5vw, 4.8rem); margin-bottom: 1.5rem; }
+.bm-study-intro h2 em { color: var(--bm-ink); font-weight: 400; }
+.bm-study-intro > p:not(.bm-eyebrow) { color: var(--ivory-mid); font-size: .9rem; }
+.bm-text-link { font-size: .85rem; text-underline-offset: 6px; }
+.bm-study-links { align-self: center; }
+.study-entry { display: grid; grid-template-columns: 100px 1fr 1rem; align-items: center; gap: 1.4rem; padding: 1.5rem 0; border-top: 1px solid var(--hairline); text-decoration: none; }
+.study-entry img { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 8px solid var(--graphite); }
+.study-entry .chip__kind { font: .65rem var(--mono); }
+.study-entry .chip__title { margin-top: .6rem; font-size: 1.4rem; }
+.study-entry:hover .chip__title { color: var(--bm-ink); }
+@media (max-width: 900px) {
+  .bm-head__row { align-items: start; flex-direction: column; gap: .25rem; }
+  .archive-controls { align-items: start; flex-direction: column; }
+  .workshop__hint { margin-left: 0; }
+  .bm-studies { gap: 2rem; }
+}
+@media (max-width: 600px) {
+  .bm-head { padding-top: 9rem; }
+  .bm-head h1 span { font-size: 1.3rem; }
+  .bm-index { gap: .8rem 1.4rem; }
+  .bm-index a { font-size: .75rem; }
+  .workshop__bar { gap: 1rem; }
+  .workshop__bar > div { width: 100%; }
+  .workshop__hint { flex: 1; }
+  .bm-section-head { flex-direction: column; align-items: start; gap: 1rem; }
+  .archive-row { grid-template-columns: 22px 52px minmax(0,1fr) 12px; gap: .7rem; padding-inline: 0; }
+  .archive-preview { height: 48px; }
+  .archive-title { font-size: 1.12rem; }
+  .archive-kind { display: none; }
+  .bm-studies { grid-template-columns: 1fr; }
+  .study-entry { grid-template-columns: 72px 1fr 12px; gap: 1rem; }
+  .study-entry img { width: 72px; height: 72px; border-width: 5px; }
+}

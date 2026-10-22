@@ -13,17 +13,16 @@
   var chips = [].slice.call(stage.querySelectorAll(".chip"));
   if (!chips.length) return;
 
-  var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var calm = motionQuery.matches;
   var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
   function narrow() { return window.innerWidth < 760; }
 
   /* If the room won't work — small screen or motion turned off —
      the same cards become a plain lit grid. Nothing is lost. */
-  if (calm || narrow()) {
-    stage.classList.add("is-static");
-    return;
-  }
+  // Keep listeners available when an initially narrow viewport becomes wide.
+  // Input guards below hand static cards back to native links and scrolling.
 
   var TUNE = {
     friction: 0.942,
@@ -64,6 +63,11 @@
       b.w = b.el.offsetWidth;
       b.h = b.el.offsetHeight;
     });
+    // Reserve enough room for the existing uniform-slot Tidy Up layout.
+    var cols = Math.max(1, Math.floor((SW + 16) / (bodies[0].w + 16)));
+    var rows = Math.ceil(bodies.length / cols);
+    SH = Math.max(640, rows * (bodies[0].h + 16) + 96);
+    stage.style.height = SH + "px";
   }
 
   function clampInside(b) {
@@ -134,6 +138,7 @@
   }
 
   stage.addEventListener("pointermove", function (e) {
+    if (stage.classList.contains("is-static")) return;
     var p = toStage(e);
     mx = p.x; my = p.y;
     pointerIn = true;
@@ -156,6 +161,7 @@
     var grabX = 0, grabY = 0, travelled = 0, pid = null;
 
     b.el.addEventListener("pointerdown", function (e) {
+      if (stage.classList.contains("is-static")) { travelled = 0; return; }
       if (e.button !== undefined && e.button !== 0) return;
       e.preventDefault();
       pid = e.pointerId;
@@ -202,6 +208,7 @@
 
     // a drag is not a click
     b.el.addEventListener("click", function (e) {
+      if (stage.classList.contains("is-static") || e.detail === 0) { travelled = 0; return; }
       if (travelled > 6) { e.preventDefault(); travelled = 0; }
     });
 
@@ -214,6 +221,7 @@
   var tidyBtn = document.querySelector(".tidy");
   if (tidyBtn) {
     tidyBtn.addEventListener("click", function () {
+      if (stage.classList.contains("is-static")) return;
       var cw = bodies[0].w, ch = bodies[0].h;
       var gap = 16;
       var cols = Math.max(1, Math.floor((SW + gap) / (cw + gap)));
@@ -354,14 +362,31 @@
 
   /* ---------- go -------------------------------------------------------- */
 
-  function boot() {
-    if (narrow()) { stage.classList.add("is-static"); return; }
-    stage.classList.remove("is-static");
+  function setMode() {
+    var staticMode = calm || narrow();
+    var wasStatic = stage.classList.contains("is-static");
+    stage.classList.toggle("is-static", staticMode);
+    if (tidyBtn) tidyBtn.disabled = staticMode;
+    document.getElementById("workbench-hint").textContent = staticMode
+      ? "Select a card to look closer. Browse by category in the archive below."
+      : "Drag, throw, or click to look closer. The lamp follows your cursor.";
+    if (staticMode) {
+      stage.style.height = "";
+      stage.classList.remove("is-lit");
+      pointerIn = false; homingUntil = 0;
+      bodies.forEach(function (b) {
+        b.held = false; b.vx = b.vy = b.vrot = 0;
+        b.el.classList.remove("is-held");
+        b.el.style.transform = ""; b.el.style.removeProperty("--lit");
+      });
+      return;
+    }
     measure();
-    scatter();
+    if (wasStatic) scatter();
+    else bodies.forEach(clampInside);
   }
 
-  boot();
+  setMode();
   requestAnimationFrame(step);
 
   // card height depends on the loaded typeface, so measure again once it lands
@@ -377,12 +402,8 @@
   window.addEventListener("resize", function () {
     clearTimeout(rt);
     rt = setTimeout(function () {
-      if (narrow()) { stage.classList.add("is-static"); return; }
-      var wasStatic = stage.classList.contains("is-static");
-      stage.classList.remove("is-static");
-      measure();
-      if (wasStatic) scatter();      // coming back from the grid: lay them out afresh
-      else bodies.forEach(clampInside);
+      setMode();
     }, 160);
   }, { passive: true });
+  motionQuery.addEventListener("change", function (e) { calm = e.matches; setMode(); });
 })();

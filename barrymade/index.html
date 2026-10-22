@@ -6,16 +6,17 @@
 <meta name="theme-color" content="#101213">
 <script src="/assets/js/theme.js?v=20260914-graphite"></script>
 <title>BarryMade — Barry Yuan</title>
-<meta name="description" content="PLACEHOLDER — everything Barry has made: tools, shaders, jam games, experiments.">
+<meta name="description" content="Games, objects, images, and experiments. Explore the workbench or browse the archive.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="/assets/css/main.css?v=20260914-graphite">
-<link rel="stylesheet" href="/assets/css/barrymade.css?v=20260927-cards">
+<link rel="stylesheet" href="/assets/css/barrymade.css?v=20261022-concept-a">
 </head>
-<body>
+<body class="barrymade-page">
+<a class="bm-skip" href="#archive">Skip to the archive</a>
 
 <div class="veil"></div>
 
@@ -38,34 +39,32 @@
 
 <main>
 
-  <header class="page-head">
-    <h1>BarryMade</h1>
-    <p class="page-head__note">
-      PLACEHOLDER — one or two sentences. Everything that got finished enough to name:
-      tools, shaders, jam games, half-experiments, things fired in a kiln.
-    </p>
+  <header class="page-head bm-head">
+    <p class="bm-eyebrow">An independent collection · Barry Yuan</p>
+    <div class="bm-head__row"><h1>BarryMade<span aria-hidden="true">✳</span></h1>
+      <p class="page-head__note">Games, objects, images.<br>Experiments in making.</p></div>
+    <nav class="bm-index" aria-label="On this page">
+      <a href="#workbench"><span>01</span> Workbench ↘</a>
+      <a href="#archive"><span>02</span> Archive ↘</a>
+      <a href="#technical-studies"><span>03</span> Technical Studies ↘</a>
+    </nav>
   </header>
 
-  <section class="workshop">
+  <section class="workshop" id="workbench" aria-labelledby="workbench-title">
 
     <div class="workshop__bar">
-      <p class="workshop__hint">Pick something up and throw it. The lamp follows your cursor.</p>
+      <div><p class="bm-eyebrow">01 / Explore by hand</p><h2 id="workbench-title">The workbench</h2></div>
+      <p class="workshop__hint" id="workbench-hint">Drag to rearrange. Throw to set things in motion.<br>Click a card to look closer.</p>
       <button class="tidy" type="button">Tidy up</button>
     </div>
 
-    <!--
-      ADDING A CARD
-      Copy one <a class="chip"> block. Order does not matter — they get
-      scattered on load. Keep the note to one line so the card stays small.
-      Point href at the card's own barrymade-<name>.html detail page; the
-      detail page's CTA is what links to the project itself.
-    -->
-    <div class="stage" id="stage">
+    <!-- Cards are the content source for the Archive. Keep uniform shells. -->
+    <div class="stage is-static" id="stage" aria-describedby="workbench-hint">
       <div class="stage__pool" aria-hidden="true"></div>
       <div class="stage__lamp" aria-hidden="true"></div>
 
-      <a class="chip" href="/barrymade/parallel-crossy-road/">
-        <div class="chip__face"><div class="chip__inner">
+      <a class="chip" data-category="games" href="/barrymade/parallel-crossy-road/">
+        <div class="chip__face"><div class="chip__inner"><div class="chip__specimen" aria-hidden="true"><span>01</span><span>↗ ↗ ↗</span></div>
           <div class="chip__meta"><span class="chip__kind">Game</span><span>2026</span></div>
           <h3 class="chip__title">Parallel Crossy Road</h3>
           <p class="chip__note">Hop across a colorful world. Dodge the traffic.</p>
@@ -73,8 +72,8 @@
         </div></div>
       </a>
 
-      <a class="chip" href="/barrymade/financial-analyst-arcade/">
-        <div class="chip__face"><div class="chip__inner">
+      <a class="chip" data-category="games" href="/barrymade/financial-analyst-arcade/">
+        <div class="chip__face"><div class="chip__inner"><img class="chip__image" src="/barrymade/financial-analyst-arcade/media/hero.png" alt="" width="440" height="200" draggable="false" decoding="async">
           <div class="chip__meta"><span class="chip__kind">Game</span><span>In progress</span></div>
           <h3 class="chip__title">Financial Analyst Arcade</h3>
           <p class="chip__note">Market reasoning simulator.</p>
@@ -82,108 +81,134 @@
         </div></div>
       </a>
 
-      <a class="chip" href="/barrymade/thing-two/">
-        <div class="chip__face"><div class="chip__inner">
-          <div class="chip__meta"><span class="chip__kind">Tool</span><span>PLACEHOLDER</span></div>
+      <a class="chip" data-category="studies" href="/barrymade/thing-two/">
+        <div class="chip__face"><div class="chip__inner"><div class="chip__specimen" aria-hidden="true"><span>03</span><span>B / M</span></div>
+          <div class="chip__meta"><span class="chip__kind">Tool</span><span>03</span></div>
           <h3 class="chip__title">Thing two</h3>
-          <p class="chip__note">PLACEHOLDER — one line on what it does.</p>
+          <p class="chip__note">Details forthcoming.</p>
           <p class="chip__tools">Maya, Python</p>
         </div></div>
       </a>
 
-      <a class="chip" href="/barrymade/sail-the-seas/">
-        <div class="chip__face"><div class="chip__inner">
-          <div class="chip__meta"><span class="chip__kind">Board game</span><span>PLACEHOLDER</span></div>
+      <a class="chip" data-category="games" href="/barrymade/sail-the-seas/">
+        <div class="chip__face"><div class="chip__inner"><img class="chip__image" src="/barrymade/sail-the-seas/media/sail-the-seas-01-thumb.webp" alt="" width="440" height="200" draggable="false" decoding="async">
+          <div class="chip__meta"><span class="chip__kind">Board game</span><span>04</span></div>
           <h3 class="chip__title">Sail the Seas</h3>
-          <p class="chip__note">PLACEHOLDER — one line on what it does.</p>
+          <p class="chip__note">Details forthcoming.</p>
           <p class="chip__tools">Laser cutting, 3D printing</p>
         </div></div>
       </a>
 
-      <a class="chip" href="/barrymade/naughty-cat/">
-        <div class="chip__face"><div class="chip__inner">
-          <div class="chip__meta"><span class="chip__kind">Game / Pixel art</span><span>PLACEHOLDER</span></div>
+      <a class="chip" data-category="games" href="/barrymade/naughty-cat/">
+        <div class="chip__face"><div class="chip__inner"><img class="chip__image" src="/barrymade/naughty-cat/media/naughty-cat-01-thumb.webp" alt="" width="440" height="200" draggable="false" decoding="async">
+          <div class="chip__meta"><span class="chip__kind">Game / Pixel art</span><span>05</span></div>
           <h3 class="chip__title">Naughty Cat</h3>
-          <p class="chip__note">PLACEHOLDER — one line on what it does.</p>
+          <p class="chip__note">Details forthcoming.</p>
           <p class="chip__tools">Pixel art</p>
         </div></div>
       </a>
 
-      <a class="chip" href="/barrymade/echoes-of-schrodinger/">
-        <div class="chip__face"><div class="chip__inner">
-          <div class="chip__meta"><span class="chip__kind">Game / 3D</span><span>PLACEHOLDER</span></div>
+      <a class="chip" data-category="games" href="/barrymade/echoes-of-schrodinger/">
+        <div class="chip__face"><div class="chip__inner"><img class="chip__image" src="/barrymade/echoes-of-schrodinger/media/echoes-of-schrodinger-01-thumb.webp" alt="" width="440" height="200" draggable="false" decoding="async">
+          <div class="chip__meta"><span class="chip__kind">Game / 3D</span><span>06</span></div>
           <h3 class="chip__title">Echoes of Schrödinger</h3>
-          <p class="chip__note">PLACEHOLDER — one line on what it does.</p>
-          <p class="chip__tools">TODO (engine)</p>
+          <p class="chip__note">Details forthcoming.</p>
+          <p class="chip__tools">Engine not documented</p>
         </div></div>
       </a>
 
-      <a class="chip" href="/barrymade/the-exhibition/">
-        <div class="chip__face"><div class="chip__inner">
-          <div class="chip__meta"><span class="chip__kind">Artist's book</span><span>PLACEHOLDER</span></div>
+      <a class="chip" data-category="objects" href="/barrymade/the-exhibition/">
+        <div class="chip__face"><div class="chip__inner"><img class="chip__image" src="/barrymade/the-exhibition/media/the-exhibition-01-thumb.webp" alt="" width="440" height="200" draggable="false" decoding="async">
+          <div class="chip__meta"><span class="chip__kind">Artist's book</span><span>07</span></div>
           <h3 class="chip__title">The Exhibition</h3>
-          <p class="chip__note">PLACEHOLDER — one line on what it does.</p>
+          <p class="chip__note">Details forthcoming.</p>
           <p class="chip__tools">Laser cutting, hand-sewing</p>
         </div></div>
       </a>
 
-      <a class="chip" href="/barrymade/mondrians-paradox/">
-        <div class="chip__face"><div class="chip__inner">
-          <div class="chip__meta"><span class="chip__kind">Motion graphics</span><span>PLACEHOLDER</span></div>
+      <a class="chip" data-category="images" href="/barrymade/mondrians-paradox/">
+        <div class="chip__face"><div class="chip__inner"><div class="chip__specimen" aria-hidden="true"><span>08</span><span>□ ▪ □</span></div>
+          <div class="chip__meta"><span class="chip__kind">Motion graphics</span><span>08</span></div>
           <h3 class="chip__title">Mondrian's Paradox</h3>
-          <p class="chip__note">PLACEHOLDER — one line on what it does.</p>
+          <p class="chip__note">Details forthcoming.</p>
           <p class="chip__tools">After Effects</p>
         </div></div>
       </a>
 
-      <a class="chip" href="/barrymade/ps-zines/">
-        <div class="chip__face"><div class="chip__inner">
-          <div class="chip__meta"><span class="chip__kind">Zine</span><span>PLACEHOLDER</span></div>
+      <a class="chip" data-category="objects" href="/barrymade/ps-zines/">
+        <div class="chip__face"><div class="chip__inner"><img class="chip__image" src="/barrymade/ps-zines/media/ps-zines-06-thumb.webp" alt="" width="440" height="200" draggable="false" decoding="async">
+          <div class="chip__meta"><span class="chip__kind">Zine</span><span>09</span></div>
           <h3 class="chip__title">PS Zines</h3>
-          <p class="chip__note">PLACEHOLDER — one line on what it does.</p>
+          <p class="chip__note">Details forthcoming.</p>
           <p class="chip__tools">Photoshop, print</p>
         </div></div>
       </a>
 
-      <a class="chip" href="/barrymade/clay-barry/">
-        <div class="chip__face"><div class="chip__inner">
-          <div class="chip__meta"><span class="chip__kind">Ceramics</span><span>PLACEHOLDER</span></div>
-          <h3 class="chip__title">TODO_TITLE</h3>
-          <p class="chip__note">PLACEHOLDER — one line on what it does.</p>
+      <a class="chip" data-category="objects" href="/barrymade/clay-barry/">
+        <div class="chip__face"><div class="chip__inner"><img class="chip__image" src="/barrymade/clay-barry/media/clay-barry-01-thumb.webp" alt="" width="440" height="200" draggable="false" decoding="async">
+          <div class="chip__meta"><span class="chip__kind">Ceramics</span><span>10</span></div>
+          <h3 class="chip__title">Untitled</h3>
+          <p class="chip__note">Details forthcoming.</p>
           <p class="chip__tools">Terracotta</p>
         </div></div>
       </a>
 
-      <a class="chip" href="/barrymade/glass-ink-wash/">
-        <div class="chip__face"><div class="chip__inner">
-          <div class="chip__meta"><span class="chip__kind">Installation</span><span>PLACEHOLDER</span></div>
-          <h3 class="chip__title">TODO_TITLE</h3>
-          <p class="chip__note">PLACEHOLDER — one line on what it does.</p>
+      <a class="chip" data-category="objects" href="/barrymade/glass-ink-wash/">
+        <div class="chip__face"><div class="chip__inner"><img class="chip__image" src="/barrymade/glass-ink-wash/media/glass-ink-wash-01-thumb.webp" alt="" width="440" height="200" draggable="false" decoding="async">
+          <div class="chip__meta"><span class="chip__kind">Installation</span><span>11</span></div>
+          <h3 class="chip__title">Untitled</h3>
+          <p class="chip__note">Details forthcoming.</p>
           <p class="chip__tools">Glass, tulle</p>
         </div></div>
       </a>
 
-      <a class="chip" href="/barrymade/thing-eleven/">
-        <div class="chip__face"><div class="chip__inner">
-          <div class="chip__meta"><span class="chip__kind">Photo</span><span>PLACEHOLDER</span></div>
+      <a class="chip" data-category="images" href="/barrymade/thing-eleven/">
+        <div class="chip__face"><div class="chip__inner"><div class="chip__specimen" aria-hidden="true"><span>12</span><span>B / M</span></div>
+          <div class="chip__meta"><span class="chip__kind">Photo</span><span>12</span></div>
           <h3 class="chip__title">Thing eleven</h3>
-          <p class="chip__note">PLACEHOLDER — one line on what it does.</p>
+          <p class="chip__note">Details forthcoming.</p>
           <p class="chip__tools">Series</p>
         </div></div>
       </a>
 
-      <a class="chip" href="/barrymade/thing-twelve/">
-        <div class="chip__face"><div class="chip__inner">
-          <div class="chip__meta"><span class="chip__kind">Experiment</span><span>PLACEHOLDER</span></div>
+      <a class="chip" data-category="experiments" href="/barrymade/thing-twelve/">
+        <div class="chip__face"><div class="chip__inner"><div class="chip__specimen" aria-hidden="true"><span>13</span><span>B / M</span></div>
+          <div class="chip__meta"><span class="chip__kind">Experiment</span><span>13</span></div>
           <h3 class="chip__title">Thing twelve</h3>
-          <p class="chip__note">PLACEHOLDER — one line on what it does.</p>
-          <p class="chip__tools">Whatever it was</p>
+          <p class="chip__note">Details forthcoming.</p>
+          <p class="chip__tools">Experiment</p>
         </div></div>
       </a>
 
     </div>
   </section>
 
+  <section class="bm-archive" id="archive" aria-labelledby="archive-title">
+    <div class="bm-section-head"><div><p class="bm-eyebrow">02 / The complete index</p><h2 id="archive-title">The archive</h2></div><p>Everything in its place.<br>Browse by medium, follow your curiosity.</p></div>
+    <div class="archive-controls" hidden><div class="archive-filters" role="group" aria-label="Filter the archive">
+      <button type="button" data-filter="all" aria-pressed="true">All work</button>
+      <button type="button" data-filter="games" aria-pressed="false">Games</button>
+      <button type="button" data-filter="objects" aria-pressed="false">Objects &amp; print</button>
+      <button type="button" data-filter="images" aria-pressed="false">Image &amp; motion</button>
+      <button type="button" data-filter="studies" aria-pressed="false">Technical Studies</button>
+      <button type="button" data-filter="experiments" aria-pressed="false">Experiments</button>
+    </div><p id="archive-count" role="status" aria-live="polite" aria-atomic="true"></p></div>
+    <div class="archive-list" id="archive-list"></div>
+    <noscript><p>The complete collection is available in the <a href="#workbench">workbench grid above</a> and the Technical Studies below.</p></noscript>
+  </section>
+  <section class="bm-studies" id="technical-studies" aria-labelledby="studies-title">
+    <div class="bm-study-intro"><p class="bm-eyebrow">03 / A closer look</p><h2 id="studies-title">Technical<br><em>Studies</em></h2><p>Shaders, simulations, tools.<br>Explore the process behind the work.</p><a href="#archive" class="bm-text-link" id="browse-studies">Browse this collection ↗</a></div>
+    <div class="bm-study-links">
+      <a class="study-entry" data-category="studies" href="/portfolio/shader_feather_fall_off/">
+        <img src="/portfolio/shader_feather_fall_off/media/hero.webp" alt="" width="392" height="294" loading="lazy">
+        <div><span class="chip__kind">Technical Art / Shader</span><h3 class="chip__title">Feather Falloff Shader</h3><p class="chip__note">A Unity shader study</p></div><span aria-hidden="true">↗</span>
+      </a>
+      <a class="study-entry" data-category="studies" href="/portfolio/vfx_vehicle_fire_smoke_simulation/">
+        <img src="/portfolio/vfx_vehicle_fire_smoke_simulation/media/Fire&amp;Smoke_sim_Front.png" alt="" width="2451" height="1542" loading="lazy">
+        <div><span class="chip__kind">Technical Art / VFX</span><h3 class="chip__title">Vehicle Fire &amp; Smoke Simulation</h3><p class="chip__note">A Houdini fire and smoke simulation</p></div><span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
 </main>
 
 <footer class="foot">
@@ -195,6 +220,7 @@
 </footer>
 
 <script src="/assets/js/site.js?v=20261021-bfcache"></script>
+<script src="/assets/js/barrymade-archive.js"></script>
 <script src="/assets/js/barrymade.js"></script>
 </body>
 </html>
