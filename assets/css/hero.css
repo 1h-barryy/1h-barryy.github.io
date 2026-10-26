@@ -54,14 +54,14 @@
 /* the single orchestrated entrance: type rises once, in two beats */
 .hero__name span,
 .hero__line,
-.hero__enter {
+.hero__hint {
   display: block;
   animation: rise 1.5s var(--ease-settle) both;
 }
 .hero__name span:nth-child(1) { animation-delay: .35s; }
 .hero__name span:nth-child(2) { animation-delay: .48s; }
 .hero__line  { animation-delay: .78s; animation-duration: 1.4s; }
-.hero__enter { animation-delay: 1s;   animation-duration: 1.4s; }
+.hero__hint { animation-delay: 1s; animation-duration: 1.4s; }
 
 @keyframes rise {
   from { opacity: 0; transform: translateY(1.1rem); }
@@ -82,42 +82,12 @@
   color: var(--ivory);
 }
 
-/* entry links — set as a small lit shelf, not buttons */
-.hero__enter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .9rem;
-}
-
-.enter-link {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: .7rem;
-  padding: .78rem 1.35rem;
-  font-size: var(--t-sm);
-  text-decoration: none;
-  color: var(--ivory);
-  border: 1px solid var(--hairline);
-  border-radius: 3px;
-  background: linear-gradient(158deg, var(--button-hi), var(--button-base));
-  box-shadow: var(--bevel), var(--lift-2);
-  transition: transform .5s var(--ease-settle), box-shadow .5s var(--ease-settle),
-              border-color .4s, background .4s;
-}
-.enter-link:hover {
-  transform: translateY(-2px);
-  border-color: var(--accent-edge);
-  box-shadow: var(--bevel), var(--lift-3), 0 0 0 1px rgba(var(--light-rgb),.10);
-}
-.enter-link:active { transform: translateY(0); box-shadow: var(--bevel), var(--lift-1); }
-
-.enter-link__dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--accent-lit);
-  box-shadow: 0 0 10px 1px rgba(var(--light-rgb),.24);
-  flex: none;
+/* A quiet invitation, not another navigation layer. */
+.hero__hint {
+  margin: 3.2rem 0 0;
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--ivory-dim);
 }
 
 /* scroll cue */
@@ -207,4 +177,105 @@
 
 @media (max-width: 720px) {
   .hero__cue { display: none; }
+}
+
+/* The visible destinations are GPU particle clusters. HTML supplies only hit
+   targets, accessible native links, focus treatment, and revealed annotations. */
+.cosmos {
+  --cosmic-gold: 218, 175, 103;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.celestial {
+  position: absolute;
+  left: var(--orbit-x);
+  top: var(--orbit-y);
+  width: 140px;
+  min-height: 124px;
+  padding: 12px 4px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-decoration: none;
+  text-align: center;
+  color: var(--ivory);
+  pointer-events: auto;
+  transform: translate(calc(-50% + var(--cosmos-x, 0px)), var(--cosmos-y, 0px));
+  -webkit-tap-highlight-color: rgba(var(--cosmic-gold), .15);
+  border-radius: 50%;
+}
+.celestial--portfolio { --orbit-x: 68%; --orbit-y: 20%; --body-size: 52px; }
+.celestial--barrymade { --orbit-x: 85%; --orbit-y: 42%; --body-size: 44px; }
+.celestial--about { --orbit-x: 68%; --orbit-y: 61%; --body-size: 34px; }
+/* This empty area is a hit target for the GPU cluster, never planet artwork. */
+.celestial__body {
+  display: block;
+  position: relative;
+  flex: none;
+  width: var(--body-size);
+  height: var(--body-size);
+  margin-bottom: 15px;
+}
+/* Sparse dust markers only when WebGL is missing (also legacy comparisons). */
+.cosmos:not(.cosmos--particles) .celestial__body::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 2px; height: 2px;
+  border-radius: 50%;
+  background: rgba(var(--cosmic-gold), .8);
+  box-shadow: -12px 4px 0 rgba(var(--cosmic-gold), .5), 9px -7px 0 rgba(var(--cosmic-gold), .5), 4px 12px 0 rgba(var(--cosmic-gold), .3), -5px -13px 0 rgba(var(--cosmic-gold), .3);
+}
+.celestial__annotation {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(3px);
+  transition: opacity 250ms ease-out, transform 300ms ease-out, visibility 0s 250ms;
+}
+.celestial__name {
+  display: block;
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.3;
+  color: var(--ivory);
+}
+.celestial__detail {
+  display: block;
+  margin-top: 5px;
+  max-width: 150px;
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: .055em;
+  color: var(--ivory-mid);
+  opacity: .85;
+}
+.celestial__explore { display: block; margin-top: 8px; font-size: 10px; letter-spacing: .06em; color: rgb(var(--cosmic-gold)); }
+.celestial.is-active .celestial__annotation,
+.cosmos:not([data-discovery]) .celestial:is(:hover, :focus-visible) .celestial__annotation {
+  opacity: 1; visibility: visible; transform: none;
+  transition: opacity 280ms ease-out 90ms, transform 300ms ease-out 90ms, visibility 0s;
+}
+.celestial.is-superseded .celestial__annotation { opacity: 0; visibility: hidden; transition: none; }
+.celestial:focus-visible { outline: none; }
+.celestial:focus-visible .celestial__body { outline: 1px solid rgba(var(--cosmic-gold), .65); outline-offset: 7px; border-radius: 50%; }
+@media (forced-colors: active) { .celestial:focus-visible { outline: 2px solid LinkText; } }
+[data-theme="light"] .cosmos { --cosmic-gold: 145, 102, 43; }
+
+@media (max-width: 980px) {
+  .cosmos { position: relative; inset: auto; height: 245px; margin: -5vh 0 5vh; }
+  .celestial { width: min(118px, 28vw); transform: translateX(-50%); }
+  .celestial--portfolio { --orbit-x: 19%; --orbit-y: 8%; --body-size: 46px; }
+  .celestial--barrymade { --orbit-x: 51%; --orbit-y: 35%; --body-size: 38px; }
+  .celestial--about { --orbit-x: 83%; --orbit-y: 6%; --body-size: 30px; }
+  .celestial__name { font-size: 16px; }
+  .celestial__detail { font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cosmos:not(.cosmos--particles) .celestial { transform: translateX(-50%); }
+  .celestial *, .celestial *::before,
+  .celestial.is-active .celestial__annotation { transition: none !important; }
+  .celestial.is-active .celestial__body { transform: none; }
 }

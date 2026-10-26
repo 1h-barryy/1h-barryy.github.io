@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="/assets/css/main.css?v=20260914-graphite">
-<link rel="stylesheet" href="/assets/css/hero.css?v=20260914-graphite">
+<link rel="stylesheet" href="/assets/css/hero.css?v=20261026-clusters">
 </head>
 <body>
 
@@ -52,15 +52,35 @@
         <em>shaders, rigs, and the tools that make them repeatable.</em>
       </p>
 
-      <div class="hero__enter">
-        <a class="enter-link" href="/portfolio/"><span class="enter-link__dot"></span>See the work</a>
-        <a class="enter-link" href="/portfolio/shader_feather_fall_off/">Feather Falloff Shader</a>
-        <a class="enter-link" href="/barrymade/">BarryMade</a>
-        <a class="enter-link" href="/about/">About</a>
-        <a class="enter-link" href="/contact/">Contact</a>
-      </div>
+      <p class="hero__hint">Explore the stars</p>
     </div>
 
+    <nav class="cosmos" aria-label="Explore my cosmos">
+      <a class="celestial celestial--portfolio" href="/portfolio/" aria-label="Portfolio — selected work">
+        <span class="celestial__body" aria-hidden="true"></span>
+        <span class="celestial__annotation">
+          <span class="celestial__name">Portfolio</span>
+          <span class="celestial__detail">Selected works</span>
+          <span class="celestial__explore">Explore <span aria-hidden="true">→</span></span>
+        </span>
+      </a>
+      <a class="celestial celestial--barrymade" href="/barrymade/" aria-label="BarryMade — experiments and curiosities">
+        <span class="celestial__body" aria-hidden="true"></span>
+        <span class="celestial__annotation">
+          <span class="celestial__name">BarryMade</span>
+          <span class="celestial__detail">Experiments &amp; curiosities</span>
+          <span class="celestial__explore">Explore <span aria-hidden="true">→</span></span>
+        </span>
+      </a>
+      <a class="celestial celestial--about" href="/about/" aria-label="About Me — the person behind the work">
+        <span class="celestial__body" aria-hidden="true"></span>
+        <span class="celestial__annotation">
+          <span class="celestial__name">About Me</span>
+          <span class="celestial__detail">Behind the work</span>
+          <span class="celestial__explore">Explore <span aria-hidden="true">→</span></span>
+        </span>
+      </a>
+    </nav>
     <div class="hero__cue"><i></i> Scroll</div>
   </section>
 
@@ -106,7 +126,8 @@
   </div>
 </footer>
 
+<script src="/assets/js/cosmos-nav.js?v=20261026-discovery"></script>
 <script src="/assets/js/site.js?v=20261021-bfcache"></script>
-<script src="/assets/js/field.js?v=20260914-mineral"></script>
+<script src="/assets/js/field.js?v=20261026-clusters"></script>
 </body>
 </html>
