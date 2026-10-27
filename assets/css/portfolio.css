@@ -24,7 +24,7 @@
 
 .index__list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(1.5rem, 3vw, 3rem);
   list-style: none;
   margin: 0;
@@ -282,9 +282,9 @@
 .editorial-project__intro {
   max-width: 57ch;
   color: var(--ivory-mid);
-  font-family: var(--serif);
-  font-size: clamp(1.3rem, 2.2vw, 1.85rem);
-  line-height: 1.48;
+  font-family: var(--sans);
+  font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+  line-height: 1.65;
 }
 .editorial-project__roles {
   display: flex;

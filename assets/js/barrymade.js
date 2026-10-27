@@ -56,6 +56,20 @@
   var mx = -9999, my = -9999, pointerIn = false;
   var homingUntil = 0;
 
+  // Natural text heights can differ. Each tidy row reserves its tallest card.
+  function tidyLayout() {
+    var gap = 16;
+    var cw = Math.max.apply(null, bodies.map(function (b) { return b.w; }));
+    var cols = Math.max(1, Math.floor((SW + gap) / (cw + gap)));
+    var heights = [];
+    bodies.forEach(function (b, i) {
+      var row = Math.floor(i / cols);
+      heights[row] = Math.max(heights[row] || 0, b.h);
+    });
+    return { cw: cw, cols: cols, gap: gap, heights: heights,
+      height: heights.reduce(function (sum, h) { return sum + h; }, 0) + (heights.length - 1) * gap };
+  }
+
   function measure() {
     var r = stage.getBoundingClientRect();
     SW = r.width; SH = r.height;
@@ -63,10 +77,8 @@
       b.w = b.el.offsetWidth;
       b.h = b.el.offsetHeight;
     });
-    // Reserve enough room for the existing uniform-slot Tidy Up layout.
-    var cols = Math.max(1, Math.floor((SW + 16) / (bodies[0].w + 16)));
-    var rows = Math.ceil(bodies.length / cols);
-    SH = Math.max(640, rows * (bodies[0].h + 16) + 96);
+    // Keep collision bounds and the table in sync with actual rendered text.
+    SH = Math.max(640, tidyLayout().height + 96);
     stage.style.height = SH + "px";
   }
 
@@ -222,16 +234,16 @@
   if (tidyBtn) {
     tidyBtn.addEventListener("click", function () {
       if (stage.classList.contains("is-static")) return;
-      var cw = bodies[0].w, ch = bodies[0].h;
-      var gap = 16;
-      var cols = Math.max(1, Math.floor((SW + gap) / (cw + gap)));
-      var rows = Math.ceil(bodies.length / cols);
+      measure();
+      var layout = tidyLayout();
+      var cw = layout.cw, gap = layout.gap, cols = layout.cols;
       var padX = Math.max(0, (SW - (cols * cw + (cols - 1) * gap)) / 2);
-      var padY = Math.max(0, (SH - (rows * ch + (rows - 1) * gap)) / 2);
+      var rowY = Math.max(0, (SH - layout.height) / 2);
       bodies.forEach(function (b, i) {
+        if (i && i % cols === 0) rowY += layout.heights[Math.floor(i / cols) - 1] + gap;
         b.home = {
           x: padX + (i % cols) * (cw + gap),
-          y: padY + Math.floor(i / cols) * (ch + gap)
+          y: rowY
         };
         b.rest = 0;
       });

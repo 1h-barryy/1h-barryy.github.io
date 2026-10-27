@@ -69,10 +69,9 @@
 }
 
 .hero__line {
-  font-family: var(--serif);
-  font-variation-settings: "opsz" 28;
-  font-size: clamp(1.05rem, 1.65vw, 1.3rem);
-  line-height: 1.45;
+  font-family: var(--sans);
+  font-size: clamp(1rem, 1.3vw, 1.125rem);
+  line-height: 1.65;
   color: var(--ivory-mid);
   max-width: 42ch;
   margin: 0 0 2.9rem;
@@ -85,7 +84,7 @@
   display: block;
   margin-bottom: .8rem;
   font-family: var(--sans);
-  font-size: clamp(.85rem, 1.15vw, 1rem);
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
   line-height: 1.5;
   color: var(--ivory);
 }

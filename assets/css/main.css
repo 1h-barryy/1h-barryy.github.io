@@ -21,7 +21,7 @@
   /* --- type --- */
   --ivory:     #e8e6df;
   --ivory-mid: #b1b5b2;
-  --ivory-dim: #8d9595;
+  --ivory-dim: #a3abab;
 
   /* --- the lamp --- */
   --accent:   #92aebe;
@@ -53,9 +53,9 @@
   --field-lit: .86, .89, .90;
   --field-pigment: .67, .55, .43;
 
-  /* --- type scale, perfect fourth from 17px --- */
-  --t-xs:   0.78rem;
-  --t-sm:   0.9rem;
+  /* --- editorial type scale: readable supporting text, 17px body --- */
+  --t-xs:   0.8125rem;
+  --t-sm:   0.9375rem;
   --t-base: 1.0625rem;
   --t-md:   1.4rem;
   --t-lg:   1.95rem;
@@ -88,7 +88,7 @@
   --shadow-strength: .16;
   --ivory: #292e30;
   --ivory-mid: #555e60;
-  --ivory-dim: #667073;
+  --ivory-dim: #596365;
   --accent: #496b7e;
   --accent-lit: #34596c;
   --accent-deep: #c7d5da;
@@ -176,8 +176,8 @@ h1, h2, h3, h4 {
   color: var(--ivory);
 }
 
-h2 { font-size: var(--t-2xl); }
-h3 { font-size: var(--t-lg); line-height: 1.2; }
+h2 { font-size: var(--t-2xl); font-variation-settings: "opsz" 48; }
+h3 { font-size: var(--t-lg); font-variation-settings: "opsz" 32; line-height: 1.2; }
 
 p { margin: 0 0 1.1em; max-width: var(--measure); }
 
@@ -339,10 +339,9 @@ main { position: relative; z-index: 1; }
 .page-head__note {
   color: var(--ivory-mid);
   max-width: 46ch;
-  font-size: var(--t-md);
+  font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
   line-height: 1.5;
-  font-family: var(--serif);
-  font-variation-settings: "opsz" 30;
+  font-family: var(--sans);
 }
 
 /* placeholder convention: anything you replace is marked with this */
