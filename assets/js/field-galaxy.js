@@ -15,6 +15,12 @@
   // Local review only: hold the opened pose without chasing the pointer.
   var reviewOpen = typeof location !== "undefined" && /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)
     && new URLSearchParams(location.search).get("reveal") === "open";
+  var local = typeof location !== "undefined" && /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+  var reviewFinal = local && new URLSearchParams(location.search).get("intro") === "final";
+  // Optional local still frame for visual review; ignored on public hosts.
+  var reviewTime = local ? new URLSearchParams(location.search).get("introAt") : null;
+  reviewTime = reviewTime !== null && Number.isFinite(Number(reviewTime))
+    ? Math.max(0, Math.min(3, Number(reviewTime))) : null;
   var listeners = [], buffers = [], shaders = [];
   function listen(target, name, handler, options) {
     target.addEventListener(name, handler, options);
@@ -43,10 +49,9 @@
     revealTilt: 0.58,  // open the disk's inclination as Z roll exposes its face
     revealRoll: 0.18,
     revealPullback: 6.4,
-    revealResponse: 1.6,
-    revealStartMs: 4800,
-    revealEndMs: 12800,
-    parallax: 0.025,
+    pointerYaw: 0.045, // bounded radians, independent of viewport aspect
+    pointerPitch: 0.025,
+    pointerResponse: 3.2,
     maxDpr: 1.75,
     camZ: 9,
     fov: 52 * Math.PI / 180,
@@ -55,7 +60,14 @@
     goldStrength: 0.82,
     beaconRadius: 2.4,
     clusterCount: 192, // per destination, in the same buffers and draw call
-    introMs: 4800
+    introMs: 3000,
+    traceEndMs: 500,
+    flowEndMs: 1300,
+    spatialEndMs: 2200,
+    entranceCameraStart: 2.2, // offset from final camera distance
+    entranceCameraPush: 2.6,
+    entranceDepth: 7.0,
+    entranceHandoffMs: 700
   };
 
   /* ---------- shaders -------------------------------------------- */
@@ -70,6 +82,10 @@
     "uniform mat4 uView;",
     "uniform float uTime;",
     "uniform float uIntro;",
+    "uniform vec4 uEntrance;", // flow, unfold, trace visibility, seconds
+    "uniform float uEntranceDepth;",
+    "uniform float uNodeReady;",
+    "uniform vec3 uNodeWake;",
     "uniform float uDpr;",
     "uniform float uOrbit;",
     "uniform float uTilt;",
@@ -100,6 +116,7 @@
     "  float burst = 1.0 - pow(1.0 - min(age / 0.24, 1.0), 3.0);",
     "  float scale = mix(0.035, 1.0, burst) + 0.38 * sin(age * 3.14159265) * (1.0 - settle);",
     "  float node = step(2.5, aLayer);",
+    "  float wake = aLayer < 3.5 ? uNodeWake.x : (aLayer < 4.5 ? uNodeWake.y : uNodeWake.z);",
     "  float field = step(1.5, aLayer) * (1.0 - node);",
     "  float angle = uTime * uOrbit / sqrt(0.8 + radius) + (1.0 - settle) * (1.1 + aSeed.y);",
     "  angle *= mix(1.0, 0.12, field);",
@@ -118,13 +135,28 @@
     "    p = aPos;",
     "    p.xz = mat2(cos(turn), sin(turn), -sin(turn), cos(turn)) * p.xz;",
     "    p += vec3(sin(uTime * 0.21 + ph), cos(uTime * 0.17 + ph), sin(uTime * 0.13 + ph)) * 0.035;",
-    "    p = center + p * mix(0.24, 1.0, settle);",
+    "    p = center + p * mix(3.0, 1.0, wake) * mix(0.24, 1.0, settle);",
     "  }",
     // Tilt disk out of the image plane, then roll to retain the diagonal silhouette.
     "  float tilt = (uTilt + uParallax.y) * mix(1.0, 0.18, field);",
     "  p.yz = mat2(cos(tilt), sin(tilt), -sin(tilt), cos(tilt)) * p.yz;",
-    "  float roll = (0.40 + uParallax.x + uRoll) * mix(1.0, 0.25, field);",
+    "  float roll = (0.40 + uRoll) * mix(1.0, 0.25, field);",
     "  p.xy = mat2(cos(roll), sin(roll), -sin(roll), cos(roll)) * p.xy;",
+    // Pointer yaw pivots around the model center, never the camera or Z axis.
+    "  float yaw = uParallax.x * mix(1.0, 0.08, field);",
+    "  p.xz = mat2(cos(yaw), sin(yaw), -sin(yaw), cos(yaw)) * p.xz;",
+    // The same grains travel from three graphic traces into their actual 3D homes.
+    // Work in the composed model space: no plane flipping or extra renderer.
+    "  if (uEntrance.y < 1.0 && node < 0.5) {",
+    "    float t = aSeed.x;",
+    "    float lane = floor(clamp((aSeed.y - 0.18) / 0.62, 0.0, 0.999) * 3.0) - 1.0;",
+    "    float curve = t * 6.2831853 + lane * 1.7 - uEntrance.w * 0.85;",
+    "    vec3 trace = vec3((t - 0.5) * 22.0, lane * 0.65 + (t - 0.5) * 2.0, 0.0);",
+    "    trace.y += sin(curve) * 2.2 * uEntrance.x;",
+    "    trace.z = cos(curve + lane * 0.8) * uEntranceDepth * uEntrance.x;",
+    "    trace.xy += vec2(sin(ph * 17.0), cos(ph * 13.0)) * 0.025;",
+    "    p = mix(trace, p, uEntrance.y);",
+    "  }",
     "  p += vec3(1.4, 0.2, -5.5);",
     "  float depth = clamp((p.z + 18.0) / 20.0, 0.0, 1.0);",
     // Project the cursor ray onto each grain's depth plane, including camera offset.
@@ -159,7 +191,7 @@
     "  float dust = exp(-dot(aPos.xz - vec2(6.0, 3.0), aPos.xz - vec2(6.0, 3.0)) / 19.0);",
     "  dust += 0.8 * exp(-dot(aPos.xz - vec2(-6.0, -5.0), aPos.xz - vec2(-6.0, -5.0)) / 15.0);",
     "  vGold = clamp(dust * smoothstep(0.22, 0.72, aSeed.x) + beaconLight * 0.65, 0.0, 1.0);",
-    "  if (node > 0.5) vGold = mix(aLayer < 3.5 ? 0.65 : (aLayer < 4.5 ? 0.12 : 0.32), 0.85, beaconLight * 0.5);",
+    "  if (node > 0.5) vGold = mix(0.04, aLayer < 3.5 ? 0.65 : (aLayer < 4.5 ? 0.12 : 0.32), wake);",
     // far particles sink into the dark
     "  float fog = 1.0 - smoothstep(5.0, mix(29.0, 55.0, field), dist);",
     "  vFade = fog * mix(0.35, 1.0, depth) * smoothstep(0.0, 0.16, age);",
@@ -168,6 +200,14 @@
     "  vFade *= mix(1.0, mix(0.025, 1.0, smoothstep(0.08, 0.85, uReveal)), step(0.5, aLayer) * (1.0 - node));",
     "  vFade *= 1.0 + uReveal * 0.32 * (1.0 - field);",
     "  vFade *= mix(1.0, 1.2 + beaconLight * 0.65, node);",
+    // A few dispersed grains at rest; identity condenses only on discovery.
+    "  if (node > 0.5) vFade *= uNodeReady * mix(0.18 * step(0.88, aSeed.x), 0.72, wake);",
+    "  if (uEntrance.y < 1.0 && node < 0.5) {",
+    "    float sparse = smoothstep(0.80, 0.88, fract(aSeed.y * 17.0));",
+    "    float traced = 1.0 - smoothstep(uEntrance.z, uEntrance.z + 0.12, aSeed.x);",
+    "    float lineAlpha = sparse * traced * smoothstep(0.0, 0.10, uEntrance.w);",
+    "    vFade *= mix(lineAlpha, 1.0, uEntrance.y);",
+    "  }",
     "}"
   ].join("\n");
 
@@ -323,6 +363,7 @@
   attrib("aLayer", layers, 1);
 
   var U = {};
+  ["uEntrance", "uEntranceDepth", "uNodeReady", "uNodeWake"].forEach(function (k) { U[k] = gl.getUniformLocation(prog, k); });
   ["uProj","uView","uTime","uIntro","uDpr","uCursor","uCursorOn","uDim","uCool","uLit","uPigment","uOpacity","uOrbit","uTilt","uParallax","uReveal","uRoll","uCamera","uGold","uGoldStrength","uBeacon","uBeaconOn","uBeaconRadius","uNode0","uNode1","uNode2"]
     .forEach(function (k) { U[k] = gl.getUniformLocation(prog, k); });
 
@@ -343,7 +384,7 @@
   }
   updatePalette();
   listen(document, "themechange", function () {
-    if (!lost) { updatePalette(); if (calm) draw(0, 1); }
+    if (!lost) { updatePalette(); if (calm || reviewTime !== null) draw(reviewTime || 0, 1); }
   });
 
   /* ---------- matrices -------------------------------------------- */
@@ -390,23 +431,26 @@
   /* ---------- cursor ---------------------------------------------- */
 
   var cx = 0, cy = 0, tx = 0, ty = 0, on = 0, onTarget = 0;
-  var px = 0, py = 0; // camera parallax
-  var reveal = 0, revealTarget = 0, roll = 0, rollTarget = 0;
+  var px = 0, py = 0, pointerX = 0, pointerY = 0; // model yaw / pitch
   var anchors = Array.prototype.slice.call(document.querySelectorAll(".celestial"));
   var cosmos = document.querySelector(".cosmos");
   var nodeBases = [], nodeHomes = [], nodeScreens = [];
   var selectedAnchor = null;
+  var nodeWake = [0, 0, 0], hoverPointer = false;
   var beaconX = 0, beaconY = 0, beaconOn = 0;
-  function unrotate(x, y, z, tilt, roll) {
+  function unrotate(x, y, z, tilt, roll, yaw) {
     x -= 1.4; y -= 0.2; z += 5.5;
+    yaw = yaw || 0;
+    var ux = x * Math.cos(yaw) + z * Math.sin(yaw);
+    z = -x * Math.sin(yaw) + z * Math.cos(yaw); x = ux;
     var rx = x * Math.cos(roll) + y * Math.sin(roll);
     var ry = -x * Math.sin(roll) + y * Math.cos(roll);
     return [rx, ry * Math.cos(tilt) + z * Math.sin(tilt), -ry * Math.sin(tilt) + z * Math.cos(tilt)];
   }
-  function screenToNode(x, y, z, camera, tilt, roll) {
+  function screenToNode(x, y, z, camera, tilt, roll, yaw) {
     var half = Math.tan(CFG.fov / 2) * (camera - z);
-    return unrotate((x / viewportWidth * 2 - 1) * half * aspect - px,
-      (1 - y / viewportHeight * 2) * half - py, z, tilt, roll);
+    return unrotate((x / viewportWidth * 2 - 1) * half * aspect,
+      (1 - y / viewportHeight * 2) * half, z, tilt, roll, yaw);
   }
   function measureNodes() {
     var bounds = canvas.getBoundingClientRect();
@@ -419,22 +463,25 @@
       nodeBases[i] = screenToNode(home[0], home[1], -4 - i * 1.5, CFG.camZ, CFG.tilt, 0.40);
     });
   }
-  function projectNodes(tilt, roll, camera) {
+  function projectNodes(tilt, roll, camera, yaw) {
     anchors.forEach(function (anchor, i) {
       var p = nodeBases[i];
       var y = p[1] * Math.cos(tilt) - p[2] * Math.sin(tilt);
-      var z = p[1] * Math.sin(tilt) + p[2] * Math.cos(tilt) - 5.5;
-      var x = p[0] * Math.cos(roll) - y * Math.sin(roll) + 1.4;
+      var z = p[1] * Math.sin(tilt) + p[2] * Math.cos(tilt);
+      var x = p[0] * Math.cos(roll) - y * Math.sin(roll);
       y = p[0] * Math.sin(roll) + y * Math.cos(roll) + 0.2;
+      var rx = x * Math.cos(yaw) - z * Math.sin(yaw);
+      z = x * Math.sin(yaw) + z * Math.cos(yaw) - 5.5;
+      x = rx + 1.4;
       var half = Math.tan(CFG.fov / 2) * (camera - z);
-      var sx = ((x + px) / (half * aspect) + 1) * viewportWidth / 2;
-      var sy = (1 - (y + py) / half) * viewportHeight / 2;
+      var sx = (x / (half * aspect) + 1) * viewportWidth / 2;
+      var sy = (1 - y / half) * viewportHeight / 2;
       // Compact layouts keep navigation in the clear lower constellation area.
       // While selected, pin the projected center to avoid a moving click target.
-      if (viewportWidth <= 980 || selectedAnchor) {
+      if (viewportWidth <= 980 || selectedAnchor || elapsed < CFG.introMs) {
         var point = selectedAnchor ? nodeScreens[i] : nodeHomes[i];
         sx = point[0]; sy = point[1];
-        p = screenToNode(sx, sy, z, camera, tilt, roll);
+        p = screenToNode(sx, sy, z, camera, tilt, roll, yaw);
       }
       nodeScreens[i] = [sx, sy];
       gl.uniform3f(U["uNode" + i], p[0], p[1], p[2]);
@@ -451,22 +498,24 @@
       beaconX = ((body.left + body.width / 2 - bounds.left) / bounds.width * 2 - 1) * halfH * aspect;
       beaconY = (1 - (body.top + body.height / 2 - bounds.top) / bounds.height * 2) * halfH;
     }
-    if (calm) { beaconOn = selectedAnchor ? 1 : 0; draw(0, 1); }
+    if (calm || reviewTime !== null) { beaconOn = selectedAnchor ? 1 : 0; draw(reviewTime || 0, 1); }
   }
   listen(document, "cosmoschange", selectAnchor);
 
   function pointer(e) {
     if (calm || !e.isPrimary) return;
+    hoverPointer = e.pointerType !== "touch" && e.pointerType !== "pen";
     var r = canvas.getBoundingClientRect();
     var nx = (e.clientX - r.left) / r.width * 2 - 1;
     var ny = 1 - (e.clientY - r.top) / r.height * 2;
     tx = nx * halfH * aspect; ty = ny * halfH;
     onTarget = Math.abs(nx) <= 1 && Math.abs(ny) <= 1 ? 1 : 0;
-    var edge = Math.max(0, Math.min(1, (Math.abs(nx) - 0.18) / 0.62));
-    revealTarget = edge * edge * (3 - 2 * edge) * onTarget;
-    rollTarget = (nx < 0 ? -1 : 1) * revealTarget;
+    // Touch keeps local illumination without steering the whole composition.
+    var steer = onTarget && e.pointerType !== "touch";
+    pointerX = steer ? Math.max(-1, Math.min(1, nx)) : 0;
+    pointerY = steer ? Math.max(-1, Math.min(1, ny)) : 0;
   }
-  function leave() { onTarget = 0; tx = 0; ty = 0; revealTarget = rollTarget = 0; }
+  function leave() { onTarget = 0; tx = 0; ty = 0; pointerX = pointerY = 0; hoverPointer = false; }
   listen(window, "pointermove", pointer, { passive: true });
   listen(window, "pointerdown", pointer, { passive: true });
   listen(window, "pointerup", function (e) { if (e.pointerType !== "mouse") leave(); }, { passive: true });
@@ -475,28 +524,48 @@
   listen(window, "blur", leave);
   listen(window, "scroll", leave, { passive: true });
 
-  var raf = 0, last = 0, elapsed = restored ? CFG.revealEndMs : 0;
+  var raf = 0, last = 0, elapsed = restored || reviewFinal ? CFG.introMs + CFG.entranceHandoffMs : 0;
+  function ease(value) { var x = Math.max(0, Math.min(1, value)); return x*x*x*(x*(x*6-15)+10); }
   var visible = true, suspended = false, lost = false, disposed = false;
   function draw(time, intro) {
     if (lost || disposed) return;
     gl.uniform1f(U.uTime, time);
-    gl.uniform1f(U.uIntro, intro);
+    // Start from the approved settled particle trajectories, never the old burst.
+    gl.uniform1f(U.uIntro, 1);
     gl.uniform1f(U.uOrbit, CFG.orbitSpeed);
-    var opening = reviewOpen ? 1 : calm ? 0.65 : reveal;
-    var camera = CFG.camZ + opening * CFG.revealPullback;
+    var ms = calm || reviewFinal || reviewOpen ? CFG.introMs : reviewTime !== null ? reviewTime * 1000 : elapsed;
+    var flow = ease((ms - CFG.traceEndMs) / (CFG.flowEndMs - CFG.traceEndMs));
+    var unfold = ease((ms - CFG.flowEndMs) / (CFG.introMs - CFG.flowEndMs));
+    var push = ease((ms - CFG.flowEndMs) / (CFG.spatialEndMs - CFG.flowEndMs));
+    var settleCamera = ease((ms - CFG.spatialEndMs) / (CFG.introMs - CFG.spatialEndMs));
+    var nodeReady = calm || reviewFinal || reviewOpen ? 1 : ease((ms - CFG.introMs) / 700);
+    if (cosmos) {
+      if (ms < CFG.introMs) cosmos.classList.add("cosmos--forming");
+      else cosmos.classList.remove("cosmos--forming");
+    }
+    gl.uniform1f(U.uNodeReady, nodeReady);
+    gl.uniform3f(U.uNodeWake,
+      calm ? (selectedAnchor === anchors[0] ? 1 : 0) : nodeWake[0],
+      calm ? (selectedAnchor === anchors[1] ? 1 : 0) : nodeWake[1],
+      calm ? (selectedAnchor === anchors[2] ? 1 : 0) : nodeWake[2]);
+    var opening = reviewOpen ? 1 : 0;
+    var camera = CFG.camZ + opening * CFG.revealPullback
+      + (CFG.entranceCameraStart * (1 - push) - CFG.entranceCameraPush * push) * (1 - settleCamera);
+    gl.uniform4f(U.uEntrance, flow, unfold, ease(ms / CFG.traceEndMs), ms / 1000);
+    gl.uniform1f(U.uEntranceDepth, CFG.entranceDepth);
     gl.uniform1f(U.uTilt, CFG.tilt + opening * CFG.revealTilt);
-    gl.uniform1f(U.uReveal, opening);
-    gl.uniform1f(U.uRoll, reviewOpen ? CFG.revealRoll : calm ? 0.08 : roll * CFG.revealRoll);
+    gl.uniform1f(U.uReveal, reviewOpen ? 1 : 0.65 * push * (1 - settleCamera));
+    gl.uniform1f(U.uRoll, reviewOpen ? CFG.revealRoll : 0);
     gl.uniform1f(U.uCamera, camera);
-    gl.uniform2f(U.uParallax, px * 0.12, py * 0.12);
+    gl.uniform2f(U.uParallax, px, py);
     gl.uniform2f(U.uCursor, cx, cy);
     gl.uniform1f(U.uCursorOn, on);
     gl.uniform2f(U.uBeacon, beaconX, beaconY);
-    gl.uniform1f(U.uBeaconOn, beaconOn);
+    gl.uniform1f(U.uBeaconOn, beaconOn * nodeReady);
     gl.uniform1f(U.uBeaconRadius, CFG.beaconRadius);
-    projectNodes(CFG.tilt + opening * CFG.revealTilt + py * 0.12,
-      0.40 + px * 0.12 + (reviewOpen ? CFG.revealRoll : calm ? 0.08 : roll * CFG.revealRoll), camera);
-    translation(view, px, py, -camera);
+    projectNodes(CFG.tilt + opening * CFG.revealTilt + py,
+      0.40 + (reviewOpen ? CFG.revealRoll : 0), camera, px);
+    translation(view, 0, 0, -camera);
     gl.uniformMatrix4fv(U.uView, false, view);
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -506,7 +575,7 @@
   function sync() {
     stop();
     if (disposed || lost || suspended || document.hidden || !visible) return;
-    if (calm) { draw(0, 1); return; }
+    if (calm || reviewTime !== null) { draw(reviewTime || 0, 1); return; }
     raf = requestAnimationFrame(frame);
   }
   function frame(now) {
@@ -516,23 +585,25 @@
     last = now; elapsed += dt * 1000;
     var follow = 1 - Math.exp(-5 * dt), damping = 1 - Math.exp(-3 * dt);
     cx += (tx - cx) * follow; cy += (ty - cy) * follow;
-    on += (onTarget - on) * damping;
     beaconOn += ((selectedAnchor ? 1 : 0) - beaconOn) * follow;
-    px += (Math.max(-0.4, Math.min(0.4, -cx * CFG.parallax)) - px) * damping;
-    py += (Math.max(-0.3, Math.min(0.3, -cy * CFG.parallax)) - py) * damping;
-    // One discovery beat after formation, then pointer-driven reopening.
-    // Quintic envelopes stop gently at both ends without repeated idle tilting.
-    function ease(value) { var x = Math.max(0, Math.min(1, value)); return x*x*x*(x*(x*6-15)+10); }
-    var opening = ease((elapsed - CFG.revealStartMs) / 2600);
-    var closing = 1 - ease((elapsed - (CFG.revealEndMs - 3200)) / 3200);
-    var automatic = opening * closing;
-    var response = 1 - Math.exp(-CFG.revealResponse * dt);
-    reveal += (Math.max(automatic, revealTarget) - reveal) * response;
-    roll += ((revealTarget > automatic ? rollTarget : automatic) - roll) * response;
+    anchors.forEach(function (anchor, i) {
+      var pointerScreenX = (tx / (halfH * aspect) + 1) * viewportWidth / 2;
+      var pointerScreenY = (1 - ty / halfH) * viewportHeight / 2;
+      var distance = Math.hypot(pointerScreenX - nodeScreens[i][0], pointerScreenY - nodeScreens[i][1]);
+      var proximity = hoverPointer && onTarget ? 1 - ease((distance - 35) / 105) : 0;
+      var target = elapsed < CFG.introMs ? 0 : selectedAnchor === anchor ? 1 : proximity * 0.65;
+      nodeWake[i] += (target - nodeWake[i]) * follow;
+    });
+    // TRACE -> FLOW -> SPATIAL -> SETTLE -> INTERACTIVE, with exclusive camera ownership.
+    var handoff = reviewOpen ? 0 : ease((elapsed - CFG.introMs) / CFG.entranceHandoffMs);
+    var response = 1 - Math.exp(-CFG.pointerResponse * dt);
+    px += (-pointerX * CFG.pointerYaw * handoff - px) * response;
+    py += (-pointerY * CFG.pointerPitch * handoff - py) * response;
+    on += (onTarget * handoff - on) * damping;
     draw(elapsed / 1000, Math.min(elapsed / CFG.introMs, 1));
     raf = requestAnimationFrame(frame);
   }
-  function measure() { if (!lost && !disposed) { resize(); measureNodes(); selectAnchor(); if (calm) draw(0, 1); } }
+  function measure() { if (!lost && !disposed) { resize(); measureNodes(); selectAnchor(); if (calm || reviewTime !== null) draw(reviewTime || 0, 1); } }
   listen(window, "resize", measure, { passive: true });
   var resizeObserver = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null;
   if (resizeObserver) resizeObserver.observe(canvas);
@@ -542,8 +613,9 @@
   if (observer) observer.observe(canvas);
   listen(document, "visibilitychange", sync);
   listen(motion, "change", function () {
-    calm = motion.matches; elapsed = Math.max(elapsed, CFG.revealEndMs);
-    reveal = motion.matches ? 0.65 : reveal; revealTarget = rollTarget = roll = 0;
+    calm = motion.matches; elapsed = Math.max(elapsed, CFG.introMs + CFG.entranceHandoffMs);
+    pointerX = pointerY = 0;
+    nodeWake = [0, 0, 0]; hoverPointer = false;
     cx = cy = tx = ty = px = py = on = onTarget = 0; sync();
   });
   function dispose() {
@@ -552,11 +624,12 @@
     if (observer) observer.disconnect();
     if (resizeObserver) resizeObserver.disconnect();
     if (cosmos) cosmos.classList.remove("cosmos--particles");
+    if (cosmos) cosmos.classList.remove("cosmos--forming");
     if (!lost) { buffers.forEach(function (b) { gl.deleteBuffer(b); }); shaders.forEach(function (s) { gl.deleteShader(s); }); gl.deleteProgram(prog); }
   }
   listen(window, "pagehide", function (e) { if (e.persisted) { suspended = true; stop(); } else dispose(); });
   listen(window, "pageshow", function () { suspended = false; sync(); });
-  listen(canvas, "webglcontextlost", function (e) { e.preventDefault(); lost = true; stop(); if (cosmos) cosmos.classList.remove("cosmos--particles"); });
+  listen(canvas, "webglcontextlost", function (e) { e.preventDefault(); lost = true; stop(); if (cosmos) { cosmos.classList.remove("cosmos--particles"); cosmos.classList.remove("cosmos--forming"); } });
   listen(canvas, "webglcontextrestored", function () {
     // Rebuild only the renderer, never reload the page or disturb navigation.
     dispose();

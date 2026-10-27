@@ -259,6 +259,7 @@
   transition: opacity 280ms ease-out 90ms, transform 300ms ease-out 90ms, visibility 0s;
 }
 .celestial.is-superseded .celestial__annotation { opacity: 0; visibility: hidden; transition: none; }
+.cosmos.cosmos--forming .celestial__annotation { opacity: 0; visibility: hidden; }
 .celestial:focus-visible { outline: none; }
 .celestial:focus-visible .celestial__body { outline: 1px solid rgba(var(--cosmic-gold), .65); outline-offset: 7px; border-radius: 50%; }
 @media (forced-colors: active) { .celestial:focus-visible { outline: 2px solid LinkText; } }

@@ -1,5 +1,67 @@
 # Homepage galaxy prototype
 
+## Cinematic entrance prototype — 2026-10-27
+
+Node discovery refinement: the three-line trajectories and camera are unchanged.
+Navigation grains and annotations stay dormant through the three-second entrance,
+then grains fade in over 700ms. At rest, only a sparse subset is visible at low
+opacity and three times the cluster spread. Pointer proximity (35–140 CSS pixels)
+smoothly condenses a restrained formation; hover/focus/touch selection reveals its
+label through the existing discovery controller. Exit reverses the response with
+5/s exponential damping. Native click targets, keyboard focus and two-tap touch
+navigation remain intact. Reduced motion paints selection directly without RAF.
+The preserved approved comparison renderer intentionally retains its old nodes.
+
+The default renderer now uses a three-second entrance: three sparse particle
+traces (0–0.5s), curving and intersecting paths with increasing depth (0.5–1.3s),
+a forward camera move as those same grains spread into their original 3D homes
+(1.3–2.2s), then a smooth return to the approved composition (2.2–3.0s).
+There is no radial explosion, plane rotation, new geometry, bloom, or extra draw
+call. All four original attribute buffers remain identical. The three navigation
+formations bypass the trace deformation and remain at their clickable home
+positions during the camera movement. Palette, typography and navigation code
+are unchanged. Reduced motion goes directly to the final neutral galaxy.
+
+Pointer tilt and local repulsion fade in over 700ms after the camera settles;
+navigation hover/focus remains available immediately. Hidden/offscreen time is
+paused; context restoration skips the entrance. The approved pre-prototype
+renderer is preserved byte-for-byte in `assets/js/field-galaxy-approved.js`.
+The sections below describe earlier iterations, including the approved intro.
+
+Run `node scripts/preview.cjs` (or use the already-running server on port 8080).
+
+| Local URL | View |
+| --- | --- |
+| `http://127.0.0.1:8080/` | New cinematic intro; reload to replay |
+| `http://127.0.0.1:8080/?intro=approved` | Approved intro and interactions before this prototype |
+| `http://127.0.0.1:8080/?intro=final` | Final interactive composition, entrance skipped |
+| `http://127.0.0.1:8080/?introAt=0.4` | TRACE still |
+| `http://127.0.0.1:8080/?introAt=1.1` | FLOW still |
+| `http://127.0.0.1:8080/?introAt=1.8` | SPATIAL REVEAL still |
+| `http://127.0.0.1:8080/?introAt=2.6` | SETTLE still |
+
+Comparison parameters only work on loopback hosts. Still previews freeze the
+particle clock, not the page UI. `?reveal=open` remains available for the older
+opened pose. No commit, push or deployment is part of this prototype.
+
+Adjustable `CFG` controls in `field-galaxy.js`: `traceEndMs` 500, `flowEndMs` 1300,
+`spatialEndMs` 2200, `introMs` 3000, `entranceCameraStart` +2.2 world units,
+`entranceCameraPush` 2.6 world units forward, `entranceDepth` 7 world units, and
+`entranceHandoffMs` 700. Keep the timing boundaries in ascending order. Trace
+width (22), curvature (2.2), drift rate (0.85) and sparsity are in the vertex
+shader. Existing pointer limits and damping remain unchanged.
+
+Verification: `node scripts/test-galaxy.cjs`, `node scripts/test-cosmos-nav.cjs`,
+JavaScript syntax and whitespace checks pass. Tests cover exact particle-buffer
+preservation, camera bounds, fixed intro orientation, projected node alignment
+through the camera travel, pointer handoff, reduced motion, context restoration,
+cleanup and loopback-only comparisons, alongside the approved renderer tests.
+Chrome rendered TRACE in light mode and FLOW/SPATIAL in dark mode without captured
+shader warnings/errors. Browser recording is not exposed by the available tools;
+`galaxy-preview/cinematic-spatial.png` is a timestamped review still instead.
+Continuous motion feel, real touch hardware, other browsers and GPU performance
+remain manual verification items; automated lifecycle tests use mocked WebGL.
+
 Local, uncommitted experiment, 2026-10-26. BarryMade, all other pages, hero identity,
 top navigation, shared styles/scripts, and the original physics audit are unchanged.
 
@@ -115,14 +177,18 @@ a distant starfield occupy independent 3D positions. The distant stars rotate
 more slowly, giving the opening a spatial reference. Additional stars emerge
 gradually; the original spiral stays present throughout.
 
-Move the pointer toward either horizontal edge of the hero to reopen the view.
-Move back to the center to settle into the original inclination. No click or
-drag is required. Touch uses the existing pointer handling; release returns the
-view. Reduced motion shows a still, partially opened composition without the
-formation or reveal sequence.
+The opening now owns the pose exclusively through 12800ms. Its quintic envelope
+returns exactly to rest without a second smoothing tail, then pointer influence
+fades in over 1400ms. Pointer movement no longer reopens the galaxy or changes
+camera distance or Z roll. It supplies at most 0.045 radians of yaw and 0.025
+radians of pitch about the galaxy's model center, with exponential damping at
+3.2/s. Normalized input keeps the limits consistent across viewport shapes.
+Distant stars receive only 8% of pointer yaw and 18% of pitch. Touch retains local
+illumination without steering; exit, blur and scroll return the tilt to neutral.
+Reduced motion retains the existing still, partially opened composition.
 
 Reveal tuning in `CFG`: `revealTilt` (0.58 radians), `revealRoll` (0.18 radians),
-`revealPullback` (6.4 world units), `revealResponse` (1.6), and the one-time window
+`revealPullback` (6.4 world units), and the one-time window
 `revealStartMs` / `revealEndMs` (4800 / 12800). The camera pullback is intentional:
 it brings more of the plane into the viewport while keeping perspective.
 
@@ -131,10 +197,12 @@ particles, for totals of 16000 / 5600, still in a single draw call. There is one
 additional static attribute buffer and no second renderer. The extra populations
 are interleaved so the mobile budget contains the same spatial layers.
 
-Refinement checks: syntax and lifecycle tests pass, including original-particle
-preservation, one-time opening/return, pointer opening/return, and a static
-reduced-motion reveal. Chrome shader rendering and pointer-triggered opening
-were checked with no captured console errors. Hardware timing remains unmeasured.
+Motion refinement checks: syntax, navigation and lifecycle tests pass, including
+original-particle preservation, pointer isolation during intro, bounded tilt,
+fixed camera/roll, projected navigation alignment during tilt, pinned selected
+formations, touch behavior, neutral return and equal damping at 30/120 Hz.
+Chrome rendered the updated shader with no captured warnings/errors. Continuous
+pointer feel and hardware timing remain manual review items.
 Earlier screenshots below document the first prototype; `reveal-dark.png` records
 the refined opening.
 
@@ -174,7 +242,9 @@ Edit `CFG` near the top of `field-galaxy.js`:
 | thickness | 0.38 | Disk thickness, with additional halo spread |
 | tilt | 0.40 radians | Disk inclination |
 | orbitSpeed | 0.018 | Differential rotation |
-| parallax | 0.025 | Damped camera response |
+| pointerYaw / pointerPitch | 0.045 / 0.025 radians | Maximum model tilt |
+| pointerResponse | 3.2 per second | Frame-rate-independent damping |
+| pointerHandoffMs | 1400 | Influence fade after the reveal settles |
 | maxDpr | 1.75 | Backing-store resolution cap |
 | pushRadius / pushForce | 2.6 / 1.35 | Cursor clearing region and strength |
 | introMs | 4800 | Formation duration |
