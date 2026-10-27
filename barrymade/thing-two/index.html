@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#101213">
 <script src="/assets/js/theme.js?v=20260914-graphite"></script>
-<title>Thing two — BarryMade — Barry Yuan</title>
-<meta name="description" content="PLACEHOLDER — one line on what Thing two is.">
+<title>Problem-Solving Lab — BarryMade — Barry Yuan</title>
+<meta name="description" content="A local semantic research tool connecting everyday questions with academic concepts, papers, and personal notes.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,6 +16,45 @@
 <link rel="stylesheet" href="/assets/css/portfolio.css?v=20260922-structure">
 <link rel="stylesheet" href="/assets/css/barrymade-project.css?v=20260927-made">
 <script>document.documentElement.className += " js";</script>
+<style>
+#problem-solving-lab .study__stage { position: static; }
+/* Scoped to this case study; shared project and card styles stay unchanged. */
+#problem-solving-lab .lab-flow { padding: clamp(1.25rem, 3vw, 2.5rem); aspect-ratio: auto; }
+#problem-solving-lab .lab-flow h2 { font-size: clamp(1.6rem, 3vw, 2.5rem); margin: .5rem 0 1.5rem; }
+#problem-solving-lab .lab-flow ol { list-style: none; padding: 0; margin: 0; }
+#problem-solving-lab .lab-flow li { border-top: 1px solid var(--hairline); padding: 1rem 0; }
+#problem-solving-lab .lab-flow li span { display: block; color: var(--ivory-dim); font-size: var(--t-sm); margin-top: .3rem; }
+#problem-solving-lab pre { max-width: 100%; overflow-x: auto; padding: 1rem; border: 1px solid var(--hairline); font-size: .78rem; line-height: 1.7; }
+#problem-solving-lab .study__body { min-width: 0; }
+#problem-solving-lab .beat a { overflow-wrap: anywhere; }
+
+#problem-solving-lab { row-gap: clamp(2.5rem, 5vw, 5rem); }
+#problem-solving-lab .lab-intro, #problem-solving-lab .lab-viewer { grid-column: 1 / -1; min-width: 0; }
+#problem-solving-lab .lab-intro > p:not(.study__eyebrow) { max-width: 65ch; color: var(--ivory-mid); font-size: 1.15rem; }
+#problem-solving-lab .lab-intro .study__facts { max-width: 850px; margin: 1.8rem 0 1.3rem; }
+#problem-solving-lab .lab-intro .made-cta { margin-bottom: 0; }
+#problem-solving-lab .study__body { padding-top: 0; }
+.lab-viewer__heading { display: flex; justify-content: space-between; align-items: end; gap: 1.5rem; }
+.lab-viewer__heading h2 { margin: 0; font-size: clamp(1.6rem, 3vw, 2.5rem); }
+.lab-viewer__heading > p { color: var(--ivory-dim); font-size: .85rem; }
+.lab-viewer__controls { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.5rem 0 1rem; }
+.lab-viewer__controls[hidden], .lab-viewer__shot[hidden] { display: none; }
+.lab-viewer__controls button { font: inherit; font-size: .85rem; padding: .75rem 1rem; border: 1px solid var(--hairline); background: var(--graphite); color: var(--ivory-mid); cursor: pointer; }
+.lab-viewer__controls button[aria-pressed="true"] { color: var(--accent-lit); border-color: var(--accent); }
+.lab-viewer__controls button:hover { border-color: var(--accent-lit); }
+.lab-viewer__controls button:focus-visible, .lab-viewer a:focus-visible { outline: 2px solid var(--accent-lit); outline-offset: 4px; }
+.lab-viewer__shot { margin: 1rem 0 0; }
+.lab-viewer__shot > a { display: block; cursor: zoom-in; border: 1px solid var(--hairline); }
+.lab-viewer__shot img { display: block; width: 100%; height: auto; }
+.lab-viewer__shot figcaption { display: flex; justify-content: space-between; align-items: start; gap: 1.5rem; margin-top: 1rem; font-size: .85rem; color: var(--ivory-dim); }
+.lab-viewer__shot figcaption span { max-width: 75ch; }
+.lab-viewer__shot figcaption a { flex-shrink: 0; color: var(--ivory); }
+@media (max-width: 620px) {
+ .lab-viewer__heading, .lab-viewer__shot figcaption { display: block; }
+ .lab-viewer__shot figcaption a { display: inline-block; margin-top: .8rem; }
+ .lab-viewer__controls button { flex: 1 1 auto; min-height: 44px; }
+}
+</style>
 </head>
 <body class="project-page">
 
@@ -45,57 +84,107 @@
     <a class="study__link" href="/barrymade/">&larr; Back to BarryMade</a>
   </div>
 
-  <article class="study" id="thing-two">
+  <article class="study" id="problem-solving-lab">
+    <header class="lab-intro">
+      <p class="study__eyebrow">Research tool — BarryMade</p>
+      <h1 class="study__title">Problem-Solving Lab</h1>
+      <p>Sometimes we can describe a problem but do not know the technical terms to search for. Problem-Solving Lab starts with everyday language and retrieves related research to help identify what the problem might be called and where to investigate next.</p>
+      <dl class="study__facts">
+        <div><dt>Kind</dt><dd>Local research prototype</dd></div>
+        <div><dt>Built with</dt><dd>Python, ChromaDB, Streamlit</dd></div>
+        <div><dt>When</dt><dd>October 2026</dd></div>
+      </dl>
+      <div class="made-cta">
+        <a class="made-cta__button" href="https://github.com/1h-barryy/2026-10-26_ProblemSolvingLab">View source on GitHub <span aria-hidden="true">↗</span></a>
+        <p class="made-cta__note">Runs locally with Python and a local database. This page is a project write-up.</p>
+      </div>
+
+    </header>
+    <section class="lab-viewer" aria-labelledby="lab-viewer-title">
+      <div class="lab-viewer__heading"><div><p class="study__eyebrow">Inside the local prototype</p><h2 id="lab-viewer-title">Follow a question into research.</h2></div><p>Actual app screenshots.<br>Select an image to open the full-resolution view.</p></div>
+      <div class="lab-viewer__controls" role="group" aria-label="Choose an application screenshot" hidden>
+        <button type="button" data-shot="0" aria-controls="lab-shot-0" aria-pressed="false">01 / Explore</button>
+        <button type="button" data-shot="1" aria-controls="lab-shot-1" aria-pressed="true">02 / Discovery Card</button>
+        <button type="button" data-shot="2" aria-controls="lab-shot-2" aria-pressed="false">03 / Research sources</button>
+      </div>
+      <figure class="lab-viewer__shot" id="lab-shot-0">
+        <a href="media/01-explore.png" target="_blank" rel="noopener" aria-label="Open Explore screenshot at full resolution in a new tab"><img src="media/01-explore.png" width="1440" height="1080" alt="Start with a question in everyday language. The sidebar shows the real local corpus: 399 arXiv papers and 2 existing notes."></a>
+        <figcaption><span>Start with a question in everyday language. The sidebar shows the real local corpus: 399 arXiv papers and 2 existing notes.</span><a href="media/01-explore.png" target="_blank" rel="noopener">View full size ↗</a></figcaption>
+      </figure>
+      <figure class="lab-viewer__shot" id="lab-shot-1">
+        <a href="media/02-discovery-card.png" target="_blank" rel="noopener" aria-label="Open Discovery Card screenshot at full resolution in a new tab"><img src="media/02-discovery-card.png" width="1440" height="1080" alt="A question about group motion retrieves candidate terminology such as flocking and collective motion, linked to its sources."></a>
+        <figcaption><span>A question about group motion retrieves candidate terminology such as flocking and collective motion, linked to its sources.</span><a href="media/02-discovery-card.png" target="_blank" rel="noopener">View full size ↗</a></figcaption>
+      </figure>
+      <figure class="lab-viewer__shot" id="lab-shot-2">
+        <a href="media/03-research-sources.png" target="_blank" rel="noopener" aria-label="Open Research sources screenshot at full resolution in a new tab"><img src="media/03-research-sources.png" width="1440" height="1080" alt="Inspect the disciplines, an exploratory analogy, and supporting papers. Distances describe retrieval similarity, not confidence."></a>
+        <figcaption><span>Inspect the disciplines, an exploratory analogy, and supporting papers. Distances describe retrieval similarity, not confidence.</span><a href="media/03-research-sources.png" target="_blank" rel="noopener">View full size ↗</a></figcaption>
+      </figure>
+    </section>
 
     <div class="study__stage">
+      
       <figure class="plate-figure">
-        <div class="plate">
-          <!-- Replace the div below with:
-               <img class="plate__img" src="media/hero.jpg" alt="Describe what is happening in the shot"> -->
-          <div class="plate__empty">
-            <strong>Hero image</strong>
-            <span>media/hero.jpg — 1600&times;1200 or wider</span>
-          </div>
+        <div class="plate lab-flow">
+          <p class="study__eyebrow">From a question to a research direction</p>
+          <h2>Find the words<br>for the problem.</h2>
+          <ol>
+            <li><strong>01 / Describe</strong><span>An everyday problem, in your own words.</span></li>
+            <li><strong>02 / Retrieve</strong><span>Search titles and abstracts by semantic similarity.</span></li>
+            <li><strong>03 / Connect</strong><span>Inspect candidate terms, disciplines, and sources.</span></li>
+            <li><strong>04 / Investigate</strong><span>Edit a research hypothesis. Save and rediscover notes.</span></li>
+          </ol>
         </div>
-        <figcaption class="plate__caption ph">
-          PLACEHOLDER — one line describing the shot.
-        </figcaption>
+        <figcaption class="plate__caption">Workflow summary of the implemented project, not an application screenshot.</figcaption>
       </figure>
     </div>
-
     <div class="study__body">
-      <p class="study__eyebrow">Tool — BarryMade</p>
-      <h1 class="study__title">Thing two</h1>
 
-      <dl class="study__facts">
-        <div><dt>Kind</dt><dd>Tool</dd></div>
-        <div><dt>Built with</dt><dd class="ph">Maya, Python</dd></div>
-        <div><dt>When</dt><dd class="ph">PLACEHOLDER</dd></div>
-      </dl>
-
-      <!-- When the project is live, swap this for:
-           <a class="made-cta__button" href="PATH/TO/PROJECT">Launch Project <span aria-hidden="true">&#8599;</span></a> -->
-      <div class="made-cta">
-        <span class="made-cta__button" aria-disabled="true">Project link coming soon</span>
-      </div>
-
+      
       <div class="beat">
-        <h2>Overview</h2>
-        <p class="ph">PLACEHOLDER — what it is and why you made it. Two or three sentences.</p>
+        <h2>Explore, connect, keep</h2>
+        <p>In Explore, enter a question and select Explore Problem. A Discovery Card organizes the top 15 matches into candidate terminology, academic disciplines, source excerpts, and a possible connection to another field. It ends with a template hypothesis to edit and test.</p>
+        <p>Add Knowledge saves a note and optional title into the same persistent database. Notes become searchable immediately and remain after restarting; they are labeled separately from research papers. The CLI also supports search, add, statistics, and Markdown card export.</p>
       </div>
-
       <div class="beat">
-        <h2>How it works</h2>
-        <p class="ph">PLACEHOLDER — the technique, tool, or process behind it.</p>
+        <h2>A small, traceable research corpus</h2>
+        <p>The development dataset contains 399 real arXiv papers, spanning areas such as human-computer interaction, collective behavior, and robotics. Each record combines one title and abstract, with the paper ID, categories, publication date, and source URL.</p>
+        <p>ChromaDB stores the records locally. The all-MiniLM-L6-v2 model creates 384-dimensional embeddings, compared with cosine distance. Candidate terms are extracted with frequency-based heuristics. This version uses no LLM or RAG generation.</p>
       </div>
-
+      
       <div class="beat">
-        <h2>Project links</h2>
-        <p class="ph">PLACEHOLDER — link to the build, repo, video, or page.</p>
+        <h2>From idea to interaction</h2>
+        <p>The prompt log traces a shift from suggesting solutions toward helping people discover terminology and cross-disciplinary analogies. Development progressed through persistence testing, arXiv inspection, corpus ingestion, retrieval evaluation, and the CLI Discovery Card.</p>
+        <p>The final code adds a Streamlit interface over the same retrieval and card modules. ChatGPT supported ideation, Claude.ai supported planning, and Claude Code supported implementation and debugging, as documented in the README. The prompt log records the earlier development prompts; it does not yet include the Streamlit phase.</p>
+      </div>
+      <div class="beat">
+        <h2>What the prototype demonstrated</h2>
+        <p>The README records two retrieval examples connecting informal descriptions to academic language:</p>
+        <ul>
+          <li>A question about stars moving to an “invisible clock” retrieved <em>Intermittent Flocking and Fractal Collective Order Induced by Time-Varying Delays</em> at rank 1, cosine distance 0.582.</li>
+          <li>A question about notifications and refocusing retrieved <em>Mitigating the Effects of Reading Interruptions by Providing Reviews and Previews</em> at rank 3, cosine distance 0.537.</li>
+        </ul>
+        <p>These are documented examples from the development corpus, not a general accuracy benchmark. The evaluation scripts compare shared non-stopword tokens to examine matches beyond exact wording. Distance is a retrieval measure, not a confidence percentage.</p>
+      </div>
+      <div class="beat">
+        <h2>Run it locally</h2>
+        <p>Download or clone the GitHub repository, install Python 3.13, then open PowerShell in the project folder:</p>
+        <pre aria-label="Windows PowerShell setup commands"><code>py -3.13 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe fetch_arxiv.py
+.\.venv\Scripts\python.exe ingest.py
+.\.venv\Scripts\python.exe -m streamlit run app.py</code></pre>
+        <p>Open <code>http://localhost:8501</code> after starting Streamlit. For the terminal interface, run <code>.\.venv\Scripts\python.exe cli.py</code>.</p>
+        <p>The dataset and database are not included in GitHub. The fetch and ingest steps build your own database in <code>data/chroma/</code>; the embedding model downloads on first use. Initial setup needs internet access. Once built, search and note storage run locally. A rebuilt arXiv corpus may differ from the development snapshot.</p>
+      </div>
+      <div class="beat">
+        <h2>Limits and next questions</h2>
+        <p>The corpus is small and documents are not chunked, so long abstracts can exceed the model’s 256-token input limit. Extracted terminology is approximate, and connections across fields are exploratory analogies rather than verified solutions. Larger coverage, better chunking, and richer explanations remain future work.</p>
+        <p><a class="study__link" href="https://github.com/1h-barryy/2026-10-26_ProblemSolvingLab#readme">Read the project documentation ↗</a></p>
       </div>
     </div>
-
   </article>
+
+
 
 </main>
 
@@ -110,5 +199,19 @@
 
 <script src="/assets/js/site.js?v=20261021-bfcache"></script>
 <script src="/assets/js/portfolio.js"></script>
+<script>
+(function () {
+  var viewer = document.querySelector('.lab-viewer');
+  var shots = viewer.querySelectorAll('.lab-viewer__shot');
+  var buttons = viewer.querySelectorAll('[data-shot]');
+  function show(index) {
+    shots.forEach(function (shot, i) { shot.hidden = i !== index; });
+    buttons.forEach(function (button, i) { button.setAttribute('aria-pressed', String(i === index)); });
+  }
+  buttons.forEach(function (button, i) { button.addEventListener('click', function () { show(i); }); });
+  show(1);
+  viewer.querySelector('.lab-viewer__controls').hidden = false;
+})();
+</script>
 </body>
 </html>
