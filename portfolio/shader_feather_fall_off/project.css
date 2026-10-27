@@ -1,0 +1,44 @@
+/* Feather Falloff only; shared typography, themes and navigation are inherited. */
+.feather .editorial-project__header { max-width: 1100px; margin-bottom: 2.5rem; }
+.feather .editorial-project__header h1 { font-size: clamp(3rem, 6.8vw, 6rem); }
+.feather .feather-stack { color: var(--ivory-dim); font-size: var(--t-sm); margin: 1.6rem 0 0; }
+.feather .editorial-project__intro { max-width: 65ch; }
+.feather figure { margin: 0; min-width: 0; }
+.feather figure a { display: block; cursor: zoom-in; }
+.feather img { display: block; width: 100%; height: auto; border: 1px solid var(--hairline); }
+.feather figcaption { margin-top: .8rem; color: var(--ivory-dim); font-size: var(--t-xs); line-height: 1.6; max-width: 80ch; }
+.feather a:focus-visible, .feather summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+.feather [id] { scroll-margin-top: 110px; }
+.feather-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(2rem, 4vw, 4rem); align-items: start; }
+.feather .feather-section-head { max-width: 65ch; margin-bottom: 2rem; }
+.feather h3 { font-size: clamp(1.4rem, 2.4vw, 2rem); margin: 0 0 1rem; line-height: 1.25; }
+.feather .feather-contributions { padding-left: 1.1rem; color: var(--ivory-mid); line-height: 1.8; }
+.feather-process { list-style: none; padding: 1.3rem 0; margin: 2rem 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; border-block: 1px solid var(--hairline); }
+.feather-process li { font-size: var(--t-sm); line-height: 1.5; }
+.feather-process span { display: block; color: var(--accent); font-size: var(--t-xs); margin-bottom: .5rem; }
+.feather .feather-note { color: var(--ivory-dim); font-size: var(--t-sm); margin-top: 1.3rem; }
+.feather-module { padding-top: 2.5rem; margin-top: 3rem; border-top: 1px solid var(--hairline); }
+.feather-module .feather-grid { grid-template-columns: .8fr 1.2fr; }
+.feather .feather-detail { margin-top: 2rem; }
+.feather code { font-size: .9em; overflow-wrap: anywhere; }
+.feather details { margin-top: 2rem; }
+.feather summary { padding: .8rem 0; cursor: pointer; font-size: var(--t-sm); }
+.feather details figure { margin-top: 1rem; }
+.feather-videos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; }
+.feather-videos h3 { font-family: var(--sans); font-size: var(--t-sm); margin-bottom: 1rem; }
+.feather-videos .study__link { font-size: var(--t-sm); margin-top: 1rem; }
+.feather-videos .editorial-project__video { position: relative; overflow: hidden; }
+.feather-videos .editorial-project__video > img { width: 100%; height: 100%; object-fit: cover; border: 0; }
+.feather-videos button { position: absolute; inset: auto 0 0; width: 100%; padding: .8rem; border: 0; background: rgba(16,18,19,.92); color: #e8e6df; font: inherit; font-size: var(--t-sm); cursor: pointer; }
+.feather-videos button:hover { background: #242829; }
+.feather-videos button:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+.feather-videos button[hidden] { display: none; }
+.feather .feather-close { max-width: 65ch; }
+@media (max-width: 900px) {
+  .feather-grid, .feather-module .feather-grid { grid-template-columns: 1fr; }
+  .feather-videos { grid-template-columns: 1fr; }
+  .feather-process { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .feather-process { gap: 1.2rem; }
+}

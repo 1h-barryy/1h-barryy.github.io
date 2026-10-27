@@ -6,14 +6,14 @@
 <meta name="theme-color" content="#101213">
 <script src="/assets/js/theme.js?v=20260914-graphite"></script>
 <title>About Me — Barry Yuan</title>
-<meta name="description" content="Barry Yuan is a technical artist finishing a master's at Carnegie Mellon's Entertainment Technology Center.">
+<meta name="description" content="Barry Yuan (Yihan Yuan), Technical Artist &amp; Creative Technologist. Professional experience, education, and an interdisciplinary path through mathematics, art, technology, and research.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="/assets/css/main.css?v=20260914-graphite">
-<link rel="stylesheet" href="/assets/css/about.css?v=20260929-education">
+<link rel="stylesheet" href="/assets/css/about.css?v=20261027-profile">
 </head>
 <body>
 
@@ -37,79 +37,84 @@
 </nav>
 
 <main>
-
-  <header class="page-head">
-    <h1>About</h1>
-  </header>
-
-  <section class="about">
-
-    <!-- ============ PORTRAIT ==================================== -->
+  <header class="page-head"><h1>About</h1></header>
+  <div class="about">
     <figure class="portrait">
-      <div class="portrait__frame">
-        <img src="/about/media/headshot.JPG" alt="Barry Yuan, smiling, in a white collared shirt against a light grey background">
-      </div>
-      <!-- TODO: optional caption — where and when the photo was taken.
-      <figcaption></figcaption> -->
+      <div class="portrait__frame"><img src="/about/media/headshot.JPG" alt="Barry Yuan, smiling, in a white collared shirt against a light grey background" width="1000" height="1250" decoding="async" fetchpriority="high"></div>
+      <figcaption>Barry Yuan / Yihan Yuan</figcaption>
     </figure>
-
-    <!-- ============ BIO ========================================= -->
     <div class="bio">
-
-      <!-- TODO: lead — 1–2 sentences, pending Barry's pick from the drafted options.
-      <p class="bio__lead"></p> -->
-
-      <h2>Education</h2>
-      <dl class="kit kit--stack">
-        <div>
-          <dt>Carnegie Mellon University</dt>
-          <dd class="kit__when">Aug 2025 – May 2027 (expected)</dd>
-          <dd>Master of Entertainment Technology<br>
-          Entertainment Technology Center</dd>
+      <section class="bio__intro" aria-labelledby="identity">
+        <p class="bio__eyebrow">01 / Introduction</p>
+        <h2 id="identity" class="bio__name">Barry Yuan <span>(Yihan Yuan)</span></h2>
+        <p class="bio__lead">Technical Artist &amp;<br>Creative Technologist</p>
+        <p>I'm Barry Yuan (Yihan Yuan), an interdisciplinary creator currently pursuing a Master of Entertainment Technology at Carnegie Mellon University.</p>
+        <p>My background began in mathematics before moving into Art &amp; Technology, shaping the way I approach creative and technical challenges. My work spans real-time graphics, interactive experiences, research, and data analysis.</p>
+        <p>I'm interested in how different disciplines connect &mdash; and how art, technology, and analytical thinking can come together to build meaningful experiences and solve complex problems.</p>
+        <div class="bio__links"><a class="bio__link" href="/portfolio/">Explore my work &nearr;</a><a class="bio__link" href="/contact/">Get in touch &nearr;</a></div>
+      </section>
+      <section aria-labelledby="experience">
+        <h2 id="experience"><span class="bio__number">02</span>Professional Experience</h2>
+        <ol class="experience">
+          <li class="experience__entry">
+            <h3>Google China</h3><p class="experience__role">Data Analyst Intern</p>
+            <p class="experience__meta">Beijing, China <span>September 2026 &ndash; Present</span></p>
+            <p>Conducted structured research and synthesized findings for analytical work. Currently developing an e-commerce user analysis model using Excel, Google Sheets, Python, and SQL.</p>
+          </li>
+          <li class="experience__entry">
+            <h3>SUPCON Technology Co., Ltd.</h3><p class="experience__role">Automation Engineering Intern</p>
+            <p class="experience__meta">Zhejiang, China <span>June 2026 &ndash; August 2026</span></p>
+            <p>Supported industrial automation projects spanning process flow diagrams, control logic, DCS configuration, and commissioning. Worked with project managers, engineers, and clients on requirements and troubleshooting, with exposure to industrial AI and process-control systems.</p>
+          </li>
+          <li class="experience__entry">
+            <h3>Lichen Liker Metaverse</h3><p class="experience__role">Student Research Assistant</p>
+            <p class="experience__meta">Columbus, Ohio <span>September 2024 &ndash; July 2025</span></p>
+            <p>Developed a multiplayer VR research environment in Unity with Oculus Integration SDK, including interface systems, scene layouts, and interactive functionality. Collaborated with interdisciplinary researchers and designers; the project was presented at academic events and tested through cross-university remote collaboration.</p>
+          </li>
+          <li class="experience__entry experience__entry--early">
+            <h3>China Orient Asset Management Co., Ltd.</h3><p class="experience__role">Intern</p>
+            <p class="experience__meta">Hangzhou, China <span>July 2022 &ndash; August 2022</span></p>
+            <p>Supported enterprise due diligence and financial research, including new-energy vehicle market trends and competitive positioning. Contributed to internal market analysis and cross-department coordination.</p>
+          </li>
+          <li class="experience__entry experience__entry--early">
+            <h3>Bank of China, Zhejiang Branch</h3><p class="experience__role">Intern</p>
+            <p class="experience__meta">Hangzhou, China <span>September 2020</span></p>
+            <p>Assisted customers with banking services, wealth-management inquiries, and international remittance, developing an understanding of personal wealth management and financial products.</p>
+          </li>
+        </ol>
+      </section>
+      <section aria-labelledby="education">
+        <h2 id="education"><span class="bio__number">03</span>Education</h2>
+        <div class="education">
+          <article><h3>Carnegie Mellon University</h3><p class="education__degree">Master of Entertainment Technology</p><p class="experience__meta">Pittsburgh, Pennsylvania <span>Expected May 2027</span></p><p>Building Virtual Worlds &middot; Visual Storytelling &middot; Advanced Pipeline</p></article>
+          <article><h3>The Ohio State University</h3><p class="education__degree">Bachelor of Arts in Art, Art &amp; Technology</p><p class="experience__meta">Columbus, Ohio <span>Graduated May 2025</span></p><p>Minor: Game Design<br>Mathematics coursework, including calculus and statistics.</p><p class="education__note">Dean's List: Spring 2024, Fall 2024, Spring 2025</p></article>
         </div>
-        <div>
-          <dt>The Ohio State University</dt>
-          <dd class="kit__when">Jan 2021 – May 2025</dd>
-          <dd>BA in Art: Art and Technology<br>
-          Minor in Game Studies</dd>
-          <dd class="kit__note">Two years of mathematics coursework before switching majors.</dd>
-        </div>
-      </dl>
-
-      <!-- TODO: Experience section goes here — same <h2> + <dl class="kit">
-           pattern as Education, dated entries, most recent first. -->
-
-      <h2>Skills</h2>
-      <dl class="kit">
-        <div>
-          <dt>Shaders and lighting</dt>
-          <dd>Unity HDRP, Shader Graph, HLSL</dd>
-        </div>
-        <div>
-          <dt>Simulation</dt>
-          <dd>Houdini: pyro solver, some fluids</dd>
-        </div>
-        <div>
-          <dt>Rigging and tools</dt>
-          <dd>Character rigging in Maya, Maya Python</dd>
-        </div>
-      </dl>
-
-      <h2>Before tech art</h2>
-      <p>I started in mathematics, spending two years on Ohio State’s mathematical finance track before switching to Art & Technology. Along the way I picked up a minor in Game Studies and spent a lot of time in the ceramics and sculpture studios.</p>
-
-      <!-- TODO: Résumé — add the PDF to the repo, then uncomment and set the path.
-      <h2>Résumé</h2>
-      <p><a class="bio__link" href="/about/media/resume.pdf">Download my résumé (PDF)</a></p> -->
-
-      <h2>Get in touch</h2>
-
-      <p>Email, phone, profiles and availability all live on the
-      <a class="bio__link" href="/contact/">contact page</a>.</p>
-
+      </section>
+      <section aria-labelledby="expertise">
+        <h2 id="expertise"><span class="bio__number">04</span>Expertise &amp; Skills</h2>
+        <dl class="expertise">
+          <div><dt>Technical Art &amp; Real-Time Graphics</dt><dd>Real-time visuals, shaders, and technical art workflows.</dd><dd class="expertise__tools">Unity / Unreal Engine &middot; Shader Graph / VFX Graph / HLSL &middot; Houdini &middot; Maya / Blender &middot; Substance 3D</dd></div>
+          <div><dt>Creative Development &amp; Interactive Experiences</dt><dd>Interactive prototyping, game development, and real-time interaction systems.</dd><dd class="expertise__tools">C# &middot; XR / VR development &middot; Figma &middot; Interdisciplinary collaboration tools</dd></div>
+          <div><dt>Data, Programming &amp; Research</dt><dd>Research, data analysis and visualization, and analytical problem-solving.</dd><dd class="expertise__tools">Python &middot; SQL &middot; Excel / Google Sheets</dd></div>
+        </dl>
+      </section>
+      <section aria-labelledby="background">
+        <h2 id="background"><span class="bio__number">05</span>From Mathematics to Art &amp; Technology</h2>
+        <p>I began my undergraduate studies with substantial mathematics coursework. As my interests shifted toward visual art, creative technology, and interactive systems, I moved into Art &amp; Technology at Ohio State and later continued into Entertainment Technology at Carnegie Mellon.</p>
+        <p>That path still shapes how I work: moving between technical art, interactive experiences, engineering, and analytical problem-solving, and looking for useful connections between them.</p>
+      </section>
+      <section aria-labelledby="beyond">
+        <h2 id="beyond"><span class="bio__number">06</span>Beyond Work</h2>
+        <p>Away from professional projects, I make time for photography, golf, ceramics, and physical art. Small creative experiments give me room to try a different medium or follow an idea without a fixed outcome.</p>
+        <div class="bio__links"><a class="bio__link" href="/barrymade/clay-barry/">Ceramics in Clay Barry &nearr;</a><a class="bio__link" href="/barrymade/">Explore BarryMade &nearr;</a></div>
+      </section>
+      <section aria-labelledby="contact">
+        <h2 id="contact"><span class="bio__number">07</span>Let's connect</h2>
+        <p>For conversations about technical art, interactive experiences, research, or opportunities to collaborate, get in touch.</p>
+        <div class="bio__links"><a class="bio__link" href="mailto:barryyuan2000@gmail.com">Email Barry &nearr;</a><a class="bio__link" href="https://github.com/1h-barryy" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a><a class="bio__link" href="/contact/">Contact details &nearr;</a></div>
+      </section>
     </div>
-  </section>
-
+  </div>
 </main>
 
 <footer class="foot">

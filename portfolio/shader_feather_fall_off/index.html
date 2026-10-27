@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#101213">
 <script src="/assets/js/theme.js?v=20260914-graphite"></script>
 <title>Feather Falloff Shader — Barry Yuan</title>
-<meta name="description" content="A Unity shader study exploring feather falloff on a winged character.">
+<meta name="description" content="Feather Falloff Shader: a personal technical art study by Barry Yuan using Maya position data, Unity HDRP Shader Graph, and custom HLSL for spatially controlled wing disintegration.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,6 +14,7 @@
 
 <link rel="stylesheet" href="/assets/css/main.css?v=20260914-graphite">
 <link rel="stylesheet" href="/assets/css/portfolio.css?v=20260925-editorial">
+<link rel="stylesheet" href="project.css?v=20261027">
 <script>document.documentElement.className += " js";</script>
 </head>
 <body class="project-page">
@@ -39,46 +40,41 @@
 </nav>
 
 <main>
-  <div class="project-head">
-    <a class="study__link" href="/portfolio/">&larr; Back to Portfolio</a>
-  </div>
-  <article class="editorial-project">
-    <header class="editorial-project__header">
-      <h1>Feather Falloff Shader</h1>
-      <p class="editorial-project__eyebrow">Technical Art / Shader</p>
-      <p class="editorial-project__intro">A Unity shader study exploring feather falloff on a winged character.</p>
-    </header>
-
-    <!-- Main: 2026-07-06 09-49-31.mp4. Replace the iframe URL and fallback link together. -->
-    <section aria-labelledby="demo-heading">
-      <div class="editorial-project__section-head"><h2 id="demo-heading">Shader Demo</h2></div>
-      <div class="editorial-project__video" style="aspect-ratio: 1660 / 1080;">
-        <iframe src="https://www.youtube-nocookie.com/embed/b8pcER2z398" title="Feather Falloff Shader — Shader Demo" width="1660" height="1080" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <a class="study__link" href="https://youtu.be/b8pcER2z398" target="_blank" rel="noopener noreferrer" aria-label="Watch Shader Demo on YouTube">Watch on YouTube ↗</a>
-    </section>
-
-    <section class="editorial-project__section editorial-project__section--narrow" aria-labelledby="overview-heading">
-      <h2 id="overview-heading">Project Overview</h2>
-      <p>A study of the feather falloff effect on a winged character, shown in a main demo and an additional recording inside the Unity editor.</p>
-      <dl class="study__facts"><div><dt>Tool</dt><dd>Unity</dd></div></dl>
-    </section>
-
-    <!-- Additional: 2026-07-06 09-48-26.mp4. Editor footage verified at 00:05.
-         Replace the iframe URL, start time, and fallback link together. -->
-    <section class="editorial-project__section" aria-labelledby="editor-demo-heading">
-      <div class="editorial-project__section-head"><h2 id="editor-demo-heading">Additional In-editor Demo</h2></div>
-      <div class="editorial-project__video" style="aspect-ratio: 1660 / 1080;">
-        <iframe src="https://www.youtube-nocookie.com/embed/lvXC-1qHW_M?start=5" title="Feather Falloff Shader — Additional In-editor Demo" width="1660" height="1080" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <a class="study__link" href="https://youtu.be/lvXC-1qHW_M?t=5" target="_blank" rel="noopener noreferrer" aria-label="Watch Additional In-editor Demo on YouTube">Watch on YouTube ↗</a>
-    </section>
-
-    <div class="editorial-project__section editorial-project__section--links">
-      <a class="study__link" href="/portfolio/">&larr; Back to Portfolio</a>
-    </div>
-  </article>
-</main>
+<div class="project-head"><a class="study__link" href="/portfolio/">&larr; Back to Portfolio</a></div>
+<article class="editorial-project feather">
+<header class="editorial-project__header">
+<p class="editorial-project__eyebrow">Procedural Feather Animation &middot; Technical Art</p>
+<h1>Feather Falloff Shader</h1>
+<p class="editorial-project__intro">A procedural wing shader exploring spatially controlled feather disintegration. Baked geometry data and custom shader logic drive feather-level movement, rotation, scaling, and visibility.</p>
+<p class="feather-stack">Autodesk Maya &nbsp;/&nbsp; Unity HDRP &nbsp;/&nbsp; Shader Graph &nbsp;/&nbsp; HLSL</p>
+</header>
+<section aria-label="Featured effect demonstration"><div class="editorial-project__video"><iframe src="https://www.youtube-nocookie.com/embed/Cy6cX6ri2yk" title="Feather Falloff Shader &mdash; Featured demo" width="1600" height="900"  allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><a class="study__link" href="https://youtu.be/Cy6cX6ri2yk" target="_blank" rel="noopener noreferrer">Watch featured demo on YouTube &nearr;</a></section>
+<section class="editorial-project__section" aria-labelledby="overview"><div class="feather-grid">
+<div><p class="editorial-project__section-label">01 / Overview</p><h2 id="overview">A wing, controlled in space.</h2><p>I built this personal technical art study to explore how baked geometric information could drive procedural animation in a real-time shader. I prepared feather position data in Maya, reconstructed that information in Unity HDRP Shader Graph, and integrated custom HLSL functions with spatial falloff controls to animate the wing's disintegration.</p><h3>My contributions</h3><ul class="feather-contributions"><li>Maya-side position data preparation.</li><li>WingFeather and WingBase Shader Graph architecture.</li><li>Integration of custom HLSL functions.</li><li>Spatial control of per-feather transformations and visibility.</li></ul></div>
+<figure><a href="media/Wing_Fall_Off_02.png" target="_blank" rel="noopener" aria-label="Open full-resolution Unity scene view of the wing and control volume"><img src="media/Wing_Fall_Off_02.png" alt="Winged character in the Unity scene with a green box-shaped control volume intersecting one wing" width="2543" height="1232" loading="lazy" decoding="async"></a><figcaption>The Unity scene view shows the control volume alongside the wing. The volume provides a spatial region for the effect, rather than treating the wing as a single moving object.</figcaption></figure>
+</div></section>
+<section class="editorial-project__section" aria-labelledby="data"><div class="feather-section-head"><p class="editorial-project__section-label">02 / Geometry &amp; data</p><h2 id="data">From Maya geometry to shader data.</h2><p>The effect begins with information carried by the mesh. The recovered Maya Wing has 15,438 vertices and four UV sets: <code>UVMap</code>, <code>UVMap2</code>, <code>shellPosXY</code>, and <code>shellPosZ</code>.</p></div>
+<ol class="feather-process" aria-label="Data preparation workflow"><li><span>01 / Geometry</span>Maya wing mesh</li><li><span>02 / Data</span>Auxiliary UV position data</li><li><span>03 / Reconstruction</span>Shader-side position information</li><li><span>04 / Control</span>Per-feather transformations</li></ol>
+<div class="feather-grid">
+<figure class=""><a href="media/Screenshot%202026-10-27%20024341.png" target="_blank" rel="noopener" aria-label="Open full-resolution image: Green-to-white reconstructed spatial debug visualization of the wing in Maya"><img src="media/Screenshot%202026-10-27%20024341.png" alt="Green-to-white reconstructed spatial debug visualization of the wing in Maya" width="1407" height="1059" loading="lazy" decoding="async"></a><figcaption>Reconstructed spatial debug view from stored worldPos vertex-color data. This is not an original capture of the historical bake, nor a visualization of shellPosXY or shellPosZ UV values. Select image to inspect at full resolution &nearr;</figcaption></figure>
+<div><h3>Position information travels with the mesh</h3><p>Position-like values were stored in the auxiliary <code>shellPosXY</code> and <code>shellPosZ</code> UV sets to support feather-level calculations and transformations in Unity.</p><p>The mesh also contains <code>Attribute</code> and <code>worldPos</code> vertex color sets. The green-to-white image is a later spatial visualization reconstructed from <code>worldPos</code>; it documents that reconstructed view, not the original baking procedure.</p><a class="study__link" href="media/Screenshot%202026-10-27%20024334.png" target="_blank" rel="noopener">Inspect the Maya debug view with wireframe overlay &nearr;</a><p class="feather-note">The named Maya UV sets and Unity channel indices are documented separately: the available media does not verify their exact export mapping.</p></div>
+</div>
+<div class="feather-module"><div class="feather-section-head"><h3>Baked Position / reconstructing the input</h3><p>The graph's Baked Position region reads <code>UV2</code> and <code>UV3</code>. Its visible split, combine, multiply, and transform nodes reconstruct position information for the downstream feather controls.</p></div>
+<figure class=""><a href="media/Screenshot%202026-10-27%20020830.png" target="_blank" rel="noopener" aria-label="Open full-resolution image: Baked Position Shader Graph group reading UV2 and UV3 into split, combine and transform nodes"><img src="media/Screenshot%202026-10-27%20020830.png" alt="Baked Position Shader Graph group reading UV2 and UV3 into split, combine and transform nodes" width="1553" height="744" loading="lazy" decoding="async"></a><figcaption>UV-channel reconstruction in WingFeather. The screenshot documents the node connections; the original baking script and export mapping are not included. Select image to inspect at full resolution &nearr;</figcaption></figure></div>
+</section>
+<section class="editorial-project__section" aria-labelledby="architecture"><div class="feather-section-head"><p class="editorial-project__section-label">03 / Shader architecture</p><h2 id="architecture">One effect, distinct control modules.</h2><p>WingFeather separates position reconstruction, box-volume sampling, offsets, rotation, scaling, and output into readable regions. The overview shows their connections; the details below isolate the parts that shape the effect.</p></div>
+<figure class=""><a href="media/Screenshot%202026-10-27%20020706.png" target="_blank" rel="noopener" aria-label="Open full-resolution image: Full WingFeather HDRP Lit Shader Graph with grouped position, offset, rotation, scaling and output regions"><img src="media/Screenshot%202026-10-27%20020706.png" alt="Full WingFeather HDRP Lit Shader Graph with grouped position, offset, rotation, scaling and output regions" width="2557" height="1286" loading="lazy" decoding="async"></a><figcaption>WingFeather architecture overview: position reconstruction, spatial controls, transformations, and output. Select image to inspect at full resolution &nearr;</figcaption></figure>
+<section class="feather-module" aria-labelledby="volume"><div class="feather-grid"><div><h3 id="volume">Spatial falloff / control volume</h3><p><code>SampleBoxVolume</code> receives a <code>WorldToBox</code> matrix and position input to evaluate a box-shaped region. Its output feeds the graph's transformation controls.</p><p>The X Offset and YZ Offset groups organize the displacement response along different directions. Together, they make the falloff spatially controllable rather than a uniform change across the whole wing.</p></div><figure class=""><a href="media/Screenshot%202026-10-27%20020854.png" target="_blank" rel="noopener" aria-label="Open full-resolution image: SampleBoxVolume custom function beside the X Offset and YZ Offset groups"><img src="media/Screenshot%202026-10-27%20020854.png" alt="SampleBoxVolume custom function beside the X Offset and YZ Offset groups" width="2269" height="893" loading="lazy" decoding="async"></a><figcaption>Box-volume sampling and directional offsets. The custom-function interface is visible; its cropped body is not treated as a complete implementation. Select image to inspect at full resolution &nearr;</figcaption></figure></div></section>
+<section class="feather-module" aria-labelledby="rotation"><div class="feather-grid"><div><h3 id="rotation">Procedural rotation &amp; scale</h3><p>The Rotation group includes the <code>RandomAxisAngle</code> custom function and a Rotate About Axis node. A separate Scale group adds size variation to the displacement and rotation controls.</p><p>These modules shape the movement of individual feathers as the spatial control changes. The graph makes their roles and connections visible without establishing the complete randomization or transformation formulas.</p></div><figure class=""><a href="media/Screenshot%202026-10-27%20020908.png" target="_blank" rel="noopener" aria-label="Open full-resolution image: WingFeather Rotation and Scale groups including RandomAxisAngle and Rotate About Axis"><img src="media/Screenshot%202026-10-27%20020908.png" alt="WingFeather Rotation and Scale groups including RandomAxisAngle and Rotate About Axis" width="1888" height="1222" loading="lazy" decoding="async"></a><figcaption>Rotation and scale are separate modules within the same procedural effect. Select image to inspect at full resolution &nearr;</figcaption></figure></div></section>
+<section class="feather-module" aria-labelledby="visibility"><div class="feather-grid"><div><h3 id="visibility">WingBase / visibility</h3><p>WingBase is a separate HDRP Lit graph. Its box-volume-related masking feeds the material's alpha path, with alpha clipping enabled and an Alpha Clip Threshold connection visible.</p><p>This keeps the base material's visibility control distinct from WingFeather's transformation network. Both graphs contribute to the same wing effect.</p></div><figure class=""><a href="media/Screenshot%202026-10-27%20020742.png" target="_blank" rel="noopener" aria-label="Open full-resolution image: WingBase HDRP Lit Shader Graph with SampleBoxVolume masking, alpha connections and alpha clipping enabled"><img src="media/Screenshot%202026-10-27%20020742.png" alt="WingBase HDRP Lit Shader Graph with SampleBoxVolume masking, alpha connections and alpha clipping enabled" width="2552" height="1304" loading="lazy" decoding="async"></a><figcaption>WingBase handles a separate material graph with spatial masking and alpha-clipping-related output. Select image to inspect at full resolution &nearr;</figcaption></figure></div>
+<details><summary>Inspect WingFeather's final vertex and fragment connections</summary><figure class=""><a href="media/Screenshot%202026-10-27%20020922.png" target="_blank" rel="noopener" aria-label="Open full-resolution image: WingFeather graph detail showing position reconstruction connections and final vertex and fragment output"><img src="media/Screenshot%202026-10-27%20020922.png" alt="WingFeather graph detail showing position reconstruction connections and final vertex and fragment output" width="2431" height="936" loading="lazy" decoding="async"></a><figcaption>Output detail: the final connections bring the position and visibility controls into the shader output. Select image to inspect at full resolution &nearr;</figcaption></figure></details>
+</section></section>
+<section class="editorial-project__section" aria-labelledby="views"><div class="feather-section-head"><p class="editorial-project__section-label">04 / Additional demonstrations</p><h2 id="views">The same effect, seen again.</h2><p>Three additional recordings show the wing effect from alternate perspectives or control states. They are views of the same shader, not separate effects or development stages.</p></div>
+<div class="feather-videos"><section aria-labelledby="view1"><h3 id="view1">Additional View 01</h3><div class="editorial-project__video" data-video="3p8UduiwFI0"><img src="media/Wing_Fall_Off_03.png" alt="Project still of the feather effect; load the video for this recording" width="2508" height="1250" loading="lazy" decoding="async"><button type="button" hidden data-title="Feather Falloff Shader &mdash; Additional View 01">Load Additional View 01</button></div><a class="study__link" href="https://youtu.be/3p8UduiwFI0" target="_blank" rel="noopener noreferrer">Watch additional view 01 on YouTube &nearr;</a></section><section aria-labelledby="view2"><h3 id="view2">Additional View 02</h3><div class="editorial-project__video" data-video="C366n_UvSuw"><img src="media/Wing_Fall_Off_03.png" alt="Project still of the feather effect; load the video for this recording" width="2508" height="1250" loading="lazy" decoding="async"><button type="button" hidden data-title="Feather Falloff Shader &mdash; Additional View 02">Load Additional View 02</button></div><a class="study__link" href="https://youtu.be/C366n_UvSuw" target="_blank" rel="noopener noreferrer">Watch additional view 02 on YouTube &nearr;</a></section><section aria-labelledby="view3"><h3 id="view3">Additional View 03</h3><div class="editorial-project__video" data-video="MFjnABgB5lE"><img src="media/Wing_Fall_Off_03.png" alt="Project still of the feather effect; load the video for this recording" width="2508" height="1250" loading="lazy" decoding="async"><button type="button" hidden data-title="Feather Falloff Shader &mdash; Additional View 03">Load Additional View 03</button></div><a class="study__link" href="https://youtu.be/MFjnABgB5lE" target="_blank" rel="noopener noreferrer">Watch additional view 03 on YouTube &nearr;</a></section></div>
+</section>
+<section class="editorial-project__section feather-close" aria-labelledby="takeaway"><p class="editorial-project__section-label">05 / Takeaway</p><h2 id="takeaway">Data preparation is part of the effect.</h2><p>This study connects Maya-side mesh preparation with shader-side procedural control. Carrying position information into the graph creates a foundation for feather-level transformations, while the box-shaped control volume provides a spatial way to direct the disintegration.</p></section>
+<div class="editorial-project__section editorial-project__section--links"><a class="study__link" href="/portfolio/">&larr; Back to Portfolio</a></div>
+</article></main>
 
 <footer class="foot">
   <span>More small things live in <a href="/barrymade/">BarryMade</a>.</span>
@@ -91,5 +87,6 @@
 
 <script src="/assets/js/site.js?v=20261021-bfcache"></script>
 <script src="/assets/js/portfolio.js"></script>
+<script src="videos.js?v=20261027"></script>
 </body>
 </html>
